@@ -1,42 +1,90 @@
-[gd_scene load_steps=9 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=12 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="Texture2D" uid="uid://dpgmwt1l3ycod" path="res://assets/PC.jpg" id="1_iwpey"]
-[ext_resource type="Texture2D" uid="uid://c1o3d05evj0od" path="res://assets/cmd.png" id="2_cnl1l"]
+[ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
+[ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
 [ext_resource type="Texture2D" uid="uid://cs8eb0lbtd4n0" path="res://assets/tableau.jpg" id="3_p8cf3"]
 [ext_resource type="Texture2D" uid="uid://dbk0o7h1fmnbe" path="res://assets/voisin.jpg" id="4_dx33h"]
 [ext_resource type="Texture2D" uid="uid://cw0s7djolpi41" path="res://assets/chat.jpg" id="6_00228"]
 [ext_resource type="Texture2D" uid="uid://ddpj3h7dyvhf2" path="res://assets/chatOut.jpg" id="7_1bl4g"]
 [ext_resource type="Texture2D" uid="uid://i4fpsbq11ebh" path="res://assets/enter.jpg" id="8_00228"]
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_0mgva"]
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Pc" type="Sprite2D" parent="."]
 position = Vector2(573.00006, 327.00006)
-scale = Vector2(0.28186277, 0.21093749)
+scale = Vector2(0.28020474, 0.25308582)
 texture = ExtResource("1_iwpey")
 
-[node name="Control" type="Control" parent="."]
+[node name="Terminal" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 253.687
-offset_top = 144.52812
-offset_right = 980.92554
-offset_bottom = 435.84766
+offset_left = 234.0
+offset_top = 125.00001
+offset_right = 961.2385
+offset_bottom = 416.31952
 rotation = -0.01001645
-scale = Vector2(1, 1.0116192)
+scale = Vector2(0.63441795, 1.0588717)
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
-[node name="Panel" type="Panel" parent="Control"]
-layout_mode = 0
-offset_left = -3.661499
-offset_top = -2.5355225
-offset_right = 733.97614
-offset_bottom = 285.41516
+[node name="Background" type="PanelContainer" parent="Terminal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Cmd" type="Sprite2D" parent="Control"]
-position = Vector2(204.91566, 152.52057)
-scale = Vector2(0.41428858, 0.29770577)
-texture = ExtResource("2_cnl1l")
+[node name="ColorRect" type="ColorRect" parent="Terminal/Background"]
+layout_mode = 2
+color = Color(0.019607844, 0.1254902, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Terminal/Background"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Rows" type="VBoxContainer" parent="Terminal/Background/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="GameText" type="RichTextLabel" parent="Terminal/Background/MarginContainer/Rows"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0.76862746, 0.16862746, 1)
+theme_override_fonts/normal_font = ExtResource("2_00228")
+theme_override_font_sizes/normal_font_size = 20
+scroll_following = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Terminal/Background/MarginContainer/Rows"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Terminal/Background/MarginContainer/Rows/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_00228")
+text = "> "
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="Terminal/Background/MarginContainer/Rows/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/caret_width = 7
+theme_override_fonts/font = ExtResource("2_00228")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxLine_1bl4g")
+theme_override_styles/focus = SubResource("StyleBoxLine_0mgva")
+max_length = 50
+caret_blink = true
+script = ExtResource("3_1bl4g")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(573, 329)
@@ -62,7 +110,7 @@ scale = Vector2(0.8399998, 0.7288251)
 texture = ExtResource("6_00228")
 
 [node name="ChatOut" type="Sprite2D" parent="."]
-position = Vector2(824.25, 344.42188)
+position = Vector2(826, 343)
 scale = Vector2(0.37826794, 0.2545316)
 texture = ExtResource("7_1bl4g")
 
@@ -70,3 +118,5 @@ texture = ExtResource("7_1bl4g")
 position = Vector2(844, 430)
 scale = Vector2(0.084558874, 0.060865995)
 texture = ExtResource("8_00228")
+
+[connection signal="text_submitted" from="Terminal/Background/MarginContainer/Rows/HBoxContainer/LineEdit" to="Terminal/Background/MarginContainer/Rows/HBoxContainer/LineEdit" method="_on_text_submitted"]
