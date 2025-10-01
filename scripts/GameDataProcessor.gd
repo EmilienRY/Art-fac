@@ -1,17 +1,14 @@
 class_name GameDataProcessor
 
-var InstructionSet = load("res://scripts/InstructionSet.gd")
+var InstructionSetScript = load("res://scripts/InstructionSet.gd")
 
-var rooms
-var currentRoom = null
-var inventory = {}
+var data = {}
 
 func _init():
-	rooms = loadJsonData("res://data/game1.json")
+	data = load_json_data("res://data/game1.json")
 
-# Load the game data from the json file.
-func loadJsonData(fileName):
-	var file = FileAccess.open(fileName, FileAccess.READ)
+func load_json_data(file_name):
+	var file = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = file.get_as_text()
 	file.close()
 
@@ -28,84 +25,51 @@ func loadJsonData(fileName):
 		assert(false, "JSON Parse Error")
 
 func process_action(action, object = null):
-	# React to the help command.
+
 	if action == InstructionSet.HELP:
 		var helpText = ''
 		helpText += 'Instructions:' + "\n"
-		helpText += '- Use "look" around the room you are in.' + "\n"
-		helpText += '- Use "north", "south", "east", "west" to move in that direction.' + "\n"
-		helpText += '- Use "open" or "close" to interact with doors.' + "\n"
-		helpText += '- Use "get <object>" pick up objects.' + "\n"
-		helpText += '- Use "reset" to reset the game, or "exit" to quit.' + "\n"
+		helpText += '- Utilisez les commandes pour le traitement d\'images.' + "\n"
+		helpText += '- Commandes disponibles: clear, reset, quit, seuil <valeur>' + "\n"
 		return helpText
 
-	# React to the reset command.
 	if action == InstructionSet.RESET:
-		currentRoom = null
-		inventory = {}
-		rooms = loadJsonData("res://data/game1.json")
+		data = load_json_data("res://data/game1.json")
 		return process_action(null)
 
-	# React to the quit command.
 	if action == InstructionSet.QUIT:
 		Engine.get_main_loop().quit()
 		return 'Bye...'
 
-	# If the current room is empty then start with the initial room.
-	if currentRoom == null:
-		currentRoom = 'room1'
-		return render_room(rooms[currentRoom])
+	if action == InstructionSet.SEUIL:
+		var new_text = ''
+		if object == null or object == '':
+			new_text += "appel invalide, usage: seuil <valeur>\n\n"
+			return new_text
+		if typeof(object) == TYPE_STRING and object.is_valid_float():
+			var seuil_value = object.to_float()
+			if seuil_value < 0 or seuil_value > 255:
+				new_text += "seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+				return new_text
+			new_text += "Seuil défini à: %s\n" % seuil_value
 
-	# React to the look command.
-	if action == InstructionSet.LOOK:
-		return render_room(rooms[currentRoom])
+			return new_text
+		else:
+			return "Valeur de seuil invalide. Utilisez un nombre.\n"
 
-	if action == InstructionSet.GET and object != null:
-		for item in rooms[currentRoom]['items']:
-			if rooms[currentRoom]['items'][item]['name'] == object:
-				inventory[item] = rooms[currentRoom]['items'][item]
-				return 'You get the ' + object;
-		return 'There is no ' + object + "\n"
-
-	if action == InstructionSet.OPEN and object != null:
-		var direction = object.get_slice(' ', 0)
-		var exit = object.get_slice(' ', 1)
-		for item in rooms[currentRoom]['exits']:
-			if item == direction:
-				for inventoryItem in inventory:
-					if rooms[currentRoom]['exits'][item]['key'] == inventoryItem:
-						rooms[currentRoom]['exits'][item]['locked'] = false
-						return 'You open the ' + direction + ' door'
-			else:
-				return 'What direction do you want to open?'
-		return 'You do not have the key for this door'
-
-	# If we get to this point we have a direction of some kind.
-	# Is direction/action valid?
-	if rooms[currentRoom]['exits'].has(action) == false:
+	if action == InstructionSet.NOT_FOUND:
 		return 'I don\'t understand!' + "\n"
 
-	# is a direction then change the state to the new room.
-	if rooms[currentRoom]['exits'][action].has('destination') == true:
-		if rooms[currentRoom]['exits'][action].has('locked') and rooms[currentRoom]['exits'][action]['locked'] == true:
-			return "The door is locked!\n"
-		currentRoom = rooms[currentRoom]['exits'][action]['destination']
+	if action == null:
+		var rendered = ''
+		for key in data.keys():
+			var entry = data[key]
+			rendered += key + "\n"
+			if entry.has('intro'):
+				rendered += entry['intro'] + "\n"
+			if entry.has('description'):
+				rendered += entry['description'] + "\n"
+			rendered += "\n"
+		return rendered
 
-	# return the text of the new room
-	return render_room(rooms[currentRoom])
-
-# Render a given room, including the exits.
-func render_room(room):
-	var renderedRoom = ''
-	renderedRoom += room['intro'] + "\n"
-
-	if room.has('items') == true:
-		for item in room['items']:
-			if inventory.has(item) == false:
-				renderedRoom += room['items'][item]['description'] + "\n"
-
-	renderedRoom += "\nPossible exists are:\n"
-
-	for exit in room['exits']:
-		renderedRoom += "- " + room['exits'][exit]['description'] + "\n"
-	return renderedRoom
+	return 'Commande non implémentée.\n'
