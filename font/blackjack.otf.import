@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bq1qb3s7yikad"
-path="res://.godot/imported/09809_COURIER.ttf-bffa577e08ffe578782c521685c7b837.fontdata"
+uid="uid://8u5rh5xils37"
+path="res://.godot/imported/blackjack.otf-9f051460c595b948da479ab02305e9e6.fontdata"
 
 [deps]
 
-source_file="res://font/09809_COURIER.ttf"
-dest_files=["res://.godot/imported/09809_COURIER.ttf-bffa577e08ffe578782c521685c7b837.fontdata"]
+source_file="res://font/blackjack.otf"
+dest_files=["res://.godot/imported/blackjack.otf-9f051460c595b948da479ab02305e9e6.fontdata"]
 
 [params]
 
@@ -30,12 +30,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "Nouvelle configuration",
-"size": Vector2i(16, 0)
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}
