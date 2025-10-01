@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dy6ljwbllnp1b"]
+[gd_scene load_steps=4 format=3 uid="uid://dy6ljwbllnp1b"]
 
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="1_fust3"]
 [ext_resource type="Script" uid="uid://cgrvaams85i30" path="res://scene/zoomFeuille.gd" id="2_xs4ie"]
+[ext_resource type="FontFile" uid="uid://8u5rh5xils37" path="res://font/blackjack.otf" id="3_f74f1"]
 
 [node name="ZoomFeuille" type="Control"]
 layout_mode = 3
@@ -13,15 +14,80 @@ grow_vertical = 2
 script = ExtResource("2_xs4ie")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 231.0
-offset_top = -26.0
-offset_right = 856.0
-offset_bottom = 1063.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.201
+anchor_right = 0.74300003
+anchor_bottom = 0.098000005
+offset_left = -0.55200195
+offset_top = -22.0
+offset_right = 0.063964844
+offset_bottom = 1243.496
 texture = ExtResource("1_fust3")
 expand_mode = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(542, 1525.0001)
-scale = Vector2(0.31760198, 0.7804848)
-texture = ExtResource("1_fust3")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="undo" type="Label" parent="CanvasLayer"]
+offset_left = 233.0
+offset_top = 3.0
+offset_right = 847.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./undo : annule la dernière opération effectuée"
+
+[node name="clear" type="Label" parent="CanvasLayer"]
+offset_left = 231.0
+offset_top = 48.0
+offset_right = 856.0
+offset_bottom = 115.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./clear : annule toutes les opérations et permet de repartir de l'image de
+ départ"
+
+[node name="Seuil" type="Label" parent="CanvasLayer"]
+offset_left = 230.0
+offset_top = 126.0
+offset_right = 844.0
+offset_bottom = 193.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./seuil val : mets les pixels de l'image à 0 (noir) si sa valeur est 
+inférieure au seuil ou à 255 (blanc) sinon"
+
+[node name="histogramme" type="Label" parent="CanvasLayer"]
+offset_left = 230.0
+offset_top = 210.0
+offset_right = 844.0
+offset_bottom = 277.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./histogramme : trace l'histogramme de l'image. C'est la répartition
+ des différentes valeurs des pixels de l'image"
+
+[node name="erosion" type="Label" parent="CanvasLayer"]
+offset_left = 235.0
+offset_top = 354.0
+offset_right = 849.0
+offset_bottom = 421.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./erosion :"
+
+[node name="dilatation" type="Label" parent="CanvasLayer"]
+offset_left = 231.0
+offset_top = 405.0
+offset_right = 845.0
+offset_bottom = 472.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./dilatation : "
