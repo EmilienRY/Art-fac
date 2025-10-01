@@ -26,20 +26,19 @@ offset_bottom = 1243.496
 texture = ExtResource("1_fust3")
 expand_mode = 1
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2
-
-[node name="undo" type="Label" parent="CanvasLayer"]
-offset_left = 233.0
+[node name="undo" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
 offset_top = 3.0
-offset_right = 847.0
+offset_right = 846.0
 offset_bottom = 70.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_f74f1")
 theme_override_font_sizes/font_size = 23
 text = " ./undo : annule la dernière opération effectuée"
 
-[node name="clear" type="Label" parent="CanvasLayer"]
+[node name="clear" type="Label" parent="."]
+layout_mode = 0
 offset_left = 231.0
 offset_top = 48.0
 offset_right = 856.0
@@ -50,44 +49,92 @@ theme_override_font_sizes/font_size = 23
 text = " ./clear : annule toutes les opérations et permet de repartir de l'image de
  départ"
 
-[node name="Seuil" type="Label" parent="CanvasLayer"]
-offset_left = 230.0
-offset_top = 126.0
-offset_right = 844.0
-offset_bottom = 193.0
+[node name="save" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 125.0
+offset_right = 846.0
+offset_bottom = 192.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./save  : sauvegarde l'image actuelle"
+
+[node name="Seuil" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 170.0
+offset_right = 846.0
+offset_bottom = 237.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_f74f1")
 theme_override_font_sizes/font_size = 23
 text = " ./seuil val : mets les pixels de l'image à 0 (noir) si sa valeur est 
-inférieure au seuil ou à 255 (blanc) sinon"
+ inférieure au seuil ou à 255 (blanc) sinon"
 
-[node name="histogramme" type="Label" parent="CanvasLayer"]
-offset_left = 230.0
-offset_top = 210.0
-offset_right = 844.0
-offset_bottom = 277.0
+[node name="histogramme" type="Label" parent="."]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 247.0
+offset_right = 845.0
+offset_bottom = 314.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_f74f1")
 theme_override_font_sizes/font_size = 23
 text = " ./histogramme : trace l'histogramme de l'image. C'est la répartition
  des différentes valeurs des pixels de l'image"
 
-[node name="erosion" type="Label" parent="CanvasLayer"]
-offset_left = 235.0
+[node name="erosion" type="Label" parent="."]
+layout_mode = 0
+offset_left = 231.0
 offset_top = 354.0
-offset_right = 849.0
+offset_right = 845.0
 offset_bottom = 421.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_f74f1")
 theme_override_font_sizes/font_size = 23
 text = " ./erosion :"
 
-[node name="dilatation" type="Label" parent="CanvasLayer"]
-offset_left = 231.0
-offset_top = 405.0
-offset_right = 845.0
-offset_bottom = 472.0
+[node name="dilatation" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 403.0
+offset_right = 846.0
+offset_bottom = 470.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_f74f1")
 theme_override_font_sizes/font_size = 23
 text = " ./dilatation : "
+
+[node name="flou" type="Label" parent="."]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 439.0
+offset_right = 845.0
+offset_bottom = 506.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./flou : "
+
+[node name="profil" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 472.0
+offset_right = 846.0
+offset_bottom = 539.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./profil “ligne/colonne” “position” : "
+
+[node name="gradient" type="Label" parent="."]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 512.0
+offset_right = 846.0
+offset_bottom = 579.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_f74f1")
+theme_override_font_sizes/font_size = 23
+text = " ./gradient : "
