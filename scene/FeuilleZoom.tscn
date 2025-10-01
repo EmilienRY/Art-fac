@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dy6ljwbllnp1b"]
 
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="1_fust3"]
-[ext_resource type="Script" path="res://scene/zoomFeuille.gd" id="2_xs4ie"]
+[ext_resource type="Script" uid="uid://cgrvaams85i30" path="res://scene/zoomFeuille.gd" id="2_xs4ie"]
 
 [node name="ZoomFeuille" type="Control"]
 layout_mode = 3
@@ -14,6 +14,14 @@ script = ExtResource("2_xs4ie")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 231.0
+offset_top = -26.0
+offset_right = 856.0
+offset_bottom = 1063.0
+texture = ExtResource("1_fust3")
+expand_mode = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(542, 1525.0001)
+scale = Vector2(0.31760198, 0.7804848)
 texture = ExtResource("1_fust3")
