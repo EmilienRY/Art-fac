@@ -8,18 +8,8 @@ const RESET = "reset"
 
 const QUIT = "quit"
 
-const LOOK = "look"
+const CLEAR = "clear"
 
-const NORTH = "north"
+const EROSION = "erosion"
 
-const SOUTH = "south"
-
-const EAST = "east"
-
-const WEST = "west"
-
-const GET = "get"
-
-const OPEN = "open"
-
-const CLOSE = "close"
+const SEUIL = "seuil"
