@@ -72,7 +72,7 @@ func process_action(action, object = null):
 			return "Valeur de seuil invalide. Utilisez un nombre.\n"
 
 	if action == InstructionSet.NOT_FOUND:
-		return 'I don\'t understand!' + "\n"
+		return 'Fonction inconnue' + "\n"
 	if action == null:
 		var rendered = ''
 		for level_key in data.keys():

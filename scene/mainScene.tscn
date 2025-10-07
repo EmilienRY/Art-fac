@@ -118,7 +118,6 @@ theme_override_styles/focus = SubResource("StyleBoxLine_0mgva")
 max_length = 50
 caret_blink = true
 script = ExtResource("3_1bl4g")
-img_path = NodePath("../../../../../../../ImgBase")
 
 [node name="Tableau" type="Sprite2D" parent="."]
 position = Vector2(576, -966.0001)
