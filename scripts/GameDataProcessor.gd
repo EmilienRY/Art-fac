@@ -3,26 +3,40 @@ class_name GameDataProcessor
 var InstructionSetScript = load("res://scripts/InstructionSet.gd")
 
 var data = {}
+var current_level_key: String = "TP1"
 
 func _init():
-	data = load_json_data("res://data/game1.json")
+	data = load_all_json_data("res://data")
 
 func load_json_data(file_name):
 	var file = FileAccess.open(file_name, FileAccess.READ)
 	var json_string = file.get_as_text()
 	file.close()
-
 	var json = JSON.new()
-	var error = json.parse(json_string)
-	if error == OK:
-		var data_received = json.data
-		if typeof(data_received) == TYPE_DICTIONARY:
-			return data_received
-		else:
-			assert(false, "Unexpected data in JSON output")
-	else:
-		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
-		assert(false, "JSON Parse Error")
+	if json.parse(json_string) == OK and typeof(json.data) == TYPE_DICTIONARY:
+		return json.data
+	return {}
+
+func load_all_json_data(dir_path: String) -> Dictionary:
+	var result := {}
+	var da = DirAccess.open(dir_path)
+	if da == null:
+		return result
+	da.list_dir_begin()
+	var fname = da.get_next()
+	while fname != "":
+		if fname.to_lower().ends_with(".json"):
+			var fpath = dir_path + "/" + fname
+			var file = FileAccess.open(fpath, FileAccess.READ)
+			var s = file.get_as_text()
+			file.close()
+			var json = JSON.new()
+			if json.parse(s) == OK and typeof(json.data) == TYPE_DICTIONARY:
+				for k in json.data.keys():
+					result[k] = json.data[k]
+		fname = da.get_next()
+	da.list_dir_end()
+	return result
 
 func process_action(action, object = null):
 
@@ -34,7 +48,7 @@ func process_action(action, object = null):
 		return helpText
 
 	if action == InstructionSet.RESET:
-		data = load_json_data("res://data/game1.json")
+		data = load_all_json_data("res://data")
 		return process_action(null)
 
 	if action == InstructionSet.QUIT:
@@ -59,12 +73,11 @@ func process_action(action, object = null):
 
 	if action == InstructionSet.NOT_FOUND:
 		return 'I don\'t understand!' + "\n"
-
 	if action == null:
 		var rendered = ''
-		for key in data.keys():
-			var entry = data[key]
-			rendered += key + "\n"
+		for level_key in data.keys():
+			var entry = data[level_key]
+			rendered += level_key + "\n"
 			if entry.has('intro'):
 				rendered += entry['intro'] + "\n"
 			if entry.has('description'):
@@ -73,3 +86,21 @@ func process_action(action, object = null):
 		return rendered
 
 	return 'Commande non implémentée.\n'
+
+func get_current_level_config():
+	if data.has(current_level_key):
+		return data[current_level_key]
+	return null
+
+func get_next_level_key():
+	var keys = data.keys()
+	for i in range(keys.size()):
+		if keys[i] == current_level_key and i < keys.size() - 1:
+			return keys[i + 1]
+	return null
+
+func set_current_level(key: String) -> bool:
+	if data.has(key):
+		current_level_key = key
+		return true
+	return false

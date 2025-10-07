@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw0s7djolpi41"
-path="res://.godot/imported/chat.jpg-f785a28a7470015e1b14db74251c2d58.ctex"
+uid="uid://bg7fq0ip8uy1a"
+path="res://.godot/imported/chien.jpg-389669e517b79d5a5d10d8c36ae00af5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/chat.jpg"
-dest_files=["res://.godot/imported/chat.jpg-f785a28a7470015e1b14db74251c2d58.ctex"]
+source_file="res://images/chien.jpg"
+dest_files=["res://.godot/imported/chien.jpg-389669e517b79d5a5d10d8c36ae00af5.ctex"]
 
 [params]
 
