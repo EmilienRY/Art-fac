@@ -32,18 +32,10 @@ func load_image(file_path: String) -> bool:
 	return false
 
 func get_image() -> Image:
-
 	return current_image.duplicate()
 
 func get_texture() -> Texture2D:
 	return current_texture
-
-func texture_threshold_from_file(file_path: String, threshold_value: float) -> Texture2D:
-	if not load_image(file_path):
-		return null
-	if not apply_threshold(threshold_value):
-		return null
-	return get_texture()
 
 func apply_threshold(threshold_value: float) -> bool:
 	if current_image == null:
@@ -62,7 +54,7 @@ func apply_threshold(threshold_value: float) -> bool:
 			else:
 				current_image.set_pixel(x, y, Color(0, 0, 0, c.a))
 
-	call_deferred("_finalize_image_update")
+	_finalize_image_update()
 	return true
 
 func _finalize_image_update():

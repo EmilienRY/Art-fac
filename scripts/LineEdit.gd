@@ -26,11 +26,9 @@ func _ready():
 	text_parser = TextParserScript.new()
 	game_data_processor = GameDataProcessorScript.new()
 
-	img_manager = get_node_or_null("/root/ImageManager")
-	if img_manager == null:
-		img_manager = ImageManagerScript.new()
-		img_manager.name = "ImageManager"
-		get_tree().get_root().call_deferred("add_child", img_manager)
+	img_manager = ImageManagerScript.new()
+	img_manager.name = "ImageManager"
+	get_tree().get_root().call_deferred("add_child", img_manager)
 
 	call_deferred("_bind_image_manager")
 
@@ -126,12 +124,7 @@ func _on_text_submitted(new_text):
 			else:
 				return
 
-			var level_cfg = game_data_processor.get_current_level_config()
-			var source_path = level_cfg['source']
-			var mgr = get_node_or_null("/root/ImageManager")
-
-			if mgr.load_image(source_path):
-				mgr.apply_threshold(thresh_val)
+			img_manager.apply_threshold(thresh_val)
 
 		InstructionSet.CLEAR:
 			gameText.clear()
