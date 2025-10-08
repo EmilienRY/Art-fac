@@ -30,7 +30,7 @@ func get_image() -> Image:
 func get_texture() -> Texture2D:
 	return current_texture
 
-func apply_threshold(threshold_value: float) -> bool:
+func transform_to_grayscale() -> bool:
 
 	var w = current_image.get_width()
 	var h = current_image.get_height()
@@ -38,7 +38,24 @@ func apply_threshold(threshold_value: float) -> bool:
 		for x in range(w):
 			var c: Color = current_image.get_pixel(x, y)
 			var lum = 0.299 * c.r + 0.587 * c.g + 0.114 * c.b
-			if lum * 255.0 >= threshold_value:
+			current_image.set_pixel(x, y, Color(lum, lum, lum, c.a))
+
+	push_snapshot()
+	_update_texture()
+	return true
+
+func apply_threshold(threshold_value: float) -> bool:
+
+	var w = current_image.get_width()
+	var h = current_image.get_height()
+	for y in range(h):
+		for x in range(w):			
+			var c: Color = current_image.get_pixel(x, y)
+
+			if(c.r != c.g or c.r != c.b):
+				return false
+
+			if c.r * 255.0 >= threshold_value:
 				current_image.set_pixel(x, y, Color(1, 1, 1, c.a))
 			else:
 				current_image.set_pixel(x, y, Color(0, 0, 0, c.a))
@@ -57,15 +74,12 @@ func _update_texture():
 func push_snapshot(img: Image = null):
 	var to_save = img if img else current_image
 		
-	# Supprimer l'historique après l'index actuel
 	if history_index < history.size() - 1:
 		history = history.slice(0, history_index + 1)
 	
-	# Ajouter le nouvel état
 	history.append(to_save.duplicate())
 	history_index = history.size() - 1
 	
-	# Limiter la taille de l'historique
 	if history.size() > max_history:
 		history.remove_at(0)
 		history_index = history.size() - 1

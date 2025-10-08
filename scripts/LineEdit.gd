@@ -75,6 +75,8 @@ func _on_text_submitted(new_text: String):
 			_process_psnr_command()
 		InstructionSet.SEND:
 			_process_send_command()
+		InstructionSet.GREY:
+			_process_grey_command()
 		_:
 			_process_generic_command(new_text, instruction)
 
@@ -85,7 +87,18 @@ func _process_seuil_command(command_text: String):
 
 	var param = text_parser.get_param()
 	if param and param.is_valid_float():
-		img_manager.apply_threshold(param.to_float())
+		var success = img_manager.apply_threshold(param.to_float())
+		if(!success):
+			gameText.append_text("Erreur, l'image n'est pas en niveaux de gris.\n\n")
+		else:
+			gameText.append_text("Seuil défini à: %s\n" % param.to_float())
+
+func _process_grey_command():
+	var success = img_manager.transform_to_grayscale()
+	if(!success):
+		gameText.append_text("Erreur lors de la conversion en niveaux de gris.\n\n")
+	else:
+		gameText.append_text("Image convertie en niveaux de gris avec succès.\n\n")
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -112,6 +125,8 @@ func _process_send_command():
 		gameText.append_text("Level passed! Now on %s\n\n" % str(result.get('next_key', '')))
 		gameText.append_text(new_cfg.intro + "\n" + new_cfg.description + "\n\n")
 		goal_node.texture = ResourceLoader.load(new_cfg.goal)
+	else:
+		gameText.append_text("Mauvais résultat.\n\n")
 
 func _process_generic_command(command_text: String, instruction: String):
 	var output = " > " + command_text + "\n\n"

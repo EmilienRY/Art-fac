@@ -25,6 +25,8 @@ func parse(text):
 			return InstructionSet.PSNR
 		'send':
 			return InstructionSet.SEND
+		'grey':
+			return InstructionSet.GREY
 
 	if text.begins_with('seuil'):
 		param = text.get_slice(' ', 1)
