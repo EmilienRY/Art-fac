@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
 [ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
 [ext_resource type="Texture2D" uid="uid://cs8eb0lbtd4n0" path="res://assets/tableau.jpg" id="3_p8cf3"]
-[ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scripts/feuille.gd" id="4_1bl4g"]
 [ext_resource type="Texture2D" uid="uid://dbk0o7h1fmnbe" path="res://assets/voisin.jpg" id="4_dx33h"]
+[ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scripts/feuille.gd" id="6_00228"]
 [ext_resource type="Shader" uid="uid://hp1smxfykyxv" path="res://shader/crt.gdshader" id="8_00228"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
@@ -155,7 +155,7 @@ scale = Vector2(0.28063726, 0.20751955)
 texture = ExtResource("4_dx33h")
 
 [node name="Feuille" type="Area2D" parent="."]
-script = ExtResource("4_1bl4g")
+script = ExtResource("6_00228")
 
 [node name="Sprite2D" type="Sprite2D" parent="Feuille"]
 position = Vector2(539, 1374.1249)
