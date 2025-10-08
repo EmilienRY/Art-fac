@@ -1,5 +1,4 @@
 extends Control
-res://zoomFeuille.gd
 var currentLevel=2
 
 var afficher_labels: bool = false
