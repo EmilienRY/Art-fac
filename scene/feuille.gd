@@ -8,3 +8,9 @@ func show_leaf():
 	var ui_layer = get_tree().current_scene.get_node("UI")  # ton CanvasLayer
 	var feuille_zoom = preload("res://scene/FeuilleZoom.tscn").instantiate()
 	ui_layer.add_child(feuille_zoom)  # ajoute au-dessus de la scène
+	
+	feuille_zoom.position = Vector2(0, get_viewport_rect().size.y)
+	# Tween pour glissement vers le haut
+	var tween = create_tween()
+	tween.tween_property(feuille_zoom,"position",Vector2(0, 0),0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
