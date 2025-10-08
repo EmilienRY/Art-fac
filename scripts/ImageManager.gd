@@ -154,7 +154,8 @@ func compute_psnr(a, b) -> float:
 		return 1e9
 	if mse == INF:
 		return NEG_INF
-	return 10.0 * log((255.0 * 255.0) / mse) / log(10.0)
+	var psnr = 10.0 * log((255.0 * 255.0) / mse) / log(10.0)
+	return round(psnr * 100.0) / 100.0
 
 func save_png(path: String) -> bool:
 	if not current_image:

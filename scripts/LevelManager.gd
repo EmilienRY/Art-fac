@@ -6,12 +6,10 @@ var img_manager: ImageManager
 var _goal_texture: Texture2D
 
 func _ready():
-	# Attendre que l'ImageManager soit disponible
 	call_deferred("_initialize")
 
 func _initialize():
 	img_manager = get_node("/root/ImageManager")
-	# Charger le niveau initial maintenant que l'ImageManager est disponible
 	load_current_level()
 
 func get_current_config() -> Dictionary:

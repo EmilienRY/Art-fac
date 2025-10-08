@@ -102,13 +102,13 @@ func _process_grey_command():
 
 func _process_undo_command():	
 	var success = img_manager.undo()
-	var message = "> undo\n\n" if success else "> nothing to undo\n\n"
+	var message = "> undo\n\n" if success else "> rien à annuler\n\n"
 	gameText.append_text(message)
 
 func _process_redo_command():
 
 	var success = img_manager.redo()
-	var message = "> redo\n\n" if success else "> nothing to redo\n\n"
+	var message = "> redo\n\n" if success else "> rien à refaire\n\n"
 	gameText.append_text(message)
 
 func _process_psnr_command():
@@ -122,7 +122,7 @@ func _process_send_command():
 	var new_cfg = result.get('new_cfg')
 	if new_cfg:
 		gameText.clear()
-		gameText.append_text("Level passed! Now on %s\n\n" % str(result.get('next_key', '')))
+		gameText.append_text("Niveau réussi! Maintenant sur %s\n\n" % str(result.get('next_key', '')))
 		gameText.append_text(new_cfg.intro + "\n" + new_cfg.description + "\n\n")
 		goal_node.texture = ResourceLoader.load(new_cfg.goal)
 	else:
