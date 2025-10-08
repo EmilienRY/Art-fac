@@ -1,0 +1,56 @@
+extends Node
+class_name LevelManager
+
+var game_data_processor = GameDataProcessor.new()
+var img_manager: ImageManager
+var _goal_texture: Texture2D
+
+func _ready():
+	# Attendre que l'ImageManager soit disponible
+	call_deferred("_initialize")
+
+func _initialize():
+	img_manager = get_node("/root/ImageManager")
+	# Charger le niveau initial maintenant que l'ImageManager est disponible
+	load_current_level()
+
+func get_current_config() -> Dictionary:
+	return game_data_processor.get_current_level_config()
+
+func load_current_level() -> bool:
+	var cfg = get_current_config()
+		
+	img_manager.reset()
+	img_manager.load_image(cfg.source)
+	_goal_texture = ResourceLoader.load(cfg.goal)
+	return true
+
+func get_goal_texture() -> Texture2D:
+	return _goal_texture
+
+func check_psnr() -> float:
+		
+	var current_image = img_manager.get_image()
+	var goal_image = _goal_texture.get_image()
+	return img_manager.compute_psnr(current_image, goal_image)
+
+func submit() -> Dictionary:
+	var cfg = get_current_config()
+	var psnr_value = check_psnr()
+	var threshold = cfg.get('psnr_threshold_db', 0.0)
+	
+	var result = {
+		"passed": psnr_value >= threshold,
+		"psnr": psnr_value,
+		"threshold": threshold
+	}
+	
+	if result.passed:
+		var next_key = game_data_processor.get_next_level_key()
+		if next_key:
+			game_data_processor.set_current_level(next_key)
+			load_current_level()
+			result["next_key"] = next_key
+			result["new_cfg"] = get_current_config()
+	
+	return result

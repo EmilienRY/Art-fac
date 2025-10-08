@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=11 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="Texture2D" uid="uid://dpgmwt1l3ycod" path="res://assets/PC.jpg" id="1_iwpey"]
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://cs8eb0lbtd4n0" path="res://assets/tableau.jpg" id="3_p8cf3"]
 [ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scene/feuille.gd" id="4_1bl4g"]
 [ext_resource type="Texture2D" uid="uid://dbk0o7h1fmnbe" path="res://assets/voisin.jpg" id="4_dx33h"]
-[ext_resource type="Texture2D" uid="uid://2hc1wldjsa4f" path="res://images/chat.jpg" id="8_00228"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
 
@@ -58,10 +57,10 @@ color = Color(0, 0, 0, 1)
 [node name="Terminal" type="Control" parent="Screen"]
 z_index = 1
 anchors_preset = 0
-offset_left = 1.9237576
-offset_top = 1.1849669
-offset_right = 786.2078
-offset_bottom = 310.2016
+offset_left = 0.5878128
+offset_top = 1.0772427
+offset_right = 784.8719
+offset_bottom = 310.09387
 scale = Vector2(0.030116007, 0.1153877)
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -119,7 +118,6 @@ theme_override_styles/focus = SubResource("StyleBoxLine_0mgva")
 max_length = 50
 caret_blink = true
 script = ExtResource("3_1bl4g")
-img_path = NodePath("../../../../../../../ImgBase")
 
 [node name="Tableau" type="Sprite2D" parent="."]
 position = Vector2(576, -966.0001)
@@ -145,14 +143,20 @@ shape = SubResource("RectangleShape2D_0mgva")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Exemple" type="Sprite2D" parent="."]
-position = Vector2(835.00006, 362)
-scale = Vector2(0.447, 0.427)
-texture = ExtResource("8_00228")
+[node name="Start" type="TextureRect" parent="UI"]
+offset_left = 705.00006
+offset_top = 101.0
+offset_right = 705.00006
+offset_bottom = 101.0
+scale = Vector2(0.4, 0.4)
+expand_mode = 1
+stretch_mode = 2
 
-[node name="ImgBase" type="Sprite2D" parent="."]
-position = Vector2(836, 189.00002)
-scale = Vector2(0.44709378, 0.48208216)
-texture = ExtResource("8_00228")
+[node name="Goal" type="TextureRect" parent="UI"]
+offset_left = 705.0
+offset_top = 273.0
+offset_right = 1305.0
+offset_bottom = 673.0
+scale = Vector2(0.4, 0.4)
 
 [connection signal="text_submitted" from="Screen/Terminal/Background/MarginContainer/Rows/HBoxContainer/LineEdit" to="Screen/Terminal/Background/MarginContainer/Rows/HBoxContainer/LineEdit" method="_on_text_submitted"]

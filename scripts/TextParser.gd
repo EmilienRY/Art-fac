@@ -17,18 +17,17 @@ func parse(text):
 			return InstructionSet.QUIT
 		'clear':
 			return InstructionSet.CLEAR
+		'undo':
+			return InstructionSet.UNDO
+		'redo':
+			return InstructionSet.REDO
+		'psnr':
+			return InstructionSet.PSNR
+		'send':
+			return InstructionSet.SEND
 
 	if text.begins_with('seuil'):
-		param=null
-		var regex = RegEx.new()
-		regex.compile("seuil\\s(?<param>.*(\\s.*)?)")
-		var results = regex.search(text)
-
-		if results == null:
-			param = ''
-			return InstructionSet.SEUIL
-
-		param = results.get_string('param')
+		param = text.get_slice(' ', 1)
 		return InstructionSet.SEUIL
 
 	return InstructionSet.NOT_FOUND

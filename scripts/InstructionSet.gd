@@ -13,3 +13,11 @@ const CLEAR = "clear"
 const EROSION = "erosion"
 
 const SEUIL = "seuil"
+
+const UNDO = "undo"
+
+const REDO = "redo"
+
+const PSNR = "psnr"
+
+const SEND = "send"

@@ -1,75 +1,122 @@
 extends LineEdit
 
-const TextParserScript = preload("res://scripts/TextParser.gd")
-const GameDataProcessorScript = preload("res://scripts/GameDataProcessor.gd")
-const ImageManager = preload("res://scripts/ImageManager.gd")
-
-@export var img_path: NodePath
-
 var gameText: RichTextLabel
-var text_parser = null
-var game_data_processor = null
-var img = null
-var t
+var text_parser = TextParser.new()
+var game_data_processor = GameDataProcessor.new()
+var img_manager: ImageManager
+var start_node: TextureRect
+var goal_node: TextureRect
+var level_manager: LevelManager
+
 func _ready():
 	gameText = get_parent().get_parent().get_node("GameText")
+	start_node = _find_node_by_name(get_tree().get_root(), "Start")
+	goal_node = _find_node_by_name(get_tree().get_root(), "Goal")
+	
+	call_deferred("_setup_managers")
+	grab_focus()
 
-	img = get_node_or_null(img_path) as Sprite2D
+func _setup_managers():
+	img_manager = ImageManager.new()
+	img_manager.name = "ImageManager"
+	get_tree().get_root().add_child(img_manager)
+	img_manager.connect("image_changed", _on_image_changed)
+	
+	level_manager = LevelManager.new()
+	level_manager.name = "LevelManager"
+	get_tree().get_root().add_child(level_manager)
+	
+	call_deferred("_load_initial_level")
 
-	t = load("res://assets/chat.jpg") as Texture2D
+func _load_initial_level():
+	var cfg = game_data_processor.get_current_level_config()
 
-	text_parser = TextParserScript.new()
-	game_data_processor = GameDataProcessorScript.new()
+	if cfg.has('source'):
+		var src_tex = ResourceLoader.load(cfg.source)
+		start_node.texture = src_tex
+		
+	if cfg.has('goal'):
+		var goal_tex = ResourceLoader.load(cfg.goal)
+		goal_node.texture = goal_tex
+	
+	if cfg.has('intro'):
+		gameText.append_text(cfg.intro + "\n")
+	if cfg.has('description'):
+		gameText.append_text(cfg.description + "\n\n")
 
-	var output_text = game_data_processor.process_action(InstructionSet.HELP)
+func _find_node_by_name(root_node: Node, name_to_find: String) -> Node:
+	if not root_node or root_node.name == name_to_find:
+		return root_node
+		
+	for child in root_node.get_children():
+		var result = _find_node_by_name(child, name_to_find)
+		if result:
+			return result
+	return null
 
-	gameText.append_text(output_text + "\n")
-	self.grab_focus()
 
-func _on_text_submitted(new_text):
-	if (new_text.is_empty()):
+func _on_text_submitted(new_text: String):
+	if new_text.is_empty():
 		return
 
-	self.set_text('')
+	text = ""
 	var instruction = text_parser.parse(new_text)
 
 	match instruction:
-		InstructionSet.NOT_FOUND:
-			var output_text = ''
-			output_text += " > " + new_text  + "\n\n"
-			output_text += game_data_processor.process_action(instruction, text_parser.get_object())
-			gameText.append_text(output_text)
-
 		InstructionSet.SEUIL:
-			var output_text = ''
-			output_text += " > " + new_text  + "\n\n"
-
-			output_text += game_data_processor.process_action(instruction, text_parser.get_param())
-			output_text += "\n"
-			gameText.append_text(output_text)
-
-			var param_text = text_parser.get_param()
-			if param_text == null or param_text == '':
-				return
-			var thresh_val = 0.0
-			if typeof(param_text) == TYPE_STRING and param_text.is_valid_float():
-				thresh_val = param_text.to_float()
-			else:
-				return
-
-			var im = ImageManager.new()
-			var source_path = "res://images/chat.jpg"
-			var new_tex = im.texture_threshold_from_file(source_path, thresh_val)
-			if new_tex != null and img != null:
-				img.texture = new_tex
-
+			_process_seuil_command(new_text)
 		InstructionSet.CLEAR:
 			gameText.clear()
-			self.set_text('')
-
+		InstructionSet.UNDO:
+			_process_undo_command()
+		InstructionSet.REDO:
+			_process_redo_command()
+		InstructionSet.PSNR:
+			_process_psnr_command()
+		InstructionSet.SEND:
+			_process_send_command()
 		_:
-			var output_text = ''
-			output_text += " > " + new_text + "\n\n"
-			output_text += game_data_processor.process_action(instruction, text_parser.get_object())
-			output_text += "\n"
-			gameText.append_text(output_text)
+			_process_generic_command(new_text, instruction)
+
+func _process_seuil_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+	output += game_data_processor.process_action(InstructionSet.SEUIL, text_parser.get_param()) + "\n"
+	gameText.append_text(output)
+
+	var param = text_parser.get_param()
+	if param and param.is_valid_float():
+		img_manager.apply_threshold(param.to_float())
+
+func _process_undo_command():	
+	var success = img_manager.undo()
+	var message = "> undo\n\n" if success else "> nothing to undo\n\n"
+	gameText.append_text(message)
+
+func _process_redo_command():
+
+	var success = img_manager.redo()
+	var message = "> redo\n\n" if success else "> nothing to redo\n\n"
+	gameText.append_text(message)
+
+func _process_psnr_command():
+		
+	var psnr_value = level_manager.check_psnr()
+	gameText.append_text("PSNR = %s dB\n\n" % str(psnr_value))
+
+func _process_send_command():
+	var result = level_manager.submit()
+		
+	var new_cfg = result.get('new_cfg')
+	if new_cfg:
+		gameText.clear()
+		gameText.append_text("Level passed! Now on %s\n\n" % str(result.get('next_key', '')))
+		gameText.append_text(new_cfg.intro + "\n" + new_cfg.description + "\n\n")
+		goal_node.texture = ResourceLoader.load(new_cfg.goal)
+
+func _process_generic_command(command_text: String, instruction: String):
+	var output = " > " + command_text + "\n\n"
+	output += game_data_processor.process_action(instruction, text_parser.get_object()) + "\n"
+	gameText.append_text(output)
+
+func _on_image_changed(new_texture: Texture2D):
+	start_node.texture = new_texture
