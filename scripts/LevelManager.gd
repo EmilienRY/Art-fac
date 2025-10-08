@@ -32,6 +32,14 @@ func check_psnr() -> float:
 	var goal_image = _goal_texture.get_image()
 	return img_manager.compute_psnr(current_image, goal_image)
 
+func get_current_level_number() -> int:
+	var level_key = game_data_processor.current_level_key
+	# Extraire le numéro du niveau depuis la clé (ex: "TP1" -> 1, "TP2" -> 2)
+	var number_str = level_key.substr(2) # Enlever "TP"
+	if number_str.is_valid_int():
+		return number_str.to_int()
+	return 1 # Par défaut niveau 1
+
 func submit() -> Dictionary:
 	var cfg = get_current_config()
 	var psnr_value = check_psnr()

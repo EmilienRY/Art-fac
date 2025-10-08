@@ -1,11 +1,15 @@
 extends Control
-var currentLevel=2
+var currentLevel=1
 
 var afficher_labels: bool = false
 
 var labelsCachéTP = [["erosion", "dilatation", "flou", "gradient", "histogramme", "profil"],["erosion", "dilatation", "flou", "gradient"]]
 
 func _ready() -> void:
+	_set_labels_visible(afficher_labels)
+
+func set_current_level(level: int) -> void:
+	currentLevel = level
 	_set_labels_visible(afficher_labels)
 
 func _set_labels_visible(affichage: bool) -> void:
