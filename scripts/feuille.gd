@@ -7,6 +7,13 @@ func _input_event(_viewport, event, _shape_idx):
 func show_leaf():
 	var ui_layer = get_tree().current_scene.get_node("UI")  # ton CanvasLayer
 	var feuille_zoom = preload("res://scene/FeuilleZoom.tscn").instantiate()
+	
+	# Récupérer le niveau actuel depuis le LevelManager
+	var level_manager = get_node("/root/LevelManager")
+	if level_manager:
+		var current_level = level_manager.get_current_level_number()
+		feuille_zoom.set_current_level(current_level)
+	
 	ui_layer.add_child(feuille_zoom)  # ajoute au-dessus de la scène
 	
 	feuille_zoom.position = Vector2(0, get_viewport_rect().size.y)
