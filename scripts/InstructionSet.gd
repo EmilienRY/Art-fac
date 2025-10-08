@@ -21,3 +21,5 @@ const REDO = "redo"
 const PSNR = "psnr"
 
 const SEND = "send"
+
+const GREY = "grey"

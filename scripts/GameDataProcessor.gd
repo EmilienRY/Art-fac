@@ -65,9 +65,7 @@ func process_action(action, object = null):
 			if seuil_value < 0 or seuil_value > 255:
 				new_text += "seuil invalide, valeur en dehors de la plage (0-255)\n\n"
 				return new_text
-			new_text += "Seuil défini à: %s\n" % seuil_value
-
-			return new_text
+			return ''
 		else:
 			return "Valeur de seuil invalide. Utilisez un nombre.\n"
 
