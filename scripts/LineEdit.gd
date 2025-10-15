@@ -1,5 +1,11 @@
 extends LineEdit
 
+@onready var typing_sound =_find_node_by_name(get_tree().get_root(), "keyBoard")
+@onready var enter_sound =_find_node_by_name(get_tree().get_root(), "enter")
+
+
+@onready var stop_timer = $Timer
+
 var gameText: RichTextLabel
 var text_parser = TextParser.new()
 var game_data_processor = GameDataProcessor.new()
@@ -12,7 +18,10 @@ func _ready():
 	gameText = get_parent().get_parent().get_node("GameText")
 	start_node = _find_node_by_name(get_tree().get_root(), "Start")
 	goal_node = _find_node_by_name(get_tree().get_root(), "Goal")
-	
+	connect("text_changed", Callable(self, "_on_text_changed"))
+
+	stop_timer.connect("timeout", Callable(self, "_on_stop_timer_timeout"))
+
 	call_deferred("_setup_managers")
 	grab_focus()
 
@@ -58,6 +67,8 @@ func _find_node_by_name(root_node: Node, name_to_find: String) -> Node:
 func _on_text_submitted(new_text: String):
 	if new_text.is_empty():
 		return
+
+	enter_sound.play()
 
 	text = ""
 	var instruction = text_parser.parse(new_text)
@@ -135,3 +146,13 @@ func _process_generic_command(command_text: String, instruction: String):
 
 func _on_image_changed(new_texture: Texture2D):
 	start_node.texture = new_texture
+
+func _on_text_changed(new_text):
+
+	stop_timer.start()
+
+	if not typing_sound.playing:
+		typing_sound.play()
+
+func _on_stop_timer_timeout():
+	typing_sound.stop()
