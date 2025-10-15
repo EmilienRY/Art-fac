@@ -38,7 +38,7 @@ func load_all_json_data(dir_path: String) -> Dictionary:
 	da.list_dir_end()
 	return result
 
-func process_action(action, object = null):
+func process_action(action, param = null):
 
 	if action == InstructionSet.HELP:
 		var helpText = ''
@@ -57,13 +57,17 @@ func process_action(action, object = null):
 
 	if action == InstructionSet.SEUIL:
 		var new_text = ''
-		if object == null or object == '':
-			new_text += "appel invalide, usage: seuil <valeur>\n\n"
+		if param == null or param.size() < 2:
+			new_text += "Appel invalide, usage: seuil <valeur>\n\n"
 			return new_text
-		if typeof(object) == TYPE_STRING and object.is_valid_float():
-			var seuil_value = object.to_float()
+		if typeof(param) == TYPE_STRING and param.is_valid_float():
+			var seuil_value = param[1].to_int()
 			if seuil_value < 0 or seuil_value > 255:
-				new_text += "seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+				new_text += "Seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+				return new_text
+			var color_mode = param[2] if param.size() > 2 else "all"
+			if color_mode not in ["all", "-r", "-g", "-b"]:
+				new_text += "Mode de couleur invalide, utilisez 'seuil <valeur> -r / -g / -b'\n\n"
 				return new_text
 			return ''
 		else:

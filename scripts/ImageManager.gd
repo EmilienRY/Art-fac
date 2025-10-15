@@ -44,22 +44,29 @@ func transform_to_grayscale() -> bool:
 	_update_texture()
 	return true
 
-func apply_threshold(threshold_value: float) -> bool:
-
+func apply_threshold(t: int, color_mode: int) -> bool:
 	var w = current_image.get_width()
 	var h = current_image.get_height()
 	for y in range(h):
-		for x in range(w):			
-			var c: Color = current_image.get_pixel(x, y)
-
-			if(c.r != c.g or c.r != c.b):
-				return false
-
-			if c.r * 255.0 >= threshold_value:
-				current_image.set_pixel(x, y, Color(1, 1, 1, c.a))
-			else:
-				current_image.set_pixel(x, y, Color(0, 0, 0, c.a))
-
+		for x in range(w):
+			var c = current_image.get_pixel(x, y)
+			var r = int(round(c.r * 255.0))
+			var g = int(round(c.g * 255.0))
+			var b = int(round(c.b * 255.0))
+			if color_mode == 0: # red
+				var nr = 255 if r >= t else 0
+				current_image.set_pixel(x, y, Color(nr / 255.0, g / 255.0, b / 255.0, c.a))
+			elif color_mode == 1: # green
+				var ng = 255 if g >= t else 0
+				current_image.set_pixel(x, y, Color(r / 255.0, ng / 255.0, b / 255.0, c.a))
+			elif color_mode == 2: # blue
+				var nb = 255 if b >= t else 0
+				current_image.set_pixel(x, y, Color(r / 255.0, g / 255.0, nb / 255.0, c.a))
+			else: # all
+				var nr = 255 if r >= t else 0
+				var ng = 255 if g >= t else 0
+				var nb = 255 if b >= t else 0
+				current_image.set_pixel(x, y, Color(nr / 255.0, ng / 255.0, nb / 255.0, c.a))
 	push_snapshot()
 	_update_texture()
 	return true

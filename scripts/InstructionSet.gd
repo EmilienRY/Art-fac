@@ -14,6 +14,12 @@ const EROSION = "erosion"
 
 const SEUIL = "seuil"
 
+const SEUIL_R = "seuil -r"
+
+const SEUIL_G = "seuil -g"
+
+const SEUIL_B = "seuil -b"
+
 const UNDO = "undo"
 
 const REDO = "redo"

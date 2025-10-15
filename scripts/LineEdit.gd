@@ -86,12 +86,24 @@ func _process_seuil_command(command_text: String):
 	gameText.append_text(output)
 
 	var param = text_parser.get_param()
-	if param and param.is_valid_float():
-		var success = img_manager.apply_threshold(param.to_float())
-		if(!success):
-			gameText.append_text("Erreur, l'image n'est pas en niveaux de gris.\n\n")
-		else:
-			gameText.append_text("Seuil défini à: %s\n" % param.to_float())
+	var seuil_value = param[1].to_int()
+	var color_mode = param[2] if param.size() > 2 else "all"
+	if color_mode == "-r":
+		color_mode = 0
+	elif color_mode == "-g":
+		color_mode = 1
+	elif color_mode == "-b":
+		color_mode = 2
+	else:
+		color_mode = -1
+	var success = img_manager.apply_threshold(seuil_value, color_mode)
+	if(!success):
+		gameText.append_text("Erreur, l'image n'est pas seuillée.\n\n")
+	else:
+		gameText.append_text("Seuil défini à: %s\n" % seuil_value + (" sur tous les canaux\n\n" if color_mode == -1 else 
+			(" sur le canal rouge\n\n" if color_mode == 0 else 
+			(" sur le canal vert\n\n" if color_mode == 1 else 
+			" sur le canal bleu\n\n"))))
 
 func _process_grey_command():
 	var success = img_manager.transform_to_grayscale()
