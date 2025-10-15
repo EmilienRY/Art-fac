@@ -3,7 +3,7 @@ var currentLevel=1
 
 var afficher_labels: bool = false
 
-var labelsCachéTP = [["erosion", "dilatation", "flou", "gradient", "histogramme", "profil"],["erosion", "dilatation", "flou", "gradient"]]
+var labelsCachéTP = [["erosion", "dilatation", "flou", "gradient", "histogramme", "profil", "ouverture", "fermeture"],["erosion", "dilatation", "flou", "gradient", "ouverture", "fermeture"]]
 
 func _ready() -> void:
 	_set_labels_visible(afficher_labels)
@@ -15,7 +15,7 @@ func set_current_level(level: int) -> void:
 func _set_labels_visible(affichage: bool) -> void:
 	var labelsCaché=labelsCachéTP[currentLevel-1]
 	for child in get_children():
-		if child is Label:
+		if child is RichTextLabel:
 			for nom in labelsCaché :
 				if child.name==nom:
 					child.visible = affichage

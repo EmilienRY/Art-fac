@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dy6ljwbllnp1b"]
+[gd_scene load_steps=5 format=3 uid="uid://dy6ljwbllnp1b"]
 
 [ext_resource type="Script" uid="uid://cgrvaams85i30" path="res://scripts/zoomFeuille.gd" id="1_f74f1"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="1_fust3"]
 [ext_resource type="FontFile" uid="uid://8u5rh5xils37" path="res://font/blackjack.otf" id="3_f74f1"]
+
+[sub_resource type="Theme" id="Theme_f74f1"]
 
 [node name="ZoomFeuille" type="Control"]
 layout_mode = 3
@@ -26,115 +28,278 @@ offset_bottom = 1243.496
 texture = ExtResource("1_fust3")
 expand_mode = 1
 
-[node name="undo" type="Label" parent="."]
-layout_mode = 0
-offset_left = 232.0
-offset_top = 3.0
-offset_right = 846.0
-offset_bottom = 70.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./undo : annule la dernière opération effectuée"
-
-[node name="clear" type="Label" parent="."]
-layout_mode = 0
+[node name="undo" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 231.0
-offset_top = 48.0
-offset_right = 856.0
-offset_bottom = 115.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./clear : annule toutes les opérations et permet de repartir de l'image de
- départ"
+offset_top = 7.0
+offset_right = 814.68
+offset_bottom = 0.8239975
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]undo[/bgcolor] : annule la dernière opération effectuée"
 
-[node name="save" type="Label" parent="."]
-layout_mode = 0
+[node name="redo" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 232.0
-offset_top = 125.0
-offset_right = 846.0
-offset_bottom = 192.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./save  : sauvegarde l'image actuelle"
+offset_top = 44.0
+offset_right = 815.68
+offset_bottom = 36.823997
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]redo[/bgcolor] : refais la dernière action"
 
-[node name="Seuil" type="Label" parent="."]
-layout_mode = 0
+[node name="save" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 232.0
-offset_top = 170.0
-offset_right = 846.0
-offset_bottom = 237.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./seuil val : mets les pixels de l'image à 0 (noir) si sa valeur est 
- inférieure au seuil ou à 255 (blanc) sinon"
+offset_top = 82.0
+offset_right = 815.68
+offset_bottom = 74.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]save[/bgcolor] : sauvegarde l'image actuelle"
 
-[node name="histogramme" type="Label" parent="."]
-layout_mode = 0
+[node name="clear" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 231.0
-offset_top = 247.0
-offset_right = 845.0
-offset_bottom = 314.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./histogramme : trace l'histogramme de l'image. C'est la répartition
- des différentes valeurs des pixels de l'image"
+offset_top = 121.0
+offset_right = 814.68
+offset_bottom = 115.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]clear[/bgcolor] : efface le contenu du terminal"
 
-[node name="erosion" type="Label" parent="."]
-layout_mode = 0
+[node name="seuil" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 231.0
-offset_top = 354.0
-offset_right = 845.0
-offset_bottom = 421.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./erosion :"
+offset_top = 265.0
+offset_right = 814.68
+offset_bottom = 291.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]seuil <val>[/bgcolor] : mets les pixels de l'image à 0 (noir) si sa valeur est 
+  inférieure au seuil ou à 255 (blanc) sinon"
 
-[node name="dilatation" type="Label" parent="."]
-layout_mode = 0
+[node name="histogramme" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 232.0
-offset_top = 403.0
-offset_right = 846.0
-offset_bottom = 470.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./dilatation : "
+offset_top = 327.0
+offset_right = 815.68
+offset_bottom = 353.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] histogramme[/bgcolor] :  trace l'histogramme de l'image. C'est la répartition
+  des différentes valeurs des pixels de l'image"
 
-[node name="flou" type="Label" parent="."]
-layout_mode = 0
+[node name="erosion" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 232.0
+offset_top = 450.0
+offset_right = 815.68
+offset_bottom = 476.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] erosion[/bgcolor] : passe la valeur du pixel à 255 (blanc) si au moins un des 
+  voisins a sa valeur à 255"
+
+[node name="grey" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 231.0
-offset_top = 439.0
-offset_right = 845.0
-offset_bottom = 506.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./flou : "
+offset_top = 164.0
+offset_right = 814.68
+offset_bottom = 158.82397
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]grey[/bgcolor] : passe l'image couleur en image noir et blanc"
 
-[node name="profil" type="Label" parent="."]
-layout_mode = 0
-offset_left = 232.0
-offset_top = 472.0
-offset_right = 846.0
-offset_bottom = 539.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./profil “ligne/colonne” “position” : "
+[node name="psnr" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 231.0
+offset_top = 207.0
+offset_right = 814.68
+offset_bottom = 230.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow]psnr[/bgcolor] : calcul la distance des valeurs des pixels entre l'image cible et 
+  l'image actuelle"
 
-[node name="gradient" type="Label" parent="."]
-layout_mode = 0
+[node name="dilatation" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
 offset_left = 232.0
-offset_top = 512.0
-offset_right = 846.0
-offset_bottom = 579.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_f74f1")
-theme_override_font_sizes/font_size = 23
-text = " ./gradient : "
+offset_top = 509.0
+offset_right = 815.68
+offset_bottom = 535.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] dilatation[/bgcolor] : passe la valeur du pixel à 0 (noir) si au moins un des 
+  voisins a sa valeur à 0"
+
+[node name="profil" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 231.0
+offset_top = 389.0
+offset_right = 814.68
+offset_bottom = 415.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] profil <ligne/colonne> <position>[/bgcolor] : trace la répartition des différentes
+  valeurs des pixels de la ligne ou la colonne choisie"
+
+[node name="flou" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 232.0
+offset_top = 692.0
+offset_right = 815.68
+offset_bottom = 718.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] flou[/bgcolor] : "
+
+[node name="gradient" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 232.0
+offset_top = 654.0
+offset_right = 815.68
+offset_bottom = 680.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] gradient[/bgcolor] : "
+
+[node name="ouverture" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 230.0
+offset_top = 571.0
+offset_right = 813.68
+offset_bottom = 566.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] ouverture[/bgcolor] : effectue une erosion puis une dilatation"
+
+[node name="fermeture" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.035
+anchor_bottom = 0.062000003
+offset_left = 230.0
+offset_top = 612.0
+offset_right = 813.68
+offset_bottom = 613.824
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] fermeture[/bgcolor] : effectue une erosion puis une dilatation"
