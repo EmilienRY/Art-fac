@@ -27,6 +27,10 @@ func parse(text):
 			return InstructionSet.SEND
 		'grey':
 			return InstructionSet.GREY
+		'erosion':
+			return InstructionSet.EROSION
+		'dilatation':
+			return InstructionSet.DILATATION
 
 	if text.begins_with('seuil'):
 		param = text.split(' ', false)

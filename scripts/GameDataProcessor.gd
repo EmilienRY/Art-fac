@@ -60,18 +60,15 @@ func process_action(action, param = null):
 		if param == null or param.size() < 2:
 			new_text += "Appel invalide, usage: seuil <valeur>\n\n"
 			return new_text
-		if typeof(param) == TYPE_STRING and param.is_valid_float():
-			var seuil_value = param[1].to_int()
-			if seuil_value < 0 or seuil_value > 255:
-				new_text += "Seuil invalide, valeur en dehors de la plage (0-255)\n\n"
-				return new_text
-			var color_mode = param[2] if param.size() > 2 else "all"
-			if color_mode not in ["all", "-r", "-g", "-b"]:
-				new_text += "Mode de couleur invalide, utilisez 'seuil <valeur> -r / -g / -b'\n\n"
-				return new_text
-			return ''
-		else:
-			return "Valeur de seuil invalide. Utilisez un nombre.\n"
+		var seuil_value = param[1].to_int()
+		if seuil_value < 0 or seuil_value > 255:
+			new_text += "Seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+			return new_text
+		var color_mode = param[2] if param.size() > 2 else "all"
+		if color_mode not in ["all", "-r", "-g", "-b"]:
+			new_text += "Mode de couleur invalide, utilisez 'seuil <valeur> -r / -g / -b'\n\n"
+			return new_text
+		return ''
 
 	if action == InstructionSet.NOT_FOUND:
 		return 'Fonction inconnue' + "\n"
