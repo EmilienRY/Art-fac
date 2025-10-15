@@ -3,7 +3,7 @@ class_name TextParser
 var InstructionSetScript = load("res://scripts/InstructionSet.gd")
 
 var object = null
-var param = null
+var param: PackedStringArray = []
 
 func parse(text):
 	match text:
@@ -29,7 +29,7 @@ func parse(text):
 			return InstructionSet.GREY
 
 	if text.begins_with('seuil'):
-		param = text.get_slice(' ', 1)
+		param = text.split(' ', false)
 		return InstructionSet.SEUIL
 
 	return InstructionSet.NOT_FOUND
