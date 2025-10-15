@@ -14,14 +14,16 @@ func set_current_level(level: int) -> void:
 
 func _set_labels_visible(affichage: bool) -> void:
 	var labelsCaché=labelsCachéTP[currentLevel-1]
-	for child in get_children():
+	var vbox = $TextureRect/ScrollContainer/VBoxContainer
+	for child in vbox.get_children():
 		if child is RichTextLabel:
 			for nom in labelsCaché :
 				if child.name==nom:
 					child.visible = affichage
 
 func _gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		$TextureRect/ScrollContainer.scroll_vertical = 0
 		var tween = create_tween()
 		tween.tween_property(self,"position",Vector2(0, get_viewport_rect().size.y),0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		tween.tween_callback(Callable(self, "queue_free")).set_delay(0.5)
