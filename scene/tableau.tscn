@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dg26msqqmc6jg"]
+
+[ext_resource type="Texture2D" uid="uid://cs8eb0lbtd4n0" path="res://assets/tableau.jpg" id="1_1qae0"]
+[ext_resource type="Script" uid="uid://bw0jre7hucjfa" path="res://scripts/zoomTableau.gd" id="2_3j50c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3j50c"]
+size = Vector2(362.5, 132)
+
+[node name="Tableau" type="Node2D"]
+
+[node name="Tableau" type="Sprite2D" parent="."]
+position = Vector2(575, 324.50003)
+scale = Vector2(0.28284317, 0.20996092)
+texture = ExtResource("1_1qae0")
+
+[node name="PC" type="Area2D" parent="."]
+script = ExtResource("2_3j50c")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PC"]
+position = Vector2(492.75, 580)
+shape = SubResource("RectangleShape2D_3j50c")
