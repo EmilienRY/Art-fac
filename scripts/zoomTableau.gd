@@ -1,16 +1,20 @@
-extends Area2D
+extends Control
 
-func _input_event(_viewport, event, _shape_idx):
+func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		show_pc()
+		transitionTableau_PC()
 
-func show_pc():
-	var ui_layer = get_tree().current_scene.get_node("UI")  # ton CanvasLayer
-	var pc = preload("res://scene/mainScene.tscn").instantiate()
+func transitionTableau_PC():
+	var ui_layer = get_tree().current_scene.get_node("UI")
+	var transition = preload("res://scene/transition.tscn").instantiate()
+	transition.video_path= "res://video/transitionTableau_PC.ogv"
+	ui_layer.add_child(transition)
 	
-	ui_layer.add_child(pc)  # ajoute au-dessus de la scène
-	
-	var tween = create_tween()
-	tween.tween_property(self,"position",Vector2(0, get_viewport_rect().size.y),0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tween.tween_callback(Callable(self, "queue_free")).set_delay(0.5)
-	
+	# Connecter un callback à la fin de la vidéo
+	var player = transition.get_node("VideoStreamPlayer")
+	player.finished.connect(func():_on_transition_finished(ui_layer))
+
+
+
+func _on_transition_finished(ui_layer):
+	queue_free()
