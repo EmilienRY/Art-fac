@@ -18,5 +18,9 @@ func transitionPC_Tableau():
 
 func _on_transition_finished(ui_layer):
 	var tableau = preload("res://scene/tableau.tscn").instantiate()
-	#tableau.set_scene_a(self.get_parent())
+	# Récupérer le niveau actuel depuis le LevelManager
+	var level_manager = get_node("/root/LevelManager")
+	if level_manager:
+		var current_level = level_manager.get_current_level_number()
+		tableau.set_current_level(current_level)
 	ui_layer.add_child(tableau)

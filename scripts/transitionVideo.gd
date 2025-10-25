@@ -15,8 +15,10 @@ func _ready():
 	player.connect("finished", Callable(self, "_on_video_finished"))
 
 func _update_video_size():
+	#adapte la taille de la vidéo à la taille de l'écran
 	$VideoStreamPlayer.size = get_viewport_rect().size
 
 func _on_video_finished():
+	#Petit délais pour éviter un bug visuel à la fin de la vidéo
+	await get_tree().create_timer(0.2).timeout
 	queue_free()
-	print("video fini")

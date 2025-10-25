@@ -1,5 +1,18 @@
 extends Control
 
+var currentLevel=1
+
+var consigneEx=["res://images/chat.jpg","res://images/chien.jpg"]
+
+func set_current_level(level: int) -> void:
+	currentLevel = level
+	set_consigne(currentLevel)
+
+func set_consigne(level : int) -> void:
+	var consigne=$ContenuTab
+	var texture_path = consigneEx[level - 1]
+	consigne.texture = load(texture_path)
+
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		transitionTableau_PC()
@@ -12,9 +25,7 @@ func transitionTableau_PC():
 	
 	# Connecter un callback à la fin de la vidéo
 	var player = transition.get_node("VideoStreamPlayer")
-	player.finished.connect(func():_on_transition_finished(ui_layer))
+	player.finished.connect(func():_on_transition_finished())
 
-
-
-func _on_transition_finished(ui_layer):
+func _on_transition_finished():
 	queue_free()
