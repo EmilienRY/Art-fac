@@ -95,11 +95,13 @@ func _on_text_submitted(new_text: String):
 		InstructionSet.SEND:
 			_process_send_command()
 		InstructionSet.GREY:
-			_process_grey_command()
+			_process_grey_command() 
 		InstructionSet.EROSION:
 			_process_erosion_command()
 		InstructionSet.DILATATION:
 			_process_dilatation_command()
+		InstructionSet.HISTOGRAM:
+			_process_histogram_command()
 		_:
 			_process_generic_command(new_text, instruction)
 
@@ -193,6 +195,61 @@ func _process_generic_command(command_text: String, instruction: String):
 	output += game_data_processor.process_action(instruction, text_parser.get_object()) + "\n"
 	gameText.append_text(output)
 
+func _process_histogram_command():
+	gameText.append_text("Génération de l'histogramme...\n\n")
+
+	var tex = img_manager.get_histogram_texture()
+	if tex == null:
+		gameText.append_text("Impossible de calculer l'histogramme.\n\n")
+		return
+
+	var histogram_win := Window.new()
+	histogram_win.name = "HistogramWindow"
+	histogram_win.size = Vector2i(512, 230)
+	histogram_win.min_size = Vector2i(512, 230)
+	histogram_win.max_size = Vector2i(512, 230)
+	histogram_win.position = Vector2i(200, 150)
+	histogram_win.title = "Histogramme"
+	get_tree().root.add_child(histogram_win)
+
+	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	histogram_win.add_child(vbox)
+
+	var tex_rect := TextureRect.new()
+	tex_rect.texture = tex
+	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tex_rect.custom_minimum_size = Vector2(512, 180)
+	vbox.add_child(tex_rect)
+
+	var scale_control := Control.new()
+	scale_control.custom_minimum_size = Vector2(490, 20)
+	vbox.add_child(scale_control)
+
+	var tex_width = 490
+	var graduations = [20,40,60,80,100,120,140,160,180,200,220,240,255]
+	for grad in graduations:
+		var label := Label.new()
+		label.label_settings = LabelSettings.new()
+		label.label_settings.font_size = 10
+		label.text = str(grad)
+		label.position = Vector2((grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
+		scale_control.add_child(label)
+
+	histogram_win.connect("close_requested", Callable(self, "_on_histogram_close").bind(histogram_win))
+
+	histogram_win.visible = true
+	histogram_win.popup()
+	histogram_win.grab_focus()
+
+
+func _on_histogram_close(win: Window):
+	if is_instance_valid(win):
+		win.queue_free()
+	gameText.append_text("Histogramme fermé.\n\n")
+
+
 func _on_image_changed(new_texture: Texture2D):
 	start_node.texture = new_texture
 	self.editable = true
@@ -202,9 +259,9 @@ func _on_image_changed(new_texture: Texture2D):
 func _on_progress_changed(progress: float) -> void:
 	var percent = int(round(progress * 100.0))
 	if percent >= 100:
-		progress_label.text = "Progress: 100% - done"
+		progress_label.text = "progression: 100%"
 	else:
-		progress_label.text = "Progress: %s%%" % str(percent)
+		progress_label.text = "progression: %s%%" % str(percent)
 
 func _on_text_changed(new_text):
 

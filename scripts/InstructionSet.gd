@@ -31,3 +31,5 @@ const GREY = "grey"
 const EROSION = "erosion"
 
 const DILATATION = "dilatation"
+
+const HISTOGRAM = "histogram"

@@ -31,6 +31,8 @@ func parse(text):
 			return InstructionSet.EROSION
 		'dilatation':
 			return InstructionSet.DILATATION
+		'histogram':
+			return InstructionSet.HISTOGRAM
 
 	if text.begins_with('seuil'):
 		param = text.split(' ', false)

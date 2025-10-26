@@ -380,3 +380,68 @@ func _to_image(input) -> Image:
 	elif input is Texture2D:
 		return input.get_image()
 	return null
+
+func findMax(array: PackedInt32Array) -> int:
+	var max_value = -1
+	for i in range(array.size()):
+		if array[i] > max_value:
+			max_value = array[i]
+	return max_value
+
+func get_histogram_texture() -> Texture2D:
+	if not current_image:
+		return null
+
+	var img_src: Image = current_image.duplicate()
+
+	var iw = img_src.get_width()
+	var ih = img_src.get_height()
+
+	# --- Préparation des compteurs ---
+	var hist_r = PackedInt32Array()
+	var hist_g = PackedInt32Array()
+	var hist_b = PackedInt32Array()
+	hist_r.resize(256)
+	hist_g.resize(256)
+	hist_b.resize(256)
+
+	# --- Accumulation ---
+	for y in range(ih):
+		for x in range(iw):
+			var c: Color = img_src.get_pixel(x, y)
+			hist_r[int(c.r * 255.0)] += 1
+			hist_g[int(c.g * 255.0)] += 1
+			hist_b[int(c.b * 255.0)] += 1
+
+	var maxR = findMax(hist_r)
+	var maxG = findMax(hist_g)
+	var maxB = findMax(hist_b)
+
+	# --- Trouver la valeur max pour normaliser ---
+	var max_val = max(maxR, max(maxG, maxB))
+	if max_val == 0:
+		max_val = 1
+
+	# --- Créer l’image résultat ---
+	var out_w = 512
+	var out_h = 200
+	var out_img = Image.create(out_w, out_h, false, Image.FORMAT_RGBA8)
+	out_img.fill(Color(0, 0, 0, 1)) # fond noir opaque
+
+	# --- Dessiner l’histogramme ---
+	for i in range(256):
+		var x = int(float(i) / 256.0 * out_w)
+		var h_r = int(hist_r[i] / float(max_val) * out_h)
+		var h_g = int(hist_g[i] / float(max_val) * out_h)
+		var h_b = int(hist_b[i] / float(max_val) * out_h)
+
+		for y in range(out_h - 1, out_h - h_r, -1):
+			out_img.set_pixel(x, y, Color(1, 0, 0)) # rouge
+		for y in range(out_h - 1, out_h - h_g, -1):
+			out_img.set_pixel(x, y, Color(0, 1, 0)) # vert
+		for y in range(out_h - 1, out_h - h_b, -1):
+			out_img.set_pixel(x, y, Color(0, 0.6, 1)) # bleu
+
+	# --- Conversion en texture ---
+	var tex := ImageTexture.create_from_image(out_img)
+	return tex
