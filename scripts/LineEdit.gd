@@ -88,6 +88,10 @@ func _on_text_submitted(new_text: String):
 			_process_send_command()
 		InstructionSet.GREY:
 			_process_grey_command()
+		InstructionSet.EROSION:
+			_process_erosion_command()
+		InstructionSet.DILATATION:
+			_process_dilatation_command()
 		_:
 			_process_generic_command(new_text, instruction)
 
@@ -107,14 +111,15 @@ func _process_seuil_command(command_text: String):
 		color_mode = 2
 	else:
 		color_mode = -1
+	
 	var success = img_manager.apply_threshold(seuil_value, color_mode)
 	if(!success):
 		gameText.append_text("Erreur, l'image n'est pas seuillée.\n\n")
 	else:
-		gameText.append_text("Seuil défini à: %s\n" % seuil_value + (" sur tous les canaux\n\n" if color_mode == -1 else 
-			(" sur le canal rouge\n\n" if color_mode == 0 else 
-			(" sur le canal vert\n\n" if color_mode == 1 else 
-			" sur le canal bleu\n\n"))))
+		gameText.append_text("Seuil défini à %s" % seuil_value + (" sur tous les canaux.\n\n" if color_mode == -1 else 
+			(" sur le canal rouge.\n\n" if color_mode == 0 else 
+			(" sur le canal vert.\n\n" if color_mode == 1 else 
+			" sur le canal bleu.\n\n"))))
 
 func _process_grey_command():
 	var success = img_manager.transform_to_grayscale()
@@ -122,6 +127,20 @@ func _process_grey_command():
 		gameText.append_text("Erreur lors de la conversion en niveaux de gris.\n\n")
 	else:
 		gameText.append_text("Image convertie en niveaux de gris avec succès.\n\n")
+
+func _process_erosion_command():
+	var success = img_manager.erosionPPM_mat3x3()
+	if(!success):
+		gameText.append_text("Erreur lors de l'érosion de l'image.\n\n")
+	else:
+		gameText.append_text("Image érodée avec succès.\n\n")
+
+func _process_dilatation_command():
+	var success = img_manager.dilatationPPM_mat3x3()
+	if(!success):
+		gameText.append_text("Erreur lors de la dilatation de l'image.\n\n")
+	else:
+		gameText.append_text("Image dilatée avec succès.\n\n")
 
 func _process_undo_command():	
 	var success = img_manager.undo()

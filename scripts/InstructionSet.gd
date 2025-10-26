@@ -10,8 +10,6 @@ const QUIT = "quit"
 
 const CLEAR = "clear"
 
-const EROSION = "erosion"
-
 const SEUIL = "seuil"
 
 const SEUIL_R = "seuil -r"
@@ -29,3 +27,7 @@ const PSNR = "psnr"
 const SEND = "send"
 
 const GREY = "grey"
+
+const EROSION = "erosion"
+
+const DILATATION = "dilatation"
