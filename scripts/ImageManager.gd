@@ -71,6 +71,66 @@ func apply_threshold(t: int, color_mode: int) -> bool:
 	_update_texture()
 	return true
 
+func erosionPPM_mat3x3() -> bool:
+	var w = current_image.get_width()
+	var h = current_image.get_height()
+	var src: Image = current_image.duplicate()
+	for y in range(h):
+		for x in range(w):
+			var minR = 255
+			var minG = 255
+			var minB = 255
+			for j in range(-1, 2):
+				for i in range(-1, 2):
+					var nx = x + i
+					var ny = y + j
+					if nx >= 0 and ny >= 0 and nx < w and ny < h:
+						var nc = src.get_pixel(nx, ny)
+						var vr = int(round(nc.r * 255.0))
+						var vg = int(round(nc.g * 255.0))
+						var vb = int(round(nc.b * 255.0))
+						if vr < minR:
+							minR = vr
+						if vg < minG:
+							minG = vg
+						if vb < minB:
+							minB = vb
+			var a = src.get_pixel(x, y).a
+			current_image.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
+	push_snapshot()
+	_update_texture()
+	return true
+
+func dilatationPPM_mat3x3() -> bool:
+	var w = current_image.get_width()
+	var h = current_image.get_height()
+	var src: Image = current_image.duplicate()
+	for y in range(h):
+		for x in range(w):
+			var minR = 0
+			var minG = 0
+			var minB = 0
+			for j in range(-1, 2):
+				for i in range(-1, 2):
+					var nx = x + i
+					var ny = y + j
+					if nx >= 0 and ny >= 0 and nx < w and ny < h:
+						var nc = src.get_pixel(nx, ny)
+						var vr = int(round(nc.r * 255.0))
+						var vg = int(round(nc.g * 255.0))
+						var vb = int(round(nc.b * 255.0))
+						if vr > minR:
+							minR = vr
+						if vg > minG:
+							minG = vg
+						if vb > minB:
+							minB = vb
+			var a = src.get_pixel(x, y).a
+			current_image.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
+	push_snapshot()
+	_update_texture()
+	return true
+
 func _update_texture():
 	if current_image:
 		current_texture = ImageTexture.create_from_image(current_image)
