@@ -7,6 +7,7 @@ extends LineEdit
 @onready var stop_timer = $Timer
 
 var gameText: RichTextLabel
+var progress_label: Label
 var text_parser = TextParser.new()
 var game_data_processor = GameDataProcessor.new()
 var img_manager: ImageManager
@@ -29,8 +30,15 @@ func _setup_managers():
 	img_manager = ImageManager.new()
 	img_manager.name = "ImageManager"
 	get_tree().get_root().add_child(img_manager)
-	img_manager.connect("image_changed", _on_image_changed)
-	
+	img_manager.connect("image_changed", Callable(self, "_on_image_changed"))
+	img_manager.connect("progress_changed", Callable(self, "_on_progress_changed"))
+
+	var rows = gameText.get_parent() 
+	progress_label = _find_node_by_name(get_tree().get_root(), "ProgressLabel")
+	progress_label.theme = gameText.theme if gameText.has_method("theme") else null
+	progress_label.modulate = Color(0, 0.8, 0.2)
+	progress_label.size_flags_horizontal = 3
+
 	level_manager = LevelManager.new()
 	level_manager.name = "LevelManager"
 	get_tree().get_root().add_child(level_manager)
@@ -129,18 +137,28 @@ func _process_grey_command():
 		gameText.append_text("Image convertie en niveaux de gris avec succès.\n\n")
 
 func _process_erosion_command():
+	if img_manager and img_manager.is_processing:
+		gameText.append_text("Un traitement est déjà en cours. Attendez la fin.\n\n")
+		return
+
 	var success = img_manager.erosionPPM_mat3x3()
 	if(!success):
 		gameText.append_text("Erreur lors de l'érosion de l'image.\n\n")
 	else:
-		gameText.append_text("Image érodée avec succès.\n\n")
+		self.editable = false
+		gameText.append_text("Image érodée en cours...\n\n")
 
 func _process_dilatation_command():
+	if img_manager and img_manager.is_processing:
+		gameText.append_text("Un traitement est déjà en cours. Attendez la fin.\n\n")
+		return
+
 	var success = img_manager.dilatationPPM_mat3x3()
 	if(!success):
 		gameText.append_text("Erreur lors de la dilatation de l'image.\n\n")
 	else:
-		gameText.append_text("Image dilatée avec succès.\n\n")
+		self.editable = false
+		gameText.append_text("Image dilatation en cours...\n\n")
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -177,6 +195,16 @@ func _process_generic_command(command_text: String, instruction: String):
 
 func _on_image_changed(new_texture: Texture2D):
 	start_node.texture = new_texture
+	self.editable = true
+	if progress_label:
+		progress_label.text = ""
+
+func _on_progress_changed(progress: float) -> void:
+	var percent = int(round(progress * 100.0))
+	if percent >= 100:
+		progress_label.text = "Progress: 100% - done"
+	else:
+		progress_label.text = "Progress: %s%%" % str(percent)
 
 func _on_text_changed(new_text):
 
