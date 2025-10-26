@@ -22,21 +22,28 @@ anchor_left = 0.201
 anchor_right = 0.74300003
 anchor_bottom = 0.098000005
 offset_left = -0.55200195
-offset_top = -22.0
+offset_top = 9.0
 offset_right = 0.063964844
-offset_bottom = 1243.496
+offset_bottom = 589.496
 texture = ExtResource("1_fust3")
 expand_mode = 1
 
-[node name="undo" type="RichTextLabel" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect"]
+clip_contents = false
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 7.0
-offset_right = 814.68
-offset_bottom = 0.8239975
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="undo" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -45,16 +52,10 @@ theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow]undo[/bgcolor] : annule la dernière opération effectuée"
+fit_content = true
 
-[node name="redo" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 44.0
-offset_right = 815.68
-offset_bottom = 36.823997
+[node name="redo" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -63,16 +64,10 @@ theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow]redo[/bgcolor] : refais la dernière action"
+fit_content = true
 
-[node name="save" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 82.0
-offset_right = 815.68
-offset_bottom = 74.824
+[node name="save" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -81,91 +76,10 @@ theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow]save[/bgcolor] : sauvegarde l'image actuelle"
+fit_content = true
 
-[node name="clear" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 121.0
-offset_right = 814.68
-offset_bottom = 115.824
-theme = SubResource("Theme_f74f1")
-theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
-theme_override_fonts/normal_font = ExtResource("3_f74f1")
-theme_override_fonts/bold_font = ExtResource("3_f74f1")
-theme_override_font_sizes/normal_font_size = 23
-theme_override_font_sizes/bold_font_size = 23
-bbcode_enabled = true
-text = "  [bgcolor=yellow]clear[/bgcolor] : efface le contenu du terminal"
-
-[node name="seuil" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 265.0
-offset_right = 814.68
-offset_bottom = 291.824
-theme = SubResource("Theme_f74f1")
-theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
-theme_override_fonts/normal_font = ExtResource("3_f74f1")
-theme_override_fonts/bold_font = ExtResource("3_f74f1")
-theme_override_font_sizes/normal_font_size = 23
-theme_override_font_sizes/bold_font_size = 23
-bbcode_enabled = true
-text = "  [bgcolor=yellow]seuil <val>[/bgcolor] : mets les pixels de l'image à 0 (noir) si sa valeur est 
-  inférieure au seuil ou à 255 (blanc) sinon"
-
-[node name="histogramme" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 327.0
-offset_right = 815.68
-offset_bottom = 353.824
-theme = SubResource("Theme_f74f1")
-theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
-theme_override_fonts/normal_font = ExtResource("3_f74f1")
-theme_override_fonts/bold_font = ExtResource("3_f74f1")
-theme_override_font_sizes/normal_font_size = 23
-theme_override_font_sizes/bold_font_size = 23
-bbcode_enabled = true
-text = "  [bgcolor=yellow] histogramme[/bgcolor] :  trace l'histogramme de l'image. C'est la répartition
-  des différentes valeurs des pixels de l'image"
-
-[node name="erosion" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 450.0
-offset_right = 815.68
-offset_bottom = 476.824
-theme = SubResource("Theme_f74f1")
-theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
-theme_override_fonts/normal_font = ExtResource("3_f74f1")
-theme_override_fonts/bold_font = ExtResource("3_f74f1")
-theme_override_font_sizes/normal_font_size = 23
-theme_override_font_sizes/bold_font_size = 23
-bbcode_enabled = true
-text = "  [bgcolor=yellow] erosion[/bgcolor] : passe la valeur du pixel à 255 (blanc) si au moins un des 
-  voisins a sa valeur à 255"
-
-[node name="grey" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 164.0
-offset_right = 814.68
-offset_bottom = 158.82397
+[node name="grey" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -174,16 +88,10 @@ theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow]grey[/bgcolor] : passe l'image couleur en image noir et blanc"
+fit_content = true
 
-[node name="psnr" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 207.0
-offset_right = 814.68
-offset_bottom = 230.824
+[node name="psnr" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -193,16 +101,10 @@ theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow]psnr[/bgcolor] : calcul la distance des valeurs des pixels entre l'image cible et 
   l'image actuelle"
+fit_content = true
 
-[node name="dilatation" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 509.0
-offset_right = 815.68
-offset_bottom = 535.824
+[node name="seuil" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -210,18 +112,27 @@ theme_override_fonts/bold_font = ExtResource("3_f74f1")
 theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
-text = "  [bgcolor=yellow] dilatation[/bgcolor] : passe la valeur du pixel à 0 (noir) si au moins un des 
-  voisins a sa valeur à 0"
+text = "  [bgcolor=yellow]seuil <val> <-r/g/b>[/bgcolor] : mets les pixels de l'image à 0 (noir) si sa
+  valeur est inférieure au seuil ou à 255 (blanc) sinon. Si l'option \"-r\",
+  \"-g\" ou \"-b\" est donnée le seuil est fait uniquement sur le canal RGB
+  correspondant. Sinon le seuil est fait  sur les trois "
+fit_content = true
 
-[node name="profil" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 231.0
-offset_top = 389.0
-offset_right = 814.68
-offset_bottom = 415.824
+[node name="histogramme" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] histogramme[/bgcolor] :  trace l'histogramme de l'image. C'est la répartition
+  des différentes valeurs des pixels de l'image"
+fit_content = true
+
+[node name="profil" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -231,16 +142,10 @@ theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow] profil <ligne/colonne> <position>[/bgcolor] : trace la répartition des différentes
   valeurs des pixels de la ligne ou la colonne choisie"
+fit_content = true
 
-[node name="flou" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 692.0
-offset_right = 815.68
-offset_bottom = 718.824
+[node name="erosion" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -248,17 +153,12 @@ theme_override_fonts/bold_font = ExtResource("3_f74f1")
 theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
-text = "  [bgcolor=yellow] flou[/bgcolor] : "
+text = "  [bgcolor=yellow] erosion[/bgcolor] : passe la valeur du pixel à 255 (blanc) si au moins un des 
+  voisins a sa valeur à 255"
+fit_content = true
 
-[node name="gradient" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 232.0
-offset_top = 654.0
-offset_right = 815.68
-offset_bottom = 680.824
+[node name="dilatation" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -266,17 +166,12 @@ theme_override_fonts/bold_font = ExtResource("3_f74f1")
 theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
-text = "  [bgcolor=yellow] gradient[/bgcolor] : "
+text = "  [bgcolor=yellow] dilatation[/bgcolor] : passe la valeur du pixel à 0 (noir) si au moins un des 
+  voisins a sa valeur à 0"
+fit_content = true
 
-[node name="ouverture" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 230.0
-offset_top = 571.0
-offset_right = 813.68
-offset_bottom = 566.824
+[node name="ouverture" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -285,16 +180,10 @@ theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
 text = "  [bgcolor=yellow] ouverture[/bgcolor] : effectue une erosion puis une dilatation"
+fit_content = true
 
-[node name="fermeture" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.035
-anchor_bottom = 0.062000003
-offset_left = 230.0
-offset_top = 612.0
-offset_right = 813.68
-offset_bottom = 613.824
+[node name="fermeture" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_f74f1")
 theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
 theme_override_fonts/normal_font = ExtResource("3_f74f1")
@@ -302,4 +191,29 @@ theme_override_fonts/bold_font = ExtResource("3_f74f1")
 theme_override_font_sizes/normal_font_size = 23
 theme_override_font_sizes/bold_font_size = 23
 bbcode_enabled = true
-text = "  [bgcolor=yellow] fermeture[/bgcolor] : effectue une erosion puis une dilatation"
+text = "  [bgcolor=yellow] fermeture[/bgcolor] : effectue une dilatation puis une erosion"
+fit_content = true
+
+[node name="flou" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] flou[/bgcolor] : "
+fit_content = true
+
+[node name="gradient" type="RichTextLabel" parent="TextureRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_f74f1")
+theme_override_colors/default_color = Color(0.008202022, 0.008202025, 0.008202025, 1)
+theme_override_fonts/normal_font = ExtResource("3_f74f1")
+theme_override_fonts/bold_font = ExtResource("3_f74f1")
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+bbcode_enabled = true
+text = "  [bgcolor=yellow] gradient[/bgcolor] : "
+fit_content = true

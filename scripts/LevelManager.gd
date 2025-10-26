@@ -4,6 +4,13 @@ class_name LevelManager
 var game_data_processor = GameDataProcessor.new()
 var img_manager: ImageManager
 var _goal_texture: Texture2D
+var nbAppelEffec=0
+
+func get_appel() -> int :
+	return nbAppelEffec
+
+func set_appel() -> void:
+	nbAppelEffec+=1
 
 func _ready():
 	call_deferred("_initialize")
@@ -58,5 +65,6 @@ func submit() -> Dictionary:
 			load_current_level()
 			result["next_key"] = next_key
 			result["new_cfg"] = get_current_config()
+			nbAppelEffec=0
 	
 	return result

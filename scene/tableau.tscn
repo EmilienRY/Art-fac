@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0qod6ivlcy7r"]
+
+[ext_resource type="Script" uid="uid://bw0jre7hucjfa" path="res://scripts/zoomTableau.gd" id="2_3j50c"]
+[ext_resource type="Texture2D" uid="uid://ccv245ug0rosv" path="res://assets/tableauV2.png" id="2_vcdl5"]
+[ext_resource type="Texture2D" uid="uid://bvf2pivi3blu6" path="res://images/chat.jpg" id="3_vcdl5"]
+
+[node name="Tableau" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_3j50c")
+
+[node name="imageScene" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1162.0
+offset_bottom = 663.0
+texture = ExtResource("2_vcdl5")
+expand_mode = 1
+
+[node name="ContenuTab" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 353.0
+offset_top = 87.0
+offset_right = 834.0
+offset_bottom = 360.0
+texture = ExtResource("3_vcdl5")
+expand_mode = 1
