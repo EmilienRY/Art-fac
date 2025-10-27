@@ -31,12 +31,14 @@ func parse(text):
 			return InstructionSet.EROSION
 		'dilatation':
 			return InstructionSet.DILATATION
-		'histogram':
-			return InstructionSet.HISTOGRAM
 
 	if text.begins_with('seuil'):
 		param = text.split(' ', false)
 		return InstructionSet.SEUIL
+	
+	if text.begins_with('histogram'):
+		param = text.split(' ', false)
+		return InstructionSet.HISTOGRAM
 
 	return InstructionSet.NOT_FOUND
 

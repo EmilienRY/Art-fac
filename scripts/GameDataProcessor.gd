@@ -58,7 +58,7 @@ func process_action(action, param = null):
 	if action == InstructionSet.SEUIL:
 		var new_text = ''
 		if param == null or param.size() < 2:
-			new_text += "Appel invalide, usage: seuil <valeur>\n\n"
+			new_text += "Appel invalide, usage: seuil <valeur> (-r / -g / -b)\n\n"
 			return new_text
 		var seuil_value = param[1].to_int()
 		if seuil_value < 0 or seuil_value > 255:

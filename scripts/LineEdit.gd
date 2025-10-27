@@ -91,28 +91,40 @@ func _on_text_submitted(new_text: String):
 		InstructionSet.REDO:
 			_process_redo_command()
 		InstructionSet.PSNR:
-			_process_psnr_command()
+			_process_psnr_command(new_text)
 		InstructionSet.SEND:
 			_process_send_command()
 		InstructionSet.GREY:
-			_process_grey_command() 
+			_process_grey_command(new_text) 
 		InstructionSet.EROSION:
-			_process_erosion_command()
+			_process_erosion_command(new_text)
 		InstructionSet.DILATATION:
-			_process_dilatation_command()
+			_process_dilatation_command(new_text)
 		InstructionSet.HISTOGRAM:
-			_process_histogram_command()
+			_process_histogram_command(new_text)
 		_:
 			_process_generic_command(new_text, instruction)
 
 func _process_seuil_command(command_text: String):
 	var output = " > " + command_text + "\n\n"
-	output += game_data_processor.process_action(InstructionSet.SEUIL, text_parser.get_param()) + "\n"
-	gameText.append_text(output)
-
 	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2 || not param[1].is_valid_int():
+		output += "Appel invalide, usage: seuil <valeur> (-r / -g / -b)\n\n"
+		gameText.append_text(output)
+		return
 	var seuil_value = param[1].to_int()
+
+	if seuil_value < 0 or seuil_value > 255:
+		output += "Seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+		gameText.append_text(output)
+		return 
 	var color_mode = param[2] if param.size() > 2 else "all"
+	if color_mode not in ["all", "-r", "-g", "-b"]:
+		output += "Mode de couleur invalide, utilisez 'seuil <valeur> -r / -g / -b'\n\n"
+		gameText.append_text(output)
+		return 
+
 	if color_mode == "-r":
 		color_mode = 0
 	elif color_mode == "-g":
@@ -126,41 +138,49 @@ func _process_seuil_command(command_text: String):
 	if(!success):
 		gameText.append_text("Erreur, l'image n'est pas seuillée.\n\n")
 	else:
-		gameText.append_text("Seuil défini à %s" % seuil_value + (" sur tous les canaux.\n\n" if color_mode == -1 else 
+
+		output += "Seuil défini à %s" % seuil_value + (" sur tous les canaux.\n\n" if color_mode == -1 else 
 			(" sur le canal rouge.\n\n" if color_mode == 0 else 
 			(" sur le canal vert.\n\n" if color_mode == 1 else 
-			" sur le canal bleu.\n\n"))))
+			" sur le canal bleu.\n\n")))
+		gameText.append_text(output)
 
-func _process_grey_command():
+func _process_grey_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
 	var success = img_manager.transform_to_grayscale()
 	if(!success):
-		gameText.append_text("Erreur lors de la conversion en niveaux de gris.\n\n")
+		gameText.append_text(output+"Erreur lors de la conversion en niveaux de gris.\n\n")
 	else:
-		gameText.append_text("Image convertie en niveaux de gris avec succès.\n\n")
+		gameText.append_text(output+"Image convertie en niveaux de gris avec succès.\n\n")
 
-func _process_erosion_command():
+func _process_erosion_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
 	if img_manager and img_manager.is_processing:
-		gameText.append_text("Un traitement est déjà en cours. Attendez la fin.\n\n")
+		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
 	var success = img_manager.erosionPPM_mat3x3()
 	if(!success):
-		gameText.append_text("Erreur lors de l'érosion de l'image.\n\n")
+		gameText.append_text(output+"Erreur lors de l'érosion de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text("Image érodée en cours...\n\n")
+		gameText.append_text(output+"Érosion en cours...\n\n")
 
-func _process_dilatation_command():
+func _process_dilatation_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
 	if img_manager and img_manager.is_processing:
-		gameText.append_text("Un traitement est déjà en cours. Attendez la fin.\n\n")
+		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
 	var success = img_manager.dilatationPPM_mat3x3()
 	if(!success):
-		gameText.append_text("Erreur lors de la dilatation de l'image.\n\n")
+		gameText.append_text(output+"Erreur lors de la dilatation de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text("Image dilatation en cours...\n\n")
+		gameText.append_text(output+"Dilatation en cours...\n\n")
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -173,10 +193,10 @@ func _process_redo_command():
 	var message = "> redo\n\n" if success else "> rien à refaire\n\n"
 	gameText.append_text(message)
 
-func _process_psnr_command():
-		
+func _process_psnr_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
 	var psnr_value = level_manager.check_psnr()
-	gameText.append_text("PSNR = %s dB\n\n" % str(psnr_value))
+	gameText.append_text(output+"PSNR = %s dB\n\n" % str(psnr_value))
 
 func _process_send_command():
 	var result = level_manager.submit()
@@ -195,12 +215,23 @@ func _process_generic_command(command_text: String, instruction: String):
 	output += game_data_processor.process_action(instruction, text_parser.get_object()) + "\n"
 	gameText.append_text(output)
 
-func _process_histogram_command():
-	gameText.append_text("Génération de l'histogramme...\n\n")
+func _process_histogram_command(command_text: String):
 
-	var tex = img_manager.get_histogram_texture()
+	var output = " > " + command_text + "\n\n"
+	var param = text_parser.get_param()
+	var channel = param[1] if param.size() > 1 else "all"
+
+	var channelMode = 0
+	if channel == "-r":
+		channelMode = 1
+	elif channel == "-g":
+		channelMode = 2
+	elif channel == "-b":
+		channelMode = 3
+
+	var tex = img_manager.get_histogram_texture(channelMode)
 	if tex == null:
-		gameText.append_text("Impossible de calculer l'histogramme.\n\n")
+		gameText.append_text(output+"Impossible de calculer l'histogramme.\n\n")
 		return
 
 	var histogram_win := Window.new()
@@ -242,6 +273,8 @@ func _process_histogram_command():
 	histogram_win.visible = true
 	histogram_win.popup()
 	histogram_win.grab_focus()
+	gameText.append_text(output)
+
 
 
 func _on_histogram_close(win: Window):
