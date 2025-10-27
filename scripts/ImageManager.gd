@@ -16,6 +16,8 @@ var history: Array = []
 var history_index: int = -1
 var max_history: int = 20
 
+var image_saved: Dictionary = {}
+
 var mutex: Mutex
 var thread: Thread
 var semaphore: Semaphore
@@ -374,12 +376,32 @@ func save_png(path: String) -> bool:
 		return false
 	return current_image.save_png(path) == OK
 
+func save(name_to_save:String) -> bool:
+	if not current_image:
+		return false
+	if image_saved.has(name_to_save) :
+		return false
+	image_saved[name_to_save] = current_image.duplicate()
+	return true
+
 func _to_image(input) -> Image:
 	if input is Image:
 		return input
 	elif input is Texture2D:
 		return input.get_image()
 	return null
+
+func get_all_saved_images() -> Dictionary:
+	return image_saved.duplicate()
+
+func set_image_from_saved(name_to_load:String) -> bool:
+	if not image_saved.has(name_to_load):
+		return false
+	current_image = image_saved[name_to_load].duplicate()
+	push_snapshot(current_image)
+	_update_texture()
+	_emit_history_changed()
+	return true
 
 func findMax(array: PackedInt32Array) -> int:
 	var max_value = -1

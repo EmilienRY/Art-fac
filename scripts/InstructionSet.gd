@@ -33,3 +33,9 @@ const EROSION = "erosion"
 const DILATATION = "dilatation"
 
 const HISTOGRAM = "histogram"
+
+const SAVE = "save"
+
+const LOAD = "load"
+
+const SEE = "see"

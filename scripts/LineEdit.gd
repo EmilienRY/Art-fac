@@ -102,8 +102,61 @@ func _on_text_submitted(new_text: String):
 			_process_dilatation_command(new_text)
 		InstructionSet.HISTOGRAM:
 			_process_histogram_command(new_text)
+		InstructionSet.SAVE:
+			_process_save_command(new_text)
+		InstructionSet.LOAD:
+			_process_load_command(new_text)
+		InstructionSet.SEE:
+			_process_see_command(new_text)
 		_:
 			_process_generic_command(new_text, instruction)
+
+func _process_save_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2:
+		output += "Appel invalide, usage: save <nom>\n\n"
+		gameText.append_text(output)
+		return
+
+	var save_name = param[1]
+	var success = img_manager.save(save_name)
+	if success:
+		output += "Image enregistrée sous le nom: %s\n\n" % save_name
+	else:
+		output += "Nom invalide ou nom déjà utilisé.\n\n"
+	gameText.append_text(output)
+
+func _process_load_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2:
+		output += "Appel invalide, usage: load <nom>\n\n"
+		gameText.append_text(output)
+		return
+
+	var load_name = param[1]
+	var success = img_manager.set_image_from_saved(load_name)
+	if success:
+		output += "Image chargée depuis le nom: %s\n\n" % load_name
+	else:
+		output += "Nom invalide ou image introuvable.\n\n"
+	gameText.append_text(output)
+
+func _process_see_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	var images = img_manager.get_all_saved_images()
+
+	for key in images.keys():
+		output += "- %s\n" % key
+
+	gameText.append_text(output)
+
+
 
 func _process_seuil_command(command_text: String):
 	var output = " > " + command_text + "\n\n"
