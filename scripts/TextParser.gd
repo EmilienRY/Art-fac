@@ -33,6 +33,8 @@ func parse(text):
 			return InstructionSet.DILATATION
 		'see':
 			return InstructionSet.SEE
+		'equalize':
+			return InstructionSet.EQUALIZE
 
 	if text.begins_with('save'):
 		param = text.split(' ', false)

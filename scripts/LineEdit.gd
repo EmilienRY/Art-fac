@@ -108,8 +108,20 @@ func _on_text_submitted(new_text: String):
 			_process_load_command(new_text)
 		InstructionSet.SEE:
 			_process_see_command(new_text)
+		InstructionSet.EQUALIZE:
+			_process_equalize_command(new_text)
 		_:
 			_process_generic_command(new_text, instruction)
+
+
+func _process_equalize_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	var success = img_manager.equalize_histogram()
+	if(!success):
+		gameText.append_text(output+"Erreur lors de l'égalisation de l'histogramme.\n\n")
+	else:
+		gameText.append_text(output+"Égalisation en cours.\n\n")
 
 func _process_save_command(command_text: String):
 	var output = " > " + command_text + "\n\n"

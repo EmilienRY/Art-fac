@@ -110,6 +110,20 @@ func dilatationPPM_mat3x3() -> bool:
 	thread.start(Callable(self, "_thread_worker").bind("dilatation", img))
 	return true
 
+func equalize_histogram() -> bool:
+	if not current_image or is_processing:
+		return false
+	var img = current_image.duplicate()
+	var th = Thread.new()
+	is_processing = true
+	thread = th
+	mutex.lock()
+	_thread_progress = 0.0
+	_thread_shows_progress = true
+	_last_printed_progress = -1
+	mutex.unlock()
+	thread.start(Callable(self, "_thread_worker").bind("equalize", img))
+	return true
 
 func _thread_worker(op, payload = null) -> void:
 
@@ -135,6 +149,9 @@ func _thread_worker(op, payload = null) -> void:
 		"dilatation":
 			var img3: Image = actual_payload
 			result = _proc_dilatation(img3)
+		"equalize":
+			var img4: Image = actual_payload
+			result = _proc_equalize(img4)
 		_:
 			result = null
 
@@ -276,6 +293,92 @@ func _proc_dilatation(src: Image) -> Image:
 		_thread_progress = float(y + 1) / float(h)
 		mutex.unlock()
 	return src
+
+func build_map(hist: PackedInt32Array) -> PackedInt32Array:
+	var n = hist.size()
+	var total_pixels = 0
+	for i in range(n):
+		total_pixels += hist[i]
+
+	var cdf = PackedInt32Array()
+	cdf.resize(n)
+	var cum = 0
+	for i in range(n):
+		cum += hist[i]
+		cdf[i] = cum
+
+	var cdf_min = 0
+	for i in range(n):
+		if cdf[i] > 0:
+			cdf_min = cdf[i]
+			break
+
+	var mp = PackedInt32Array()
+	mp.resize(n)
+	if total_pixels == 0 or total_pixels == cdf_min:
+		for i in range(n):
+			mp[i] = i
+	else:
+		for i in range(n):
+			var val = float(cdf[i] - cdf_min) / float(total_pixels - cdf_min)
+			var nv = int(round(val * float(n - 1)))
+			mp[i] = clamp(nv, 0, n - 1)
+
+	return mp
+
+func _proc_equalize(src: Image) -> Image:
+	var w = src.get_width()
+	var h = src.get_height()
+
+	var hist_r = PackedInt32Array()
+	var hist_g = PackedInt32Array()
+	var hist_b = PackedInt32Array()
+	hist_r.resize(256)
+	hist_g.resize(256)
+	hist_b.resize(256)
+	for i in range(256):
+		hist_r[i] = 0
+		hist_g[i] = 0
+		hist_b[i] = 0
+
+	for y in range(h):
+		for x in range(w):
+			var c = src.get_pixel(x, y)
+			var ir = int(round(c.r * 255.0))
+			var ig = int(round(c.g * 255.0))
+			var ib = int(round(c.b * 255.0))
+			ir = clamp(ir, 0, 255)
+			ig = clamp(ig, 0, 255)
+			ib = clamp(ib, 0, 255)
+			hist_r[ir] += 1
+			hist_g[ig] += 1
+			hist_b[ib] += 1
+
+
+	var map_r = build_map(hist_r)
+	var map_g = build_map(hist_g)
+	var map_b = build_map(hist_b)
+
+	for y in range(h):
+		for x in range(w):
+			var c = src.get_pixel(x, y)
+			var ir = int(round(c.r * 255.0))
+			var ig = int(round(c.g * 255.0))
+			var ib = int(round(c.b * 255.0))
+			ir = clamp(ir, 0, 255)
+			ig = clamp(ig, 0, 255)
+			ib = clamp(ib, 0, 255)
+			var nr = float(map_r[ir]) / 255.0
+			var ng = float(map_g[ig]) / 255.0
+			var nb = float(map_b[ib]) / 255.0
+			src.set_pixel(x, y, Color(nr, ng, nb, c.a))
+
+		mutex.lock()
+		_thread_progress = float(y + 1) / float(h)
+		mutex.unlock()
+
+	return src
+
 
 func _update_texture():
 

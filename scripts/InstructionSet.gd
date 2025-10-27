@@ -39,3 +39,5 @@ const SAVE = "save"
 const LOAD = "load"
 
 const SEE = "see"
+
+const EQUALIZE = "equalize"
