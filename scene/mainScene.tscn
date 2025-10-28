@@ -59,6 +59,7 @@ scale = Vector2(1.8058594, 1.8999999)
 texture = ExtResource("14_s3u6w")
 
 [node name="typing" type="VideoStreamPlayer" parent="CenterIdle"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -223,11 +224,6 @@ offset_right = 1237.0
 offset_bottom = 666.0
 scale = Vector2(0.4, 0.4)
 
-[node name="Cible" type="Sprite2D" parent="UI"]
-position = Vector2(950.00006, 352.00003)
-scale = Vector2(0.07812501, 0.07812503)
-texture = ExtResource("11_8selj")
-
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
 offset_left = 215.00003
@@ -237,6 +233,11 @@ offset_bottom = 76.19818
 scale = Vector2(28.1, 17.647)
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
+
+[node name="Cible" type="Sprite2D" parent="UI"]
+position = Vector2(875, 357)
+scale = Vector2(0.07812501, 0.07812503)
+texture = ExtResource("11_8selj")
 
 [node name="scoreScreen" type="Control" parent="."]
 layout_mode = 3
