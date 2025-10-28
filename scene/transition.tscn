@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://daahbeubddajb"]
+[gd_scene load_steps=2 format=3 uid="uid://daahbeubddajb"]
 
-[ext_resource type="VideoStream" uid="uid://bsutklnaexgrg" path="res://video/transitionPC_tableau.ogv" id="1_hpshh"]
 [ext_resource type="Script" uid="uid://7lkakfml8w83" path="res://scripts/transitionVideo.gd" id="1_pywll"]
 
 [node name="Node2D" type="Node2D"]
@@ -9,5 +8,4 @@ script = ExtResource("1_pywll")
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-stream = ExtResource("1_hpshh")
 volume_db = -80.0
