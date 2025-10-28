@@ -31,10 +31,26 @@ func parse(text):
 			return InstructionSet.EROSION
 		'dilatation':
 			return InstructionSet.DILATATION
+		'see':
+			return InstructionSet.SEE
+		'equalize':
+			return InstructionSet.EQUALIZE
+
+	if text.begins_with('save'):
+		param = text.split(' ', false)
+		return InstructionSet.SAVE
+
+	if text.begins_with('load'):
+		param = text.split(' ', false)
+		return InstructionSet.LOAD
 
 	if text.begins_with('seuil'):
 		param = text.split(' ', false)
 		return InstructionSet.SEUIL
+	
+	if text.begins_with('histogram'):
+		param = text.split(' ', false)
+		return InstructionSet.HISTOGRAM
 
 	return InstructionSet.NOT_FOUND
 

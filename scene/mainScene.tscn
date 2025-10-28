@@ -133,6 +133,9 @@ theme_override_fonts/normal_font = ExtResource("2_00228")
 theme_override_font_sizes/normal_font_size = 20
 scroll_following = true
 
+[node name="ProgressLabel" type="Label" parent="Screen/Terminal/Background/MarginContainer/Rows"]
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen/Terminal/Background/MarginContainer/Rows"]
 layout_mode = 2
 
@@ -221,6 +224,54 @@ offset_right = 252.33382
 offset_bottom = 107.88965
 scale = Vector2(28.280005, 17.760002)
 mouse_filter = 2
+
+[node name="scoreScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1634.0
+offset_top = -67.0
+offset_right = -1594.0
+offset_bottom = -27.0
+scale = Vector2(38.77726, 19.03066)
+
+[node name="PanelContainer" type="PanelContainer" parent="scoreScreen"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="scoreScreen/PanelContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Lutz" type="Sprite2D" parent="scoreScreen"]
+position = Vector2(16.149855, 27.168581)
+scale = Vector2(0.014890937, 0.022112073)
+
+[node name="Lutz2" type="Sprite2D" parent="scoreScreen"]
+position = Vector2(22.081163, 27.010944)
+scale = Vector2(0.016, 0.022)
+
+[node name="Precision" type="Label" parent="scoreScreen"]
+layout_mode = 0
+offset_left = 17.200804
+offset_top = 17.130253
+offset_right = 317.2008
+offset_bottom = 102.13025
+scale = Vector2(0.045999154, 0.16890568)
+theme_override_fonts/font = ExtResource("2_00228")
+theme_override_font_sizes/font_size = 30
+text = "Score:"
+
+[node name="Bravo" type="Label" parent="scoreScreen"]
+layout_mode = 0
+offset_left = 12.378389
+offset_top = 3.6257281
+offset_right = 312.3784
+offset_bottom = 88.625725
+scale = Vector2(0.053580973, 0.13362993)
+theme_override_fonts/font = ExtResource("2_00228")
+theme_override_font_sizes/font_size = 100
+text = "BRAVO"
 
 [node name="TableauArea" type="Area2D" parent="."]
 script = ExtResource("12_5sxg5")

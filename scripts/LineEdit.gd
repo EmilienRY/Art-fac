@@ -7,6 +7,7 @@ extends LineEdit
 @onready var stop_timer = $Timer
 
 var gameText: RichTextLabel
+var progress_label: Label
 var text_parser = TextParser.new()
 var game_data_processor = GameDataProcessor.new()
 var img_manager: ImageManager
@@ -29,8 +30,15 @@ func _setup_managers():
 	img_manager = ImageManager.new()
 	img_manager.name = "ImageManager"
 	get_tree().get_root().add_child(img_manager)
-	img_manager.connect("image_changed", _on_image_changed)
-	
+	img_manager.connect("image_changed", Callable(self, "_on_image_changed"))
+	img_manager.connect("progress_changed", Callable(self, "_on_progress_changed"))
+
+	var rows = gameText.get_parent() 
+	progress_label = _find_node_by_name(get_tree().get_root(), "ProgressLabel")
+	progress_label.theme = gameText.theme if gameText.has_method("theme") else null
+	progress_label.modulate = Color(0, 0.8, 0.2)
+	progress_label.size_flags_horizontal = 3
+
 	level_manager = LevelManager.new()
 	level_manager.name = "LevelManager"
 	get_tree().get_root().add_child(level_manager)
@@ -83,26 +91,105 @@ func _on_text_submitted(new_text: String):
 		InstructionSet.REDO:
 			_process_redo_command()
 		InstructionSet.PSNR:
-			_process_psnr_command()
+			_process_psnr_command(new_text)
 		InstructionSet.SEND:
 			_process_send_command()
 		InstructionSet.GREY:
-			_process_grey_command()
+			_process_grey_command(new_text) 
 		InstructionSet.EROSION:
-			_process_erosion_command()
+			_process_erosion_command(new_text)
 		InstructionSet.DILATATION:
-			_process_dilatation_command()
+			_process_dilatation_command(new_text)
+		InstructionSet.HISTOGRAM:
+			_process_histogram_command(new_text)
+		InstructionSet.SAVE:
+			_process_save_command(new_text)
+		InstructionSet.LOAD:
+			_process_load_command(new_text)
+		InstructionSet.SEE:
+			_process_see_command(new_text)
+		InstructionSet.EQUALIZE:
+			_process_equalize_command(new_text)
 		_:
 			_process_generic_command(new_text, instruction)
 
-func _process_seuil_command(command_text: String):
+
+func _process_equalize_command(command_text: String):
 	var output = " > " + command_text + "\n\n"
-	output += game_data_processor.process_action(InstructionSet.SEUIL, text_parser.get_param()) + "\n"
-	gameText.append_text(output)
+
+	var success = img_manager.equalize_histogram()
+	if(!success):
+		gameText.append_text(output+"Erreur lors de l'égalisation de l'histogramme.\n\n")
+	else:
+		gameText.append_text(output+"Égalisation en cours.\n\n")
+
+func _process_save_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
 
 	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2:
+		output += "Appel invalide, usage: save <nom>\n\n"
+		gameText.append_text(output)
+		return
+
+	var save_name = param[1]
+	var success = img_manager.save(save_name)
+	if success:
+		output += "Image enregistrée sous le nom: %s\n\n" % save_name
+	else:
+		output += "Nom invalide ou nom déjà utilisé.\n\n"
+	gameText.append_text(output)
+
+func _process_load_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2:
+		output += "Appel invalide, usage: load <nom>\n\n"
+		gameText.append_text(output)
+		return
+
+	var load_name = param[1]
+	var success = img_manager.set_image_from_saved(load_name)
+	if success:
+		output += "Image chargée depuis le nom: %s\n\n" % load_name
+	else:
+		output += "Nom invalide ou image introuvable.\n\n"
+	gameText.append_text(output)
+
+func _process_see_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	var images = img_manager.get_all_saved_images()
+
+	for key in images.keys():
+		output += "- %s\n" % key
+
+	gameText.append_text(output)
+
+
+
+func _process_seuil_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+	var param = text_parser.get_param()
+
+	if param == null or param.size() < 2 || not param[1].is_valid_int():
+		output += "Appel invalide, usage: seuil <valeur> (-r / -g / -b)\n\n"
+		gameText.append_text(output)
+		return
 	var seuil_value = param[1].to_int()
+
+	if seuil_value < 0 or seuil_value > 255:
+		output += "Seuil invalide, valeur en dehors de la plage (0-255)\n\n"
+		gameText.append_text(output)
+		return 
 	var color_mode = param[2] if param.size() > 2 else "all"
+	if color_mode not in ["all", "-r", "-g", "-b"]:
+		output += "Mode de couleur invalide, utilisez 'seuil <valeur> -r / -g / -b'\n\n"
+		gameText.append_text(output)
+		return 
+
 	if color_mode == "-r":
 		color_mode = 0
 	elif color_mode == "-g":
@@ -116,31 +203,49 @@ func _process_seuil_command(command_text: String):
 	if(!success):
 		gameText.append_text("Erreur, l'image n'est pas seuillée.\n\n")
 	else:
-		gameText.append_text("Seuil défini à %s" % seuil_value + (" sur tous les canaux.\n\n" if color_mode == -1 else 
+
+		output += "Seuil défini à %s" % seuil_value + (" sur tous les canaux.\n\n" if color_mode == -1 else 
 			(" sur le canal rouge.\n\n" if color_mode == 0 else 
 			(" sur le canal vert.\n\n" if color_mode == 1 else 
-			" sur le canal bleu.\n\n"))))
+			" sur le canal bleu.\n\n")))
+		gameText.append_text(output)
 
-func _process_grey_command():
+func _process_grey_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
 	var success = img_manager.transform_to_grayscale()
 	if(!success):
-		gameText.append_text("Erreur lors de la conversion en niveaux de gris.\n\n")
+		gameText.append_text(output+"Erreur lors de la conversion en niveaux de gris.\n\n")
 	else:
-		gameText.append_text("Image convertie en niveaux de gris avec succès.\n\n")
+		gameText.append_text(output+"Image convertie en niveaux de gris avec succès.\n\n")
 
-func _process_erosion_command():
+func _process_erosion_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	if img_manager and img_manager.is_processing:
+		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
+		return
+
 	var success = img_manager.erosionPPM_mat3x3()
 	if(!success):
-		gameText.append_text("Erreur lors de l'érosion de l'image.\n\n")
+		gameText.append_text(output+"Erreur lors de l'érosion de l'image.\n\n")
 	else:
-		gameText.append_text("Image érodée avec succès.\n\n")
+		self.editable = false
+		gameText.append_text(output+"Érosion en cours...\n\n")
 
-func _process_dilatation_command():
+func _process_dilatation_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
+
+	if img_manager and img_manager.is_processing:
+		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
+		return
+
 	var success = img_manager.dilatationPPM_mat3x3()
 	if(!success):
-		gameText.append_text("Erreur lors de la dilatation de l'image.\n\n")
+		gameText.append_text(output+"Erreur lors de la dilatation de l'image.\n\n")
 	else:
-		gameText.append_text("Image dilatée avec succès.\n\n")
+		self.editable = false
+		gameText.append_text(output+"Dilatation en cours...\n\n")
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -153,10 +258,10 @@ func _process_redo_command():
 	var message = "> redo\n\n" if success else "> rien à refaire\n\n"
 	gameText.append_text(message)
 
-func _process_psnr_command():
-		
+func _process_psnr_command(command_text: String):
+	var output = " > " + command_text + "\n\n"
 	var psnr_value = level_manager.check_psnr()
-	gameText.append_text("PSNR = %s dB\n\n" % str(psnr_value))
+	gameText.append_text(output+"PSNR = %s dB\n\n" % str(psnr_value))
 
 func _process_send_command():
 	var result = level_manager.submit()
@@ -175,8 +280,86 @@ func _process_generic_command(command_text: String, instruction: String):
 	output += game_data_processor.process_action(instruction, text_parser.get_object()) + "\n"
 	gameText.append_text(output)
 
+func _process_histogram_command(command_text: String):
+
+	var output = " > " + command_text + "\n\n"
+	var param = text_parser.get_param()
+	var channel = param[1] if param.size() > 1 else "all"
+
+	var channelMode = 0
+	if channel == "-r":
+		channelMode = 1
+	elif channel == "-g":
+		channelMode = 2
+	elif channel == "-b":
+		channelMode = 3
+
+	var tex = img_manager.get_histogram_texture(channelMode)
+	if tex == null:
+		gameText.append_text(output+"Impossible de calculer l'histogramme.\n\n")
+		return
+
+	var histogram_win := Window.new()
+	histogram_win.name = "HistogramWindow"
+	histogram_win.size = Vector2i(512, 230)
+	histogram_win.min_size = Vector2i(512, 230)
+	histogram_win.max_size = Vector2i(512, 230)
+	histogram_win.position = Vector2i(200, 150)
+	histogram_win.title = "Histogramme"
+	get_tree().root.add_child(histogram_win)
+
+	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	histogram_win.add_child(vbox)
+
+	var tex_rect := TextureRect.new()
+	tex_rect.texture = tex
+	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tex_rect.custom_minimum_size = Vector2(512, 180)
+	vbox.add_child(tex_rect)
+
+	var scale_control := Control.new()
+	scale_control.custom_minimum_size = Vector2(490, 20)
+	vbox.add_child(scale_control)
+
+	var tex_width = 490
+	var graduations = [20,40,60,80,100,120,140,160,180,200,220,240,255]
+	for grad in graduations:
+		var label := Label.new()
+		label.label_settings = LabelSettings.new()
+		label.label_settings.font_size = 10
+		label.text = str(grad)
+		label.position = Vector2((grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
+		scale_control.add_child(label)
+
+	histogram_win.connect("close_requested", Callable(self, "_on_histogram_close").bind(histogram_win))
+
+	histogram_win.visible = true
+	histogram_win.popup()
+	histogram_win.grab_focus()
+	gameText.append_text(output)
+
+
+
+func _on_histogram_close(win: Window):
+	if is_instance_valid(win):
+		win.queue_free()
+	gameText.append_text("Histogramme fermé.\n\n")
+
+
 func _on_image_changed(new_texture: Texture2D):
 	start_node.texture = new_texture
+	self.editable = true
+	if progress_label:
+		progress_label.text = ""
+
+func _on_progress_changed(progress: float) -> void:
+	var percent = int(round(progress * 100.0))
+	if percent >= 100:
+		progress_label.text = "progression: 100%"
+	else:
+		progress_label.text = "progression: %s%%" % str(percent)
 
 func _on_text_changed(new_text):
 
