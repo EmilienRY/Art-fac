@@ -20,7 +20,7 @@ func _gui_input(event):
 func transitionTableau_PC():
 	var ui_layer = get_tree().current_scene.get_node("UI")
 	var transition = preload("res://scene/transition.tscn").instantiate()
-	transition.video_path= "res://video/transitionTableau_PC.ogv"
+	transition.video_path= "res://video/down_transition.ogv"
 	ui_layer.add_child(transition)
 	
 	# Connecter un callback à la fin de la vidéo
