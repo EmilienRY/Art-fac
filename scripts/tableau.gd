@@ -7,7 +7,7 @@ func _input_event(_viewport, event, _shape_idx):
 func transitionPC_Tableau():
 	var ui_layer = get_tree().current_scene.get_node("UI")
 	var transition = preload("res://scene/transition.tscn").instantiate()
-	transition.video_path= "res://video/transitionPC_tableau.ogv"
+	transition.video_path= "res://video/up_transition.ogv"
 	ui_layer.add_child(transition)
 	
 	# Connecter un callback à la fin de la vidéo
