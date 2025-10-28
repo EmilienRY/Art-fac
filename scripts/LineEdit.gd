@@ -3,6 +3,8 @@ extends LineEdit
 @onready var typing_sound =_find_node_by_name(get_tree().get_root(), "keyBoard")
 @onready var enter_sound =_find_node_by_name(get_tree().get_root(), "enter")
 
+var typing_video_path := "res://video/typing.ogv"
+@onready var typing_video_player: VideoStreamPlayer = _find_node_by_name(get_tree().get_root(), "typing")
 
 @onready var stop_timer = $Timer
 
@@ -23,6 +25,10 @@ func _ready():
 
 	stop_timer.connect("timeout", Callable(self, "_on_stop_timer_timeout"))
 
+	var stream = ResourceLoader.load(typing_video_path)
+	typing_video_player.stream = stream
+	typing_video_player.autoplay = false
+	typing_video_player.loop = true
 	call_deferred("_setup_managers")
 	grab_focus()
 
@@ -367,6 +373,17 @@ func _on_text_changed(new_text):
 
 	if not typing_sound.playing:
 		typing_sound.play()
+		
+	if typing_video_player:
+		if not typing_video_player.visible:
+			typing_video_player.visible = true
+		if not typing_video_player.is_playing():
+			typing_video_player.play()
 
 func _on_stop_timer_timeout():
 	typing_sound.stop()
+	
+	if typing_video_player and typing_video_player.is_playing():
+		typing_video_player.stop()
+	if typing_video_player:
+		typing_video_player.visible = false

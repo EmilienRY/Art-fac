@@ -46,7 +46,7 @@ shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.094000004465
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6fla"]
-size = Vector2(618.5, 195)
+size = Vector2(618.5, 121)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s3u6w"]
 size = Vector2(220, 488.5)
@@ -54,9 +54,21 @@ size = Vector2(220, 488.5)
 [node name="Node2D" type="Node2D"]
 
 [node name="CenterIdle" type="Sprite2D" parent="."]
-position = Vector2(578.87494, 346)
+position = Vector2(584, 348.00003)
 scale = Vector2(1.8058594, 1.8999999)
 texture = ExtResource("14_s3u6w")
+
+[node name="typing" type="VideoStreamPlayer" parent="CenterIdle"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -180.0
+offset_right = -320.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+expand = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(573, 329)
@@ -64,10 +76,10 @@ position = Vector2(573, 329)
 [node name="Screen" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 231.0
-offset_top = 49.0
-offset_right = 263.32986
-offset_bottom = 90.904724
+offset_left = 211.0
+offset_top = 50.0
+offset_right = 246.69644
+offset_bottom = 94.921005
 scale = Vector2(18.713348, 9.282963)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
@@ -93,10 +105,10 @@ color = Color(0, 0, 0, 1)
 [node name="Terminal" type="Control" parent="Screen"]
 z_index = 1
 anchors_preset = 0
-offset_left = 0.5878128
-offset_top = 1.0772427
-offset_right = 784.8719
-offset_bottom = 310.09387
+offset_left = 0.48094046
+offset_top = 6.2480044
+offset_right = 749.2771
+offset_bottom = 266.71826
 scale = Vector2(0.030116007, 0.1153877)
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -196,19 +208,19 @@ shape = SubResource("RectangleShape2D_5sxg5")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Start" type="TextureRect" parent="UI"]
-offset_left = 705.00006
+offset_left = 637.0
 offset_top = 101.0
-offset_right = 705.00006
+offset_right = 637.0
 offset_bottom = 101.0
 scale = Vector2(0.4, 0.4)
 expand_mode = 1
 stretch_mode = 2
 
 [node name="Goal" type="TextureRect" parent="UI"]
-offset_left = 705.0
-offset_top = 273.0
-offset_right = 1305.0
-offset_bottom = 673.0
+offset_left = 637.0
+offset_top = 266.0
+offset_right = 1237.0
+offset_bottom = 666.0
 scale = Vector2(0.4, 0.4)
 
 [node name="Cible" type="Sprite2D" parent="UI"]
@@ -218,12 +230,13 @@ texture = ExtResource("11_8selj")
 
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
-offset_left = 234.00006
+offset_left = 215.00003
 offset_top = 53.0
-offset_right = 255.25183
-offset_bottom = 74.90315
-scale = Vector2(28.280005, 17.760002)
+offset_right = 238.621
+offset_bottom = 76.19818
+scale = Vector2(28.1, 17.647)
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="scoreScreen" type="Control" parent="."]
 layout_mode = 3
@@ -277,7 +290,7 @@ text = "BRAVO"
 script = ExtResource("12_5sxg5")
 
 [node name="CollisionShapeTableau" type="CollisionShape2D" parent="TableauArea"]
-position = Vector2(611.75, 27.5)
+position = Vector2(611.75, -9.5)
 shape = SubResource("RectangleShape2D_q6fla")
 
 [node name="VoisinArea" type="Area2D" parent="."]
