@@ -26,3 +26,9 @@ offset_right = 1068.0
 offset_bottom = 399.0
 texture = ExtResource("2_ta4l5")
 expand_mode = 1
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
