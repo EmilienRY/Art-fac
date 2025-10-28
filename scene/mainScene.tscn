@@ -1,6 +1,5 @@
 [gd_scene load_steps=20 format=3 uid="uid://cwt3mvqkyx2k4"]
 
-[ext_resource type="Texture2D" uid="uid://dpgmwt1l3ycod" path="res://assets/PC.jpg" id="1_iwpey"]
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
 [ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
@@ -13,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bs613d3r35a06" path="res://assets/cible.png" id="11_8selj"]
 [ext_resource type="Script" uid="uid://c5r7h6q4jhxql" path="res://scripts/tableau.gd" id="12_5sxg5"]
 [ext_resource type="Script" uid="uid://gl7dkced8mt2" path="res://scripts/PCversVoisin.gd" id="13_q6fla"]
+[ext_resource type="Texture2D" uid="uid://ylxii0rimuck" path="res://assets/center_idle.png" id="14_s3u6w"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
 
@@ -46,17 +46,17 @@ shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.094000004465
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6fla"]
-size = Vector2(363, 118)
+size = Vector2(618.5, 195)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s3u6w"]
 size = Vector2(220, 488.5)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Pc" type="Sprite2D" parent="."]
-position = Vector2(573.00006, 327.00006)
-scale = Vector2(0.28020474, 0.25308582)
-texture = ExtResource("1_iwpey")
+[node name="CenterIdle" type="Sprite2D" parent="."]
+position = Vector2(578.87494, 346)
+scale = Vector2(1.8058594, 1.8999999)
+texture = ExtResource("14_s3u6w")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(573, 329)
@@ -64,10 +64,10 @@ position = Vector2(573, 329)
 [node name="Screen" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 220.00006
-offset_top = 88.0
-offset_right = 260.00006
-offset_bottom = 128.0
+offset_left = 231.0
+offset_top = 49.0
+offset_right = 263.32986
+offset_bottom = 90.904724
 scale = Vector2(18.713348, 9.282963)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
@@ -218,10 +218,10 @@ texture = ExtResource("11_8selj")
 
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
-offset_left = 225.00002
-offset_top = 87.0
-offset_right = 252.33382
-offset_bottom = 107.88965
+offset_left = 234.00006
+offset_top = 53.0
+offset_right = 255.25183
+offset_bottom = 74.90315
 scale = Vector2(28.280005, 17.760002)
 mouse_filter = 2
 
@@ -277,7 +277,7 @@ text = "BRAVO"
 script = ExtResource("12_5sxg5")
 
 [node name="CollisionShapeTableau" type="CollisionShape2D" parent="TableauArea"]
-position = Vector2(859, 32)
+position = Vector2(611.75, 27.5)
 shape = SubResource("RectangleShape2D_q6fla")
 
 [node name="VoisinArea" type="Area2D" parent="."]
