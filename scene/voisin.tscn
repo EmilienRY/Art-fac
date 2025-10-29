@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dmm83p2lmedi7"]
 
-[ext_resource type="Script" uid="uid://c7cjqdt2ioddv" path="res://scripts/Voisin.gd" id="1_fh7xo"]
+[ext_resource type="Script" uid="uid://yypjd34g8msw" path="res://scripts/Voisin.gd" id="1_fh7xo"]
 [ext_resource type="Texture2D" uid="uid://bv0tv5lvyttih" path="res://assets/right_idle.png" id="2_101p1"]
 [ext_resource type="AudioStream" uid="uid://c5msgvc7m10kt" path="res://sound/keyboard-sound.mp3" id="3_tbxu3"]
 [ext_resource type="VideoStream" uid="uid://goh3vcrm3uhh" path="res://video/neighbor_typing.ogv" id="4_hvfvc"]
@@ -137,7 +137,6 @@ size_flags_vertical = 3
 theme_override_colors/default_color = Color(0, 0.76862746, 0.16862746, 1)
 theme_override_fonts/normal_font = ExtResource("5_4xx4n")
 theme_override_font_sizes/normal_font_size = 20
-text = "grey"
 scroll_following = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen/Terminal/Background/MarginContainer/Rows"]
@@ -153,7 +152,7 @@ vertical_alignment = 2
 [node name="ecranVoisin" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="Start" type="TextureRect" parent="ecranVoisin"]
+[node name="imgIndice" type="TextureRect" parent="ecranVoisin"]
 offset_left = 941.00006
 offset_top = 214.0
 offset_right = 1295.9998

@@ -2,43 +2,41 @@ extends Control
 
 var currentLevel=1
 var nbFois=0
-var imgInter=[["res://images/chat.jpg","res://images/Yoshi.png","res://images/YoshiYukata.png"],
-["res://images/chien.jpg","res://images/YoshiYukata.png","res://images/Yoshi.png"]]
+var videoAngry = ["res://video/neighbor_mad1.ogv","res://video/neighbor_mad2.ogv","res://video/neighbor_mad3.ogv"]
 
-var gameText: RichTextLabel
-var progress_label: Label
-var text_parser = TextParser.new()
-var game_data_processor = GameDataProcessor.new()
-var img_manager: ImageManager
-var start_node: TextureRect
-var level_manager: LevelManager
+var indiceTerminal
+var indiceEcrit
+var imgPath
+var maxAppel
+
 var player
 var screen
 var loop=1
 
-var indiceEcrit = ">seuil 100"
 
-func set_current_level(level: int, appelVoisin : int) -> void:
+
+func set_current_level(level: int, appelVoisin : int, indiceTer : String, indiceEdit : String, img_Path : String, maxAppelVoisin : int) -> void:
 	currentLevel = level
 	nbFois+=appelVoisin
-	#set_imgAide(currentLevel)
+	indiceTerminal = indiceTer
+	indiceEcrit = indiceEdit
+	imgPath=img_Path
+	maxAppel=maxAppelVoisin
+	set_indice(indiceTerminal,imgPath)
+	if nbFois>3:
+		_setVideoAngry()
 
-func set_imgAide(level : int) -> void:
-	var indice=$imgIntermediaire
-	var texture_path
-	if nbFois<=imgInter[level - 1].size():
-		texture_path = imgInter[level - 1][nbFois-1]
-		indice.texture = load(texture_path)
-	else :
-		indice.visible=false
-		var imgScene=$RightIdle
-		imgScene.texture = load("res://assets/voisinPasContent.png")
-		#imgScene.visible=false
-		#player.visible=true
-		#player.size = get_viewport_rect().size
-		#player.stream = load(video[randi_range(0,2)])
-		#player.play()
-		
+func set_indice(indiceTer : String, img_path : String) -> void :
+	$Screen/Terminal/Background/MarginContainer/Rows/indiceCommande1.text=indiceTer
+	$ecranVoisin/imgIndice.texture=load(img_path)
+
+func _setVideoAngry():
+	var numVideo = randi_range(0,2)
+	$CenterIdle/typing.stream=load(videoAngry[numVideo])
+	$CenterIdle/typing.loop=false
+	$ecranVoisin.visible=false
+	$Screen.visible=false
+
 func _ready() -> void:
 	player = $CenterIdle/typing
 	player.play()
@@ -49,8 +47,8 @@ func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if player.is_playing() :
 			player.stop()
-		print("test")
 		screen.visible=false
+		$ecranVoisin.visible=false
 		transitionVoisin_PC()
 
 func transitionVoisin_PC():
