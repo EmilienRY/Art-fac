@@ -1,34 +1,176 @@
-[gd_scene load_steps=4 format=3 uid="uid://678cdor6kce2"]
+[gd_scene load_steps=9 format=3 uid="uid://dmm83p2lmedi7"]
 
-[ext_resource type="Script" uid="uid://33yfpvg1mn01" path="res://scripts/VoisinVersPC.gd" id="1_101p1"]
+[ext_resource type="Script" uid="uid://yypjd34g8msw" path="res://scripts/Voisin.gd" id="1_fh7xo"]
 [ext_resource type="Texture2D" uid="uid://bv0tv5lvyttih" path="res://assets/right_idle.png" id="2_101p1"]
-[ext_resource type="Texture2D" uid="uid://bg7fq0ip8uy1a" path="res://images/chien.jpg" id="2_ta4l5"]
+[ext_resource type="AudioStream" uid="uid://c5msgvc7m10kt" path="res://sound/keyboard-sound.mp3" id="3_tbxu3"]
+[ext_resource type="VideoStream" uid="uid://goh3vcrm3uhh" path="res://video/neighbor_typing.ogv" id="4_hvfvc"]
+[ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="5_4xx4n"]
+[ext_resource type="Texture2D" uid="uid://bvf2pivi3blu6" path="res://images/chat.jpg" id="6_bita5"]
+[ext_resource type="Shader" uid="uid://hp1smxfykyxv" path="res://shader/crt.gdshader" id="7_qf1he"]
 
-[node name="Voisin" type="Control"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_608k5"]
+shader = ExtResource("7_qf1he")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.0
+shader_parameter/scanlines_width = 0.0
+shader_parameter/grille_opacity = 0.19600000931
+shader_parameter/resolution = Vector2(1280, 720)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 2.0
+shader_parameter/roll_size = 0.2000000095
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.030000001425
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.01000004797499998
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.3750000178125
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.094000004465
+
+[node name="TestControll" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_101p1")
+script = ExtResource("1_fh7xo")
 
-[node name="RightIdle" type="Sprite2D" parent="."]
-position = Vector2(569.0001, 338)
-scale = Vector2(1.8210937, 1.8597221)
+[node name="CenterIdle" type="Sprite2D" parent="."]
+position = Vector2(578, 335)
+scale = Vector2(1.8058594, 1.8999999)
 texture = ExtResource("2_101p1")
 
-[node name="imgIntermediaire" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 710.0
-offset_top = 133.0
-offset_right = 1068.0
-offset_bottom = 399.0
-texture = ExtResource("2_ta4l5")
+[node name="keyBoard" type="AudioStreamPlayer2D" parent="CenterIdle"]
+position = Vector2(105.10272, 9.366867)
+scale = Vector2(0.31207925, 0.5637578)
+stream = ExtResource("3_tbxu3")
+volume_db = 3.0
+autoplay = true
+
+[node name="typing" type="VideoStreamPlayer" parent="CenterIdle"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -180.0
+offset_right = -320.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stream = ExtResource("4_hvfvc")
+expand = true
+loop = true
+
+[node name="Screen" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 722.00006
+offset_top = 112.99999
+offset_right = 741.0239
+offset_bottom = 145.9636
+scale = Vector2(18.713348, 9.282963)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+scale = Vector2(2.3686957, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="Screen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Screen/PanelContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Terminal" type="Control" parent="Screen"]
+z_index = 1
+anchors_preset = 0
+offset_left = 0.8017578
+offset_top = 1.8313141
+offset_right = 318.41272
+offset_bottom = 256.69946
+scale = Vector2(0.030116007, 0.1153877)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Background" type="PanelContainer" parent="Screen/Terminal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Screen/Terminal/Background"]
+layout_mode = 2
+color = Color(0.019607844, 0.1254902, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Terminal/Background"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Rows" type="VBoxContainer" parent="Screen/Terminal/Background/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="indiceCommande1" type="RichTextLabel" parent="Screen/Terminal/Background/MarginContainer/Rows"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0.76862746, 0.16862746, 1)
+theme_override_fonts/normal_font = ExtResource("5_4xx4n")
+theme_override_font_sizes/normal_font_size = 20
+scroll_following = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Screen/Terminal/Background/MarginContainer/Rows"]
+layout_mode = 2
+
+[node name="indiceCommande2" type="Label" parent="Screen/Terminal/Background/MarginContainer/Rows/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_4xx4n")
+text = ">"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ecranVoisin" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="imgIndice" type="TextureRect" parent="ecranVoisin"]
+offset_left = 941.00006
+offset_top = 214.0
+offset_right = 1295.9998
+offset_bottom = 486.5
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_bita5")
 expand_mode = 1
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="shader" type="ColorRect" parent="ecranVoisin"]
+material = SubResource("ShaderMaterial_608k5")
+anchors_preset = -1
+anchor_right = 0.000114281975
+offset_left = 716.0
+offset_top = 114.0
+offset_right = 729.0
+offset_bottom = 131.0
+scale = Vector2(28.1, 17.647)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true

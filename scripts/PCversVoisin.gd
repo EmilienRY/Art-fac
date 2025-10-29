@@ -19,14 +19,18 @@ func transitionPC_Voisin():
 
 
 func _on_transition_finished(ui_layer):
+	#var voisin = preload("res://scene/voisin.tscn").instantiate()
 	var voisin = preload("res://scene/voisin.tscn").instantiate()
-
 	# Récupérer le niveau actuel depuis le LevelManager
 	var level_manager = get_node("/root/LevelManager")
 	if level_manager:
 		level_manager.set_appel()
 		appelVoisin = level_manager.get_appel()
 		var current_level = level_manager.get_current_level_number()
-		voisin.set_current_level(current_level,appelVoisin)
+		var indiceTermi= level_manager._get_indiceTerminal()
+		var indiceLigne = level_manager._get_indiceLigneEdit()
+		var imgPath = level_manager._get_img_Indice()
+		var maxAppel = level_manager._get_MaxappelVoisin()
+		voisin.set_current_level(current_level,appelVoisin,indiceTermi,indiceLigne,imgPath,maxAppel)
 	print(appelVoisin)
 	ui_layer.add_child(voisin)

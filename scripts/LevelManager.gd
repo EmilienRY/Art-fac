@@ -6,11 +6,28 @@ var img_manager: ImageManager
 var _goal_texture: Texture2D
 var nbAppelEffec=0
 
+var indiceTerminal
+var indiceLigneEdit
+var maxAppel
+var imgIndicePath
+
 func get_appel() -> int :
 	return nbAppelEffec
 
 func set_appel() -> void:
 	nbAppelEffec+=1
+
+func _get_indiceTerminal() -> String:
+	return indiceTerminal
+
+func _get_indiceLigneEdit() -> String:
+	return indiceLigneEdit
+
+func _get_img_Indice() -> String:
+	return imgIndicePath
+
+func _get_MaxappelVoisin() -> int:
+	return maxAppel
 
 func _ready():
 	call_deferred("_initialize")
@@ -28,6 +45,11 @@ func load_current_level() -> bool:
 	img_manager.reset()
 	img_manager.load_image(cfg.source)
 	_goal_texture = ResourceLoader.load(cfg.goal)
+	
+	indiceTerminal = cfg.indice_terminal
+	indiceLigneEdit = cfg.indice_ligne
+	maxAppel = cfg.maxVoisin
+	imgIndicePath=cfg.img_indice
 	return true
 
 func get_goal_texture() -> Texture2D:

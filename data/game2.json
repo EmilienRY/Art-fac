@@ -4,6 +4,10 @@
 		"description" : "Votre but est de reproduire l'image cible en partant de l'image source.",
 		"source": "res://images/chien.jpg",
 		"goal": "res://images/chien.jpg",
-		"psnr_threshold_db": 50.0
+		"psnr_threshold_db": 50.0,
+		"img_indice" :  "res://images/chien.jpg",
+		"indice_terminal" : "grey",
+		"indice_ligne" : ">seuil 100",
+		"maxVoisin" : 3
 	}
 }
