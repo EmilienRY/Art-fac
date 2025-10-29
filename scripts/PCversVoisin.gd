@@ -19,8 +19,8 @@ func transitionPC_Voisin():
 
 
 func _on_transition_finished(ui_layer):
+	#var voisin = preload("res://scene/voisin.tscn").instantiate()
 	var voisin = preload("res://scene/voisin.tscn").instantiate()
-
 	# Récupérer le niveau actuel depuis le LevelManager
 	var level_manager = get_node("/root/LevelManager")
 	if level_manager:
