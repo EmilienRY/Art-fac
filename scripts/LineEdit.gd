@@ -6,6 +6,19 @@ extends LineEdit
 var typing_video_path := "res://video/typing.ogv"
 @onready var typing_video_player: VideoStreamPlayer = _find_node_by_name(get_tree().get_root(), "typing")
 
+@onready var winScreen = _find_node_by_name(get_tree().get_root(), "scoreScreen")
+@onready var ui = _find_node_by_name(get_tree().get_root(), "UI")
+@onready var screen = _find_node_by_name(get_tree().get_root(), "Screen")
+@onready var tableau = _find_node_by_name(get_tree().get_root(), "TableauArea")
+@onready var voisin = _find_node_by_name(get_tree().get_root(), "VoisinArea")
+@onready var feuille = _find_node_by_name(get_tree().get_root(), "Feuille")
+@onready var btn = _find_node_by_name(get_tree().get_root(), "NextLvlButton")
+
+@onready var lutz1 = _find_node_by_name(get_tree().get_root(), "Lutz1")
+@onready var lutz2 = _find_node_by_name(get_tree().get_root(), "Lutz2")
+@onready var lutz3 = _find_node_by_name(get_tree().get_root(), "Lutz3")
+
+
 @onready var stop_timer = $Timer
 
 var gameText: RichTextLabel
@@ -31,6 +44,7 @@ func _ready():
 	typing_video_player.loop = true
 	call_deferred("_setup_managers")
 	grab_focus()
+	btn.connect("pressed", Callable(self, "_on_next_level_pressed"))
 
 func _setup_managers():
 	img_manager = ImageManager.new()
@@ -39,7 +53,6 @@ func _setup_managers():
 	img_manager.connect("image_changed", Callable(self, "_on_image_changed"))
 	img_manager.connect("progress_changed", Callable(self, "_on_progress_changed"))
 
-	var rows = gameText.get_parent() 
 	progress_label = _find_node_by_name(get_tree().get_root(), "ProgressLabel")
 	progress_label.theme = gameText.theme if gameText.has_method("theme") else null
 	progress_label.modulate = Color(0, 0.8, 0.2)
@@ -269,6 +282,40 @@ func _process_psnr_command(command_text: String):
 	var psnr_value = level_manager.check_psnr()
 	gameText.append_text(output+"PSNR = %s dB\n\n" % str(psnr_value))
 
+func _show_win_screen(result: Dictionary):
+	winScreen.visible = true
+	ui.visible = false
+	screen.visible = false
+	tableau.visible = false
+	voisin.visible = false
+	feuille.visible = false
+
+	var psnr = result.get('psnr')
+	var threshold = result.get('threshold')
+
+	if psnr < threshold+15:
+		lutz1.visible = true
+		lutz2.visible = false
+		lutz3.visible = false
+	elif psnr < threshold+30:
+		lutz1.visible = true
+		lutz2.visible = true
+		lutz3.visible = false
+	else:
+		lutz1.visible = true
+		lutz2.visible = true
+		lutz3.visible = true
+
+
+func _on_next_level_pressed():
+	winScreen.visible = false
+	ui.visible = true
+	screen.visible = true
+	tableau.visible = true
+	voisin.visible = true
+	feuille.visible = true
+	btn.visible = false
+
 func _process_send_command():
 	var result = level_manager.submit()
 		
@@ -278,6 +325,8 @@ func _process_send_command():
 		gameText.append_text("Niveau réussi! Maintenant sur %s\n\n" % str(result.get('next_key', '')))
 		gameText.append_text(new_cfg.intro + "\n" + new_cfg.description + "\n\n")
 		goal_node.texture = ResourceLoader.load(new_cfg.goal)
+		_show_win_screen(result)
+
 	else:
 		gameText.append_text("Mauvais résultat.\n\n")
 

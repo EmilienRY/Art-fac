@@ -44,8 +44,7 @@ func process_action(action, param = null):
 		var helpText = ''
 		helpText += 'Instructions:' + "\n"
 		helpText += '- Utilisez les commandes pour le traitement d\'images.' + "\n"
-		helpText += '- Commandes disponibles: clear, save, load, see, send, exit' + "\n"
-		helpText += '						 undo, redo' + "\n"
+		helpText += '- Commandes disponibles: clear, save, load, see, send, exit, undo, redo' + "\n"
 
 		return helpText
 
