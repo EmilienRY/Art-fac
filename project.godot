@@ -14,3 +14,7 @@ config/name="projet jeux serieux"
 run/main_scene="uid://cwt3mvqkyx2k4"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="viewport"

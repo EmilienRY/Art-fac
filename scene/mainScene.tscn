@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=23 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
@@ -9,9 +9,12 @@
 [ext_resource type="AudioStream" uid="uid://d2fvihm3baw5n" path="res://sound/enter-sound.mp3" id="5_0mgva"]
 [ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scripts/feuille.gd" id="6_00228"]
 [ext_resource type="Shader" uid="uid://hp1smxfykyxv" path="res://shader/crt.gdshader" id="8_00228"]
+[ext_resource type="Texture2D" uid="uid://bflf8dguk1leh" path="res://assets/barre.png" id="10_s3u6w"]
 [ext_resource type="Texture2D" uid="uid://bs613d3r35a06" path="res://assets/cible.png" id="11_8selj"]
 [ext_resource type="Script" uid="uid://c5r7h6q4jhxql" path="res://scripts/tableau.gd" id="12_5sxg5"]
 [ext_resource type="Script" uid="uid://gl7dkced8mt2" path="res://scripts/PCversVoisin.gd" id="13_q6fla"]
+[ext_resource type="Texture2D" uid="uid://dv8ggelno4xuv" path="res://assets/lutz.png" id="13_rh23s"]
+[ext_resource type="Theme" uid="uid://b3klx57slj0l3" path="res://themes/soft_retro/soft_retro.tres" id="14_myw5j"]
 [ext_resource type="Texture2D" uid="uid://ylxii0rimuck" path="res://assets/center_idle.png" id="14_s3u6w"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
@@ -52,6 +55,7 @@ size = Vector2(618.5, 121)
 size = Vector2(220, 488.5)
 
 [node name="Node2D" type="Node2D"]
+metadata/_edit_vertical_guides_ = [-2271.0]
 
 [node name="CenterIdle" type="Sprite2D" parent="."]
 position = Vector2(584, 348.00003)
@@ -69,10 +73,11 @@ offset_right = -320.0
 offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
+speed_scale = 1.5
 expand = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(573, 329)
+position = Vector2(581, 332)
 
 [node name="Screen" type="Control" parent="."]
 layout_mode = 3
@@ -106,11 +111,11 @@ color = Color(0, 0, 0, 1)
 [node name="Terminal" type="Control" parent="Screen"]
 z_index = 1
 anchors_preset = 0
-offset_left = 0.48094046
-offset_top = 6.2480044
-offset_right = 749.2771
-offset_bottom = 266.71826
-scale = Vector2(0.030116007, 0.1153877)
+offset_left = 0.5343783
+offset_top = 5.9248323
+offset_right = 749.3305
+offset_bottom = 266.39508
+scale = Vector2(0.029091781, 0.116657674)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
@@ -224,6 +229,16 @@ offset_right = 1237.0
 offset_bottom = 666.0
 scale = Vector2(0.4, 0.4)
 
+[node name="Barre" type="Sprite2D" parent="UI"]
+position = Vector2(429.14063, 409)
+scale = Vector2(0.3033711, 0.5205477)
+texture = ExtResource("10_s3u6w")
+
+[node name="Cible" type="Sprite2D" parent="UI"]
+position = Vector2(841.00006, 426)
+scale = Vector2(0.07812501, 0.07812503)
+texture = ExtResource("11_8selj")
+
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
 offset_left = 215.00003
@@ -234,58 +249,101 @@ scale = Vector2(28.1, 17.647)
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Cible" type="Sprite2D" parent="UI"]
-position = Vector2(875, 357)
-scale = Vector2(0.07812501, 0.07812503)
-texture = ExtResource("11_8selj")
-
-[node name="scoreScreen" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -1634.0
-offset_top = -67.0
-offset_right = -1594.0
-offset_bottom = -27.0
-scale = Vector2(38.77726, 19.03066)
+[node name="scoreScreen" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="PanelContainer" type="PanelContainer" parent="scoreScreen"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -9.0
+offset_top = -12.0
+offset_right = 25.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="scoreScreen/PanelContainer"]
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Lutz" type="Sprite2D" parent="scoreScreen"]
-position = Vector2(16.149855, 27.168581)
-scale = Vector2(0.014890937, 0.022112073)
-
-[node name="Lutz2" type="Sprite2D" parent="scoreScreen"]
-position = Vector2(22.081163, 27.010944)
-scale = Vector2(0.016, 0.022)
-
-[node name="Precision" type="Label" parent="scoreScreen"]
-layout_mode = 0
-offset_left = 17.200804
-offset_top = 17.130253
-offset_right = 317.2008
-offset_bottom = 102.13025
-scale = Vector2(0.045999154, 0.16890568)
-theme_override_fonts/font = ExtResource("2_00228")
-theme_override_font_sizes/font_size = 30
-text = "Score:"
+[node name="NextLvlButton" type="Button" parent="scoreScreen"]
+offset_left = 488.0
+offset_top = 570.0
+offset_right = 672.0
+offset_bottom = 629.0
+theme = ExtResource("14_myw5j")
+text = "Niveau suivant"
 
 [node name="Bravo" type="Label" parent="scoreScreen"]
-layout_mode = 0
-offset_left = 12.378389
-offset_top = 3.6257281
-offset_right = 312.3784
-offset_bottom = 88.625725
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -157.0
+offset_top = -276.00003
+offset_right = 5843.0
+offset_bottom = 1388.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.053580973, 0.13362993)
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_00228")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 2000
 text = "BRAVO"
+
+[node name="Precision" type="Label" parent="scoreScreen"]
+offset_left = 523.0
+offset_top = 289.0
+offset_right = 3043.0
+offset_bottom = 872.0
+scale = Vector2(0.045999154, 0.16890568)
+theme_override_fonts/font = ExtResource("2_00228")
+theme_override_font_sizes/font_size = 700
+text = "Score:"
+
+[node name="Lutz1" type="Sprite2D" parent="scoreScreen"]
+position = Vector2(581.0613, 480.534)
+scale = Vector2(0.4683426, 0.39681935)
+texture = ExtResource("13_rh23s")
+
+[node name="Lutz2" type="Sprite2D" parent="scoreScreen"]
+position = Vector2(852.5019, 480.534)
+scale = Vector2(0.4653271, 0.39964387)
+texture = ExtResource("13_rh23s")
+
+[node name="Lutz3" type="Sprite2D" parent="scoreScreen"]
+position = Vector2(309.62024, 480.534)
+scale = Vector2(0.4653271, 0.39964387)
+texture = ExtResource("13_rh23s")
+
+[node name="part1" type="CPUParticles2D" parent="scoreScreen"]
+position = Vector2(102, 640)
+amount = 200
+lifetime = 2.0
+spread = 180.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 1.0
+initial_velocity_max = 20.0
+angle_min = -500.0
+angle_max = 200.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(1, 1, 0, 1)
+
+[node name="part2" type="CPUParticles2D" parent="scoreScreen"]
+position = Vector2(1098, 632)
+amount = 200
+lifetime = 2.0
+spread = 180.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 1.0
+initial_velocity_max = 20.0
+angle_min = -500.0
+angle_max = 200.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
 
 [node name="TableauArea" type="Area2D" parent="."]
 script = ExtResource("12_5sxg5")
