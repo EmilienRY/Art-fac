@@ -31,6 +31,7 @@ func _on_transition_finished(ui_layer):
 		var indiceLigne = level_manager._get_indiceLigneEdit()
 		var imgPath = level_manager._get_img_Indice()
 		var maxAppel = level_manager._get_MaxappelVoisin()
+		
 		voisin.set_current_level(current_level,appelVoisin,indiceTermi,indiceLigne,imgPath,maxAppel)
-	print(appelVoisin)
+
 	ui_layer.add_child(voisin)

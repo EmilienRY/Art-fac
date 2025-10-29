@@ -1,7 +1,7 @@
 extends Control
 
 var currentLevel=1
-var nbFois=0
+var nbAppel=0
 var videoAngry = ["res://video/neighbor_mad1.ogv","res://video/neighbor_mad2.ogv","res://video/neighbor_mad3.ogv"]
 
 var indiceTerminal
@@ -17,13 +17,13 @@ var loop=1
 
 func set_current_level(level: int, appelVoisin : int, indiceTer : String, indiceEdit : String, img_Path : String, maxAppelVoisin : int) -> void:
 	currentLevel = level
-	nbFois+=appelVoisin
+	nbAppel=appelVoisin
 	indiceTerminal = indiceTer
 	indiceEcrit = indiceEdit
 	imgPath=img_Path
 	maxAppel=maxAppelVoisin
 	set_indice(indiceTerminal,imgPath)
-	if nbFois>3:
+	if nbAppel>maxAppel:
 		_setVideoAngry()
 
 func set_indice(indiceTer : String, img_path : String) -> void :
