@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=24 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dv8ggelno4xuv" path="res://assets/lutz.png" id="13_rh23s"]
 [ext_resource type="Theme" uid="uid://b3klx57slj0l3" path="res://themes/soft_retro/soft_retro.tres" id="14_myw5j"]
 [ext_resource type="Texture2D" uid="uid://ylxii0rimuck" path="res://assets/center_idle.png" id="14_s3u6w"]
+[ext_resource type="Texture2D" uid="uid://bp6mcxj45gixy" path="res://assets/lutzParticule.png" id="15_ogdkf"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
 
@@ -250,7 +251,6 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="scoreScreen" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="PanelContainer" type="PanelContainer" parent="scoreScreen"]
 anchors_preset = 15
@@ -319,8 +319,9 @@ scale = Vector2(0.4653271, 0.39964387)
 texture = ExtResource("13_rh23s")
 
 [node name="part1" type="CPUParticles2D" parent="scoreScreen"]
-position = Vector2(102, 640)
+position = Vector2(100, 615)
 amount = 200
+texture = ExtResource("15_ogdkf")
 lifetime = 2.0
 spread = 180.0
 gravity = Vector2(0, -100)
@@ -330,11 +331,11 @@ angle_min = -500.0
 angle_max = 200.0
 scale_amount_min = 2.0
 scale_amount_max = 4.0
-color = Color(1, 1, 0, 1)
 
 [node name="part2" type="CPUParticles2D" parent="scoreScreen"]
 position = Vector2(1098, 632)
 amount = 200
+texture = ExtResource("15_ogdkf")
 lifetime = 2.0
 spread = 180.0
 gravity = Vector2(0, -100)
