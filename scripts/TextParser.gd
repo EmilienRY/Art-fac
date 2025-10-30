@@ -7,6 +7,8 @@ var param: PackedStringArray = []
 
 func parse(text):
 	match text:
+		'png':
+			return InstructionSet.PNG
 		'help':
 			return InstructionSet.HELP
 		'reset':

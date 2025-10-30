@@ -474,7 +474,28 @@ func compute_psnr(a, b) -> float:
 	var psnr = 10.0 * log((255.0 * 255.0) / mse) / log(10.0)
 	return round(psnr * 100.0) / 100.0
 
-func save_png(path: String) -> bool:
+func get_desktop_path() -> String:
+	var os_name = OS.get_name()
+	var path = ""
+	
+	match os_name:
+		"Windows":
+			path = OS.get_environment("USERPROFILE") + "\\Documents"
+		"macOS", "Linux", "FreeBSD":
+			path = OS.get_environment("HOME") + "/Documents"
+		_:
+			push_warning("OS non reconnu : " + os_name)
+	
+	return path
+
+
+
+func save_png() -> bool:
+
+	var path = get_desktop_path() + "\\output_image.png"
+
+	print("Saving image to: " + path)
+
 	if not current_image:
 		return false
 	return current_image.save_png(path) == OK

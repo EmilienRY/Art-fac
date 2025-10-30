@@ -129,6 +129,15 @@ func _on_text_submitted(new_text: String):
 			_process_see_command(new_text)
 		InstructionSet.EQUALIZE:
 			_process_equalize_command(new_text)
+		InstructionSet.PNG:
+			var success = img_manager.save_png()
+			var output = " > " + new_text + "\n\n"
+			if success:
+				output += "Image sauvegardée en PNG avec succès.\n\n"
+				gameText.append_text(output)
+			else:
+				output += "Erreur lors de la sauvegarde en PNG.\n\n"
+				gameText.append_text(output)
 		_:
 			_process_generic_command(new_text, instruction)
 

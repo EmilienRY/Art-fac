@@ -1,5 +1,7 @@
 class_name InstructionSet
 
+const PNG = "png"
+
 const NOT_FOUND = "not_found"
 
 const HELP = "help"
