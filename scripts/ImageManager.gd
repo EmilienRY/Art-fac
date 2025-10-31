@@ -366,12 +366,16 @@ func _proc_threshold(img: Image, t: int, color_mode: int) -> Image:
 	return img
 
 func _proc_dilatation(src: Image, iterations: int) -> Image:
+
 	var w = src.get_width()
 	var h = src.get_height()
 	var work = src.duplicate()
 
 	for it in range(iterations):
 		var copy_src = work.duplicate()
+		var new_work = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		new_work.fill(Color(0,0,0,0))
+
 		for y in range(h):
 			for x in range(w):
 				var minR = 255
@@ -383,9 +387,9 @@ func _proc_dilatation(src: Image, iterations: int) -> Image:
 						var ny = y + j
 						if nx >= 0 and ny >= 0 and nx < w and ny < h:
 							var nc = copy_src.get_pixel(nx, ny)
-							var vr = int(round(nc.r * 255.0))
-							var vg = int(round(nc.g * 255.0))
-							var vb = int(round(nc.b * 255.0))
+							var vr = int(nc.r * 255.0 + 0.5)
+							var vg = int(nc.g * 255.0 + 0.5)
+							var vb = int(nc.b * 255.0 + 0.5)
 							if vr < minR:
 								minR = vr
 							if vg < minG:
@@ -393,11 +397,12 @@ func _proc_dilatation(src: Image, iterations: int) -> Image:
 							if vb < minB:
 								minB = vb
 				var a = copy_src.get_pixel(x, y).a
-				work.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
+				new_work.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
 
 			mutex.lock()
 			_thread_progress = (float(it) + float(y + 1) / float(h)) / float(iterations)
 			mutex.unlock()
+		work = new_work
 
 	return work
 
@@ -409,6 +414,9 @@ func _proc_erosion(src: Image, iterations: int) -> Image:
 
 	for it in range(iterations):
 		var copy_src = work.duplicate()
+		var new_work = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		new_work.fill(Color(0,0,0,0))
+
 		for y in range(h):
 			for x in range(w):
 				var maxR = 0
@@ -420,9 +428,9 @@ func _proc_erosion(src: Image, iterations: int) -> Image:
 						var ny = y + j
 						if nx >= 0 and ny >= 0 and nx < w and ny < h:
 							var nc = copy_src.get_pixel(nx, ny)
-							var vr = int(round(nc.r * 255.0))
-							var vg = int(round(nc.g * 255.0))
-							var vb = int(round(nc.b * 255.0))
+							var vr = int(nc.r * 255.0 + 0.5)
+							var vg = int(nc.g * 255.0 + 0.5)
+							var vb = int(nc.b * 255.0 + 0.5)
 							if vr > maxR:
 								maxR = vr
 							if vg > maxG:
@@ -430,11 +438,13 @@ func _proc_erosion(src: Image, iterations: int) -> Image:
 							if vb > maxB:
 								maxB = vb
 				var a = copy_src.get_pixel(x, y).a
-				work.set_pixel(x, y, Color(maxR / 255.0, maxG / 255.0, maxB / 255.0, a))
+				new_work.set_pixel(x, y, Color(maxR / 255.0, maxG / 255.0, maxB / 255.0, a))
 
 			mutex.lock()
 			_thread_progress = (float(it) + float(y + 1) / float(h)) / float(iterations)
 			mutex.unlock()
+
+		work = new_work
 
 	return work
 
