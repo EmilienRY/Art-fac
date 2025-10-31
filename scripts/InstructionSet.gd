@@ -1,5 +1,7 @@
 class_name InstructionSet
 
+const PNG = "png"
+
 const NOT_FOUND = "not_found"
 
 const HELP = "help"
@@ -41,3 +43,9 @@ const LOAD = "load"
 const SEE = "see"
 
 const EQUALIZE = "equalize"
+
+const BLUR= "blur"
+
+const DIFF= "diff"
+
+const GRADIENT= "gradient"

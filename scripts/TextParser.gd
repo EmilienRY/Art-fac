@@ -7,6 +7,8 @@ var param: PackedStringArray = []
 
 func parse(text):
 	match text:
+		'png':
+			return InstructionSet.PNG
 		'help':
 			return InstructionSet.HELP
 		'reset':
@@ -35,6 +37,16 @@ func parse(text):
 			return InstructionSet.SEE
 		'equalize':
 			return InstructionSet.EQUALIZE
+		'gradient':
+			return InstructionSet.GRADIENT
+
+	if text.begins_with('diff'):
+		param = text.split(' ', false)
+		return InstructionSet.DIFF
+
+	if text.begins_with('blur'):
+		param = text.split(' ', false)
+		return InstructionSet.BLUR
 
 	if text.begins_with('save'):
 		param = text.split(' ', false)

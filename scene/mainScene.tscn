@@ -1,11 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=22 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
 [ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
-[ext_resource type="Texture2D" uid="uid://cs8eb0lbtd4n0" path="res://assets/tableau.jpg" id="3_p8cf3"]
 [ext_resource type="AudioStream" uid="uid://c5msgvc7m10kt" path="res://sound/keyboard-sound.mp3" id="4_1bl4g"]
-[ext_resource type="Texture2D" uid="uid://dbk0o7h1fmnbe" path="res://assets/voisin.jpg" id="4_dx33h"]
 [ext_resource type="AudioStream" uid="uid://d2fvihm3baw5n" path="res://sound/enter-sound.mp3" id="5_0mgva"]
 [ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scripts/feuille.gd" id="6_00228"]
 [ext_resource type="Shader" uid="uid://hp1smxfykyxv" path="res://shader/crt.gdshader" id="8_00228"]
@@ -29,25 +27,25 @@ size = Vector2(650.25, 86)
 shader = ExtResource("8_00228")
 shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.0
-shader_parameter/scanlines_width = 0.0
-shader_parameter/grille_opacity = 0.19600000931
+shader_parameter/scanlines_width = 0.05200000247
+shader_parameter/grille_opacity = 0.0090000004275
 shader_parameter/resolution = Vector2(1280, 720)
 shader_parameter/pixelate = false
-shader_parameter/roll = false
-shader_parameter/roll_speed = 2.0
+shader_parameter/roll = true
+shader_parameter/roll_speed = 1.0
 shader_parameter/roll_size = 0.2000000095
-shader_parameter/roll_variation = 1.8
-shader_parameter/distort_intensity = 0.030000001425
-shader_parameter/noise_opacity = 0.4
+shader_parameter/roll_variation = 0.67700002889762
+shader_parameter/distort_intensity = 0.010000000475
+shader_parameter/noise_opacity = 0.202000009595
 shader_parameter/noise_speed = 5.0
-shader_parameter/static_noise_intensity = 0.06
-shader_parameter/aberration = 0.01000004797499998
-shader_parameter/brightness = 1.4
+shader_parameter/static_noise_intensity = 0.0790000037525
+shader_parameter/aberration = 0.010000047974999982
+shader_parameter/brightness = 1.3
 shader_parameter/discolor = false
 shader_parameter/warp_amount = 0.3750000178125
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.094000004465
+shader_parameter/vignette_opacity = 0.3230000153425
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6fla"]
 size = Vector2(618.5, 121)
@@ -77,6 +75,8 @@ grow_vertical = 2
 speed_scale = 1.5
 expand = true
 
+[node name="musique" type="AudioStreamPlayer2D" parent="CenterIdle"]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(581, 332)
 
@@ -84,9 +84,9 @@ position = Vector2(581, 332)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 211.0
-offset_top = 50.0
+offset_top = 53.0
 offset_right = 246.69644
-offset_bottom = 94.921005
+offset_bottom = 97.59783
 scale = Vector2(18.713348, 9.282963)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
@@ -102,6 +102,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 0.32062912
+offset_bottom = 0.43089294
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -190,16 +192,6 @@ one_shot = true
 stream = ExtResource("5_0mgva")
 pitch_scale = 0.85
 
-[node name="Tableau" type="Sprite2D" parent="."]
-position = Vector2(576, -966.0001)
-scale = Vector2(0.28186277, 0.20247395)
-texture = ExtResource("3_p8cf3")
-
-[node name="Voisin" type="Sprite2D" parent="."]
-position = Vector2(2561, 319)
-scale = Vector2(0.28063726, 0.20751955)
-texture = ExtResource("4_dx33h")
-
 [node name="Feuille" type="Area2D" parent="."]
 script = ExtResource("6_00228")
 
@@ -242,6 +234,10 @@ texture = ExtResource("11_8selj")
 
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
+anchors_preset = -1
+anchor_top = 0.0014557544
+anchor_right = 3.8637056e-05
+anchor_bottom = 0.0014557544
 offset_left = 215.00003
 offset_top = 53.0
 offset_right = 238.621
@@ -251,6 +247,7 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="scoreScreen" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="PanelContainer" type="PanelContainer" parent="scoreScreen"]
 anchors_preset = 15
