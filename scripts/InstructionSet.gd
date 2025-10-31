@@ -46,6 +46,8 @@ const EQUALIZE = "equalize"
 
 const BLUR= "blur"
 
+const FNAF = "fnaf"
+
 const DIFF= "diff"
 
 const GRADIENT= "gradient"
