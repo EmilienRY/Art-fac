@@ -312,12 +312,17 @@ func _process_erosion_command(command_text: String):
 		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
-	var success = img_manager.erosionPPM_mat3x3()
+	var param = text_parser.get_param()
+	var iterations = 1 
+	if param != null and param.size() == 2:
+			iterations = param[1].to_int()
+
+	var success = img_manager.erosionPPM_mat3x3(iterations)
 	if(!success):
 		gameText.append_text(output+"Erreur lors de l'érosion de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text(output+"Érosion en cours...\n\n")
+		gameText.append_text(output+"Érosion en cours avec %d itérations...\n\n" % iterations)
 
 func _process_dilatation_command(command_text: String):
 	var output = " > " + command_text + "\n\n"
@@ -326,12 +331,17 @@ func _process_dilatation_command(command_text: String):
 		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
-	var success = img_manager.dilatationPPM_mat3x3()
+	var param = text_parser.get_param()
+	var iterations = 1 
+	if param != null and param.size() == 2:
+			iterations = param[1].to_int()
+	
+	var success = img_manager.dilatationPPM_mat3x3(iterations)
 	if(!success):
 		gameText.append_text(output+"Erreur lors de la dilatation de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text(output+"Dilatation en cours...\n\n")
+		gameText.append_text(output+"Dilatation en cours avec %d itérations...\n\n" % iterations)
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -423,9 +433,9 @@ func _process_histogram_command(command_text: String):
 
 	var histogram_win := Window.new()
 	histogram_win.name = "HistogramWindow"
-	histogram_win.size = Vector2i(512, 230)
-	histogram_win.min_size = Vector2i(512, 230)
-	histogram_win.max_size = Vector2i(512, 230)
+	histogram_win.size = Vector2i(580, 230)
+	histogram_win.min_size = Vector2i(580, 230)
+	histogram_win.max_size = Vector2i(580, 230)
 	histogram_win.position = Vector2i(200, 150)
 	histogram_win.title = "Histogramme"
 	get_tree().root.add_child(histogram_win)
@@ -438,21 +448,22 @@ func _process_histogram_command(command_text: String):
 	var tex_rect := TextureRect.new()
 	tex_rect.texture = tex
 	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	tex_rect.custom_minimum_size = Vector2(512, 180)
+	tex_rect.custom_minimum_size = Vector2(560, 180)
 	vbox.add_child(tex_rect)
 
 	var scale_control := Control.new()
-	scale_control.custom_minimum_size = Vector2(490, 20)
+	scale_control.custom_minimum_size = Vector2(560, 20)
 	vbox.add_child(scale_control)
 
-	var tex_width = 490
-	var graduations = [20,40,60,80,100,120,140,160,180,200,220,240,255]
+	var left_margin = 15
+	var tex_width = int(tex_rect.custom_minimum_size.x) - left_margin * 2
+	var graduations = [0,20,40,60,80,100,120,140,160,180,200,220,240,255]
 	for grad in graduations:
 		var label := Label.new()
 		label.label_settings = LabelSettings.new()
 		label.label_settings.font_size = 10
 		label.text = str(grad)
-		label.position = Vector2((grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
+		label.position = Vector2(left_margin + (grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
 		scale_control.add_child(label)
 
 	histogram_win.connect("close_requested", Callable(self, "_on_histogram_close").bind(histogram_win))
