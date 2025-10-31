@@ -129,8 +129,75 @@ func _on_text_submitted(new_text: String):
 			_process_see_command(new_text)
 		InstructionSet.EQUALIZE:
 			_process_equalize_command(new_text)
+		InstructionSet.BLUR:
+			_process_blur_command(new_text)
+		InstructionSet.GRADIENT:
+			_process_gradient_command(new_text)
+		InstructionSet.DIFF:
+			_process_diff_command(new_text)
+		InstructionSet.PNG:
+			var success = img_manager.save_png()
+			var output = " > " + new_text + "\n\n"
+			if success:
+				output += "Image sauvegardée en PNG avec succès.\n\n"
+				gameText.append_text(output)
+			else:
+				output += "Erreur lors de la sauvegarde en PNG.\n\n"
+				gameText.append_text(output)
 		_:
 			_process_generic_command(new_text, instruction)
+
+func _process_gradient_command(new_text):
+	var output = " > " + new_text + "\n\n"
+
+	var success = img_manager.compute_gradient()
+	if(!success):
+		gameText.append_text(output+"Erreur lors du calcul du gradient.\n\n")
+	else:
+		self.editable = false
+		gameText.append_text(output+"Calcul du gradient en cours...\n\n")
+
+func _process_diff_command(new_text):
+	var output = " > " + new_text + "\n\n"
+
+	var param = text_parser.get_param()
+	if param == null or param.size() < 1:
+		output += "Appel invalide, usage: diff <image>\n\n"
+		gameText.append_text(output)
+		return
+
+	var image1 = param[1]
+	var success = img_manager.compute_difference(image1)
+	if(!success):
+		gameText.append_text(output+"Erreur lors du calcul de la différence.\n\n")
+	else:
+		self.editable = false
+		gameText.append_text(output+"Calcul de la différence en cours...\n\n")
+
+func _process_blur_command(new_text):
+	var output = " > " + new_text + "\n\n"
+
+	var param = text_parser.get_param()
+	var mask_name = ""
+	var iterations = 1 
+	if param != null and param.size() > 1:
+		var a = param[1]
+		if typeof(a) == TYPE_STRING and a.is_valid_int():
+			iterations = a.to_int()
+		else:
+			mask_name = a
+			if param.size() > 2 and param[2].is_valid_int():
+				iterations = param[2].to_int()
+
+	var success = img_manager.gaussian_blur(mask_name, iterations)
+	if(!success):
+		gameText.append_text(output+"Erreur lors de l'application du flou gaussien.\n\n")
+	elif mask_name!="":
+		self.editable = false
+		gameText.append_text(output+"Flou gaussien appliqué avec le masque '%s' en cours (iterations: %d)...\n\n" % [mask_name, iterations])
+	else:
+		self.editable = false
+		gameText.append_text(output+"Flou gaussien en cours (iterations: %d)...\n\n" % iterations)
 
 
 func _process_equalize_command(command_text: String):
