@@ -82,9 +82,9 @@ position = Vector2(581, 332)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 211.0
-offset_top = 50.0
+offset_top = 53.0
 offset_right = 246.69644
-offset_bottom = 94.921005
+offset_bottom = 97.59783
 scale = Vector2(18.713348, 9.282963)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
@@ -230,6 +230,10 @@ texture = ExtResource("11_8selj")
 
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
+anchors_preset = -1
+anchor_top = 0.0015432099
+anchor_right = 3.8637056e-05
+anchor_bottom = 0.0014557544
 offset_left = 215.00003
 offset_top = 53.0
 offset_right = 238.621

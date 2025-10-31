@@ -125,6 +125,58 @@ func equalize_histogram() -> bool:
 	thread.start(Callable(self, "_thread_worker").bind("equalize", img))
 	return true
 
+func gaussian_blur(mask_name: String = "", iterations: int = 1) -> bool:
+	if not current_image or is_processing:
+		return false
+	var img = current_image.duplicate()
+	var mask_img: Image = null
+	if mask_name != "":
+		if image_saved.has(mask_name):
+			mask_img = image_saved[mask_name].duplicate()
+		else:
+			return false
+	var th = Thread.new()
+	is_processing = true
+	thread = th
+	mutex.lock()
+	_thread_progress = 0.0
+	_thread_shows_progress = true
+	_last_printed_progress = -1
+	mutex.unlock()
+	thread.start(Callable(self, "_thread_worker").bind("gaussian", [img, mask_img, iterations]))
+	return true
+
+func compute_difference(image_name: String) -> bool:
+	if not current_image or is_processing:
+		return false
+	if not image_saved.has(image_name):
+		return false
+	var img2 = image_saved[image_name].duplicate()
+	var th = Thread.new()
+	is_processing = true
+	thread = th
+	mutex.lock()
+	_thread_shows_progress = false
+	mutex.unlock()
+	thread.start(Callable(self, "_thread_worker").bind("difference", [current_image.duplicate(), img2]))
+	return true
+
+func compute_gradient():
+	if not current_image or is_processing:
+		return false
+	var img = current_image.duplicate()
+	var th = Thread.new()
+	is_processing = true
+	thread = th
+	mutex.lock()
+	_thread_progress = 0.0
+	_thread_shows_progress = true
+	_last_printed_progress = -1
+	mutex.unlock()
+	thread.start(Callable(self, "_thread_worker").bind("gradient", img))
+	return true
+
+
 func _thread_worker(op, payload = null) -> void:
 
 	var actual_op = op
@@ -152,6 +204,18 @@ func _thread_worker(op, payload = null) -> void:
 		"equalize":
 			var img4: Image = actual_payload
 			result = _proc_equalize(img4)
+		"gaussian":
+			var args = actual_payload
+			var iters = 1
+			if args is Array and args.size() > 2:
+				iters = int(args[2])
+			result = _proc_gaussian_blur(args[0], args[1], iters)
+		"difference":
+			var args = actual_payload
+			result = _proc_difference(args[0], args[1])
+		"gradient":
+			var img5: Image = actual_payload
+			result = _proc_gradient(img5)
 		_:
 			result = null
 
@@ -196,6 +260,73 @@ func _process(delta: float) -> void:
 		if thread:
 			thread.wait_to_finish()
 			thread = null
+
+func _proc_gradient(img: Image) -> Image:
+	var w = img.get_width()
+	var h = img.get_height()
+
+	var grad_img = Image.create(w, h, false, Image.FORMAT_RGBA8)
+	grad_img.fill(Color(0, 0, 0, 1))
+
+	for y in range(h):
+		for x in range(w):
+			var nl = img.get_pixel(clamp(x - 1, 0, w - 1), clamp(y - 1, 0, h - 1))
+			var nn = img.get_pixel(x, clamp(y - 1, 0, h - 1))
+			var nr = img.get_pixel(clamp(x + 1, 0, w - 1), clamp(y - 1, 0, h - 1))
+			var ml = img.get_pixel(clamp(x - 1, 0, w - 1), y)
+			var mr = img.get_pixel(clamp(x + 1, 0, w - 1), y)
+			var bl = img.get_pixel(clamp(x - 1, 0, w - 1), clamp(y + 1, 0, h - 1))
+			var bn = img.get_pixel(x, clamp(y + 1, 0, h - 1))
+			var br = img.get_pixel(clamp(x + 1, 0, w - 1), clamp(y + 1, 0, h - 1))
+
+			var nl_r = int(round(nl.r * 255.0)); var nl_g = int(round(nl.g * 255.0)); var nl_b = int(round(nl.b * 255.0))
+			var nn_r = int(round(nn.r * 255.0)); var nn_g = int(round(nn.g * 255.0)); var nn_b = int(round(nn.b * 255.0))
+			var nr_r = int(round(nr.r * 255.0)); var nr_g = int(round(nr.g * 255.0)); var nr_b = int(round(nr.b * 255.0))
+			var ml_r = int(round(ml.r * 255.0)); var ml_g = int(round(ml.g * 255.0)); var ml_b = int(round(ml.b * 255.0))
+			var mr_r = int(round(mr.r * 255.0)); var mr_g = int(round(mr.g * 255.0)); var mr_b = int(round(mr.b * 255.0))
+			var bl_r = int(round(bl.r * 255.0)); var bl_g = int(round(bl.g * 255.0)); var bl_b = int(round(bl.b * 255.0))
+			var bn_r = int(round(bn.r * 255.0)); var bn_g = int(round(bn.g * 255.0)); var bn_b = int(round(bn.b * 255.0))
+			var br_r = int(round(br.r * 255.0)); var br_g = int(round(br.g * 255.0)); var br_b = int(round(br.b * 255.0))
+
+			var gx_r = (-1 * nl_r) + (1 * nr_r) + (-2 * ml_r) + (2 * mr_r) + (-1 * bl_r) + (1 * br_r)
+			var gy_r = (-1 * nl_r) + (-2 * nn_r) + (-1 * nr_r) + (1 * bl_r) + (2 * bn_r) + (1 * br_r)
+			var gx_g = (-1 * nl_g) + (1 * nr_g) + (-2 * ml_g) + (2 * mr_g) + (-1 * bl_g) + (1 * br_g)
+			var gy_g = (-1 * nl_g) + (-2 * nn_g) + (-1 * nr_g) + (1 * bl_g) + (2 * bn_g) + (1 * br_g)
+			var gx_b = (-1 * nl_b) + (1 * nr_b) + (-2 * ml_b) + (2 * mr_b) + (-1 * bl_b) + (1 * br_b)
+			var gy_b = (-1 * nl_b) + (-2 * nn_b) + (-1 * nr_b) + (1 * bl_b) + (2 * bn_b) + (1 * br_b)
+
+			var mag_r = int(round(sqrt(float(gx_r * gx_r + gy_r * gy_r))))
+			var mag_g = int(round(sqrt(float(gx_g * gx_g + gy_g * gy_g))))
+			var mag_b = int(round(sqrt(float(gx_b * gx_b + gy_b * gy_b))))
+			mag_r = clamp(mag_r, 0, 255)
+			mag_g = clamp(mag_g, 0, 255)
+			mag_b = clamp(mag_b, 0, 255)
+
+			var grey = float(mag_r + mag_g + mag_b) / 3.0 / 255.0
+			var alpha = img.get_pixel(x, y).a
+			grad_img.set_pixel(x, y, Color(grey, grey, grey, alpha))
+
+		mutex.lock()
+		_thread_progress = float(y + 1) / float(h)
+		mutex.unlock()
+
+	return grad_img
+
+func _proc_difference(img_a: Image, img_b: Image) -> Image:
+	var w = img_a.get_width()
+	var h = img_a.get_height()
+	if w != img_b.get_width() or h != img_b.get_height():
+		return img_a
+
+	for y in range(h):
+		for x in range(w):
+			var ca: Color = img_a.get_pixel(x, y)
+			var cb: Color = img_b.get_pixel(x, y)
+			var dr = abs(int(round(ca.r * 255.0)) - int(round(cb.r * 255.0)))
+			var dg = abs(int(round(ca.g * 255.0)) - int(round(cb.g * 255.0)))
+			var db = abs(int(round(ca.b * 255.0)) - int(round(cb.b * 255.0)))
+			img_a.set_pixel(x, y, Color(float(dr) / 255.0, float(dg) / 255.0, float(db) / 255.0, ca.a))
+	return img_a
 
 func _proc_grayscale(img: Image) -> Image:
 	var w = img.get_width()
@@ -586,3 +717,65 @@ func get_histogram_texture(channel : int = 1) -> Texture2D:
 
 	var tex := ImageTexture.create_from_image(out_img)
 	return tex
+
+func _proc_gaussian_blur(src: Image, mask: Image = null, iterations: int = 1) -> Image:
+	if not src:
+		return src
+
+	if iterations < 1:
+		iterations = 1
+
+	var w = src.get_width()
+	var h = src.get_height()
+
+	var orig_image = src.duplicate()
+	var work = orig_image.duplicate()
+
+	for it in range(iterations):
+		var temp = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		temp.fill(Color(0,0,0,0))
+		for y in range(h):
+			for x in range(w):
+				var xl = clamp(x - 1, 0, w - 1)
+				var xr = clamp(x + 1, 0, w - 1)
+				var c_l = work.get_pixel(xl, y)
+				var c_c = work.get_pixel(x, y)
+				var c_r = work.get_pixel(xr, y)
+				var sr = (c_l.r + 2.0 * c_c.r + c_r.r) / 4.0
+				var sg = (c_l.g + 2.0 * c_c.g + c_r.g) / 4.0
+				var sb = (c_l.b + 2.0 * c_c.b + c_r.b) / 4.0
+				var sa = (c_l.a + 2.0 * c_c.a + c_r.a) / 4.0
+				temp.set_pixel(x, y, Color(sr, sg, sb, sa))
+
+		var out_img = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		out_img.fill(Color(0,0,0,0))
+		for y in range(h):
+			for x in range(w):
+				var yt = clamp(y - 1, 0, h - 1)
+				var yb = clamp(y + 1, 0, h - 1)
+				var c_t = temp.get_pixel(x, yt)
+				var c_c = temp.get_pixel(x, y)
+				var c_b = temp.get_pixel(x, yb)
+				var sr = (c_t.r + 2.0 * c_c.r + c_b.r) / 4.0
+				var sg = (c_t.g + 2.0 * c_c.g + c_b.g) / 4.0
+				var sb = (c_t.b + 2.0 * c_c.b + c_b.b) / 4.0
+				var sa = (c_t.a + 2.0 * c_c.a + c_b.a) / 4.0
+
+				var apply_blur = true
+				if mask:
+					var mc = mask.get_pixel(x, y)
+					apply_blur = mc.r > 0.5
+
+				if apply_blur:
+					out_img.set_pixel(x, y, Color(sr, sg, sb, sa))
+				else:
+					var orig = orig_image.get_pixel(x, y)
+					out_img.set_pixel(x, y, orig)
+
+			mutex.lock()
+			_thread_progress = (float(it) + float(y + 1) / float(h)) / float(iterations)
+			mutex.unlock()
+
+		work = out_img.duplicate()
+
+	return work

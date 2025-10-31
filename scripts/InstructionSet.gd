@@ -43,3 +43,9 @@ const LOAD = "load"
 const SEE = "see"
 
 const EQUALIZE = "equalize"
+
+const BLUR= "blur"
+
+const DIFF= "diff"
+
+const GRADIENT= "gradient"
