@@ -9,10 +9,16 @@ var typing_video_path := "res://video/typing.ogv"
 @onready var winScreen = _find_node_by_name(get_tree().get_root(), "scoreScreen")
 @onready var ui = _find_node_by_name(get_tree().get_root(), "UI")
 @onready var screen = _find_node_by_name(get_tree().get_root(), "Screen")
+@onready var terminal = _find_node_by_name(get_tree().get_root(), "Terminal")
 @onready var tableau = _find_node_by_name(get_tree().get_root(), "TableauArea")
 @onready var voisin = _find_node_by_name(get_tree().get_root(), "VoisinArea")
 @onready var feuille = _find_node_by_name(get_tree().get_root(), "Feuille")
 @onready var btn = _find_node_by_name(get_tree().get_root(), "NextLvlButton")
+
+#fnaf
+@onready var musiquePlayer = _find_node_by_name(get_tree().get_root(), "musique")
+@onready var videoFoxy = _find_node_by_name(get_tree().get_root(), "foxy")
+
 
 @onready var lutz1 = _find_node_by_name(get_tree().get_root(), "Lutz1")
 @onready var lutz2 = _find_node_by_name(get_tree().get_root(), "Lutz2")
@@ -135,6 +141,8 @@ func _on_text_submitted(new_text: String):
 			_process_gradient_command(new_text)
 		InstructionSet.DIFF:
 			_process_diff_command(new_text)
+		InstructionSet.FNAF:
+			_process_fnaf_command(new_text)
 		InstructionSet.PNG:
 			var success = img_manager.save_png()
 			var output = " > " + new_text + "\n\n"
@@ -146,6 +154,51 @@ func _on_text_submitted(new_text: String):
 				gameText.append_text(output)
 		_:
 			_process_generic_command(new_text, instruction)
+
+func _process_fnaf_command(new_text):
+
+	var output = " > " + new_text + "\n\n"
+	output += "La pizza arrive.\n\n"
+	gameText.append_text(output)
+
+	if not is_instance_valid(musiquePlayer):
+		push_error("musiquePlayer introuvable (musique node non trouvé)")
+		return
+
+	var path := "res://sound/fnaf.mp3"
+	var stream = ResourceLoader.load(path)
+	if stream == null:
+		push_error("Fichier audio introuvable: %s" % path)
+		return
+
+	if musiquePlayer.playing:
+		musiquePlayer.stop()
+
+	musiquePlayer.stream = stream
+
+	musiquePlayer.connect("finished", Callable(self,"_on_loop_sound").bind(musiquePlayer))
+
+	musiquePlayer.play()
+
+func _on_loop_sound(player):
+	var stream = ResourceLoader.load("res://sound/foxyJumpscare.mp3")
+	player.stream = stream
+	videoFoxy.connect("finished", Callable(self,"_on_foxy_jumpscare_finished").bind(player))
+	player.play()
+	videoFoxy.play()
+	videoFoxy.set_visible(true)
+
+	ui.set_visible(false)
+	terminal.set_visible(false)
+
+func _on_foxy_jumpscare_finished(player):
+
+	player.stop()
+	videoFoxy.stop()
+
+	videoFoxy.set_visible(false)
+	ui.set_visible(true)
+	terminal.set_visible(true)
 
 func _process_gradient_command(new_text):
 	var output = " > " + new_text + "\n\n"

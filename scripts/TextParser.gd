@@ -35,6 +35,8 @@ func parse(text):
 			return InstructionSet.EQUALIZE
 		'gradient':
 			return InstructionSet.GRADIENT
+		'fnaf':
+			return InstructionSet.FNAF
 
 	if text.begins_with('erosion'):
 		param = text.split(' ', false)
