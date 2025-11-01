@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crnafq760v3ss"
-path="res://.godot/imported/catSitRemix.png-9c16a3a1f326497f654d360f7fb67dee.ctex"
+uid="uid://ea21fseeahl3"
+path="res://.godot/imported/lutz.png-9148d5a8ba96a3d368563f90b00cc99b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/catSitRemix.png"
-dest_files=["res://.godot/imported/catSitRemix.png-9c16a3a1f326497f654d360f7fb67dee.ctex"]
+source_file="res://images/lutz.png"
+dest_files=["res://.godot/imported/lutz.png-9148d5a8ba96a3d368563f90b00cc99b.ctex"]
 
 [params]
 

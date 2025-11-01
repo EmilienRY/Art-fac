@@ -1,15 +1,15 @@
 {
 	"TP5": {
 		"intro" : "Bienvenue dans ce cinquième TP de traitement d'images !.",
-		"description" : "Votre but est de créer une image binaire des contours.",
+		"description" : "Votre but est de flouter 10 fois le fond de cette image. Regardez bien la description de la fonction de flou !",
 		"source": "res://images/catSitRemix.png",
-		"goal": "res://images/catSitRemix.png",
+		"goal": "res://images/finalImage.png",
 		"loaded_images": [
 		],
 		"psnr_threshold_db": 50.0,
 		"img_indice" :  "res://images/catSitRemix.png",
 		"indice_terminal" : "grey",
-		"indice_ligne" : ">gradient",
-		"tempsMax" : 45
+		"indice_ligne" : ">seuil ...",
+		"tempsMax" : 20
 	}
 }
