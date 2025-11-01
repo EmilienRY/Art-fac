@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmm83p2lmedi7"]
+[gd_scene load_steps=10 format=3 uid="uid://dmm83p2lmedi7"]
 
 [ext_resource type="Script" uid="uid://yypjd34g8msw" path="res://scripts/Voisin.gd" id="1_fh7xo"]
 [ext_resource type="Texture2D" uid="uid://bv0tv5lvyttih" path="res://assets/right_idle.png" id="2_101p1"]
@@ -7,7 +7,6 @@
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="5_4xx4n"]
 [ext_resource type="Texture2D" uid="uid://culfumnxrcvw3" path="res://assets/postit.png" id="5_tbxu3"]
 [ext_resource type="Texture2D" uid="uid://bvf2pivi3blu6" path="res://images/chat.jpg" id="6_bita5"]
-[ext_resource type="AudioStream" uid="uid://bhkaq7e8ojuxr" path="res://sound/grognementSimple.mp3" id="6_hvfvc"]
 [ext_resource type="Shader" uid="uid://hp1smxfykyxv" path="res://shader/crt.gdshader" id="7_qf1he"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_608k5"]
@@ -54,15 +53,15 @@ scale = Vector2(0.31207925, 0.5637578)
 stream = ExtResource("3_tbxu3")
 volume_db = 3.0
 autoplay = true
-parameters/looping = false
+parameters/looping = true
 
 [node name="typing" type="VideoStreamPlayer" parent="CenterIdle"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -312.31668
+offset_left = -320.0692
 offset_top = -182.63159
-offset_right = -312.31668
+offset_right = -320.0692
 offset_bottom = -182.63159
 grow_horizontal = 2
 grow_vertical = 2
@@ -89,7 +88,6 @@ bbcode_enabled = true
 text = "[b]Attention il te voit ![b]"
 
 [node name="Grognement" type="AudioStreamPlayer2D" parent="CenterIdle"]
-stream = ExtResource("6_hvfvc")
 
 [node name="Screen" type="Control" parent="."]
 anchors_preset = 0
@@ -197,10 +195,5 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_right = 208.0
-offset_bottom = 87.0
 
 [node name="Timer" type="Timer" parent="."]

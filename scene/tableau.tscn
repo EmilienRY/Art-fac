@@ -21,10 +21,10 @@ texture = ExtResource("3_2hgnp")
 
 [node name="consigne" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 349.80917
-offset_top = 81.29248
-offset_right = 823.0
-offset_bottom = 359.0
+offset_left = 345.0
+offset_top = 73.0
+offset_right = 827.0
+offset_bottom = 371.0
 expand_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
