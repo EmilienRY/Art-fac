@@ -237,6 +237,7 @@ offset_top = 77.0
 offset_right = 1120.0
 offset_bottom = 429.0
 scale = Vector2(0.4, 0.4)
+stretch_mode = 3
 
 [node name="Goal" type="TextureRect" parent="UI"]
 offset_left = 628.0
@@ -244,6 +245,7 @@ offset_top = 222.0
 offset_right = 1120.4999
 offset_bottom = 574.0
 scale = Vector2(0.4, 0.4)
+stretch_mode = 3
 
 [node name="Barre" type="Sprite2D" parent="UI"]
 position = Vector2(529.08954, 396.17)
