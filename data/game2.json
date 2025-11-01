@@ -11,6 +11,6 @@
 		"img_indice" :  "res://images/oupiGoupi.jpg",
 		"indice_terminal" : "equalize",
 		"indice_ligne" : ">save larry_le_malicieux",
-		"maxVoisin" : 3
+		"tempsMax" : 45
 	}
 }

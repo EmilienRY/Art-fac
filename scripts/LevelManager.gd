@@ -4,18 +4,17 @@ class_name LevelManager
 var game_data_processor = GameDataProcessor.new()
 var img_manager: ImageManager
 var _goal_texture: Texture2D
-var nbAppelEffec=0
+var tempsVoisin : int
 
 var indiceTerminal
 var indiceLigneEdit
-var maxAppel
 var imgIndicePath
 
-func get_appel() -> int :
-	return nbAppelEffec
+func get_timer() -> int :
+	return tempsVoisin
 
-func set_appel() -> void:
-	nbAppelEffec+=1
+func update_timer(temps : int) -> void:
+	tempsVoisin=temps
 
 func _get_indiceTerminal() -> String:
 	return indiceTerminal
@@ -25,9 +24,6 @@ func _get_indiceLigneEdit() -> String:
 
 func _get_img_Indice() -> String:
 	return imgIndicePath
-
-func _get_MaxappelVoisin() -> int:
-	return maxAppel
 
 func _ready():
 	call_deferred("_initialize")
@@ -54,7 +50,7 @@ func load_current_level() -> bool:
 
 	indiceTerminal = cfg.indice_terminal
 	indiceLigneEdit = cfg.indice_ligne
-	maxAppel = cfg.maxVoisin
+	tempsVoisin = cfg.tempsMax
 	imgIndicePath=cfg.img_indice
 	return true
 
@@ -93,6 +89,5 @@ func submit() -> Dictionary:
 			load_current_level()
 			result["next_key"] = next_key
 			result["new_cfg"] = get_current_config()
-			nbAppelEffec=0
 	
 	return result

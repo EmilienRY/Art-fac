@@ -10,6 +10,6 @@
 		"img_indice" :  "res://images/puechFinalExo1.png",
 		"indice_terminal" : "histogram -b",
 		"indice_ligne" : ">seuil 103 -b",
-		"maxVoisin" : 5
+		"tempsMax" : 60
 	}
 }
