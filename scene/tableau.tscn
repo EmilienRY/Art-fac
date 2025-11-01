@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0qod6ivlcy7r"]
+[gd_scene load_steps=3 format=3 uid="uid://b0qod6ivlcy7r"]
 
 [ext_resource type="Script" uid="uid://bw0jre7hucjfa" path="res://scripts/zoomTableau.gd" id="2_3j50c"]
 [ext_resource type="Texture2D" uid="uid://brh8cvenndcly" path="res://assets/up_idle.png" id="3_2hgnp"]
-[ext_resource type="Texture2D" uid="uid://baexr4m6wsrb8" path="res://images/wpuech.jpg" id="3_vcdl5"]
 
 [node name="Tableau" type="Control"]
 layout_mode = 3
@@ -26,8 +25,3 @@ offset_top = 73.0
 offset_right = 827.0
 offset_bottom = 371.0
 expand_mode = 1
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1064, 285)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_vcdl5")
