@@ -1,8 +1,8 @@
 {
 	"TP6": {
 		"intro" : "Bravo ! Vous êtes arrivé à la fin !",
-		"description": "res://images/Yoshi.png",
-            "source" : "Vous pouvez maintenant jouer librement avec les images mises à votre disposition.",
+            "description" : "Vous pouvez maintenant jouer librement avec les images mises à votre disposition.",
+		"source": "res://images/Yoshi.png",
 		"goal": "res://images/lutz.png",
 		"loaded_images": [
             "res://images/Yoshi.png",
@@ -22,8 +22,8 @@
 		],
 		"psnr_threshold_db": 20000.0,
 		"img_indice" :  "res://images/wpuechOri.jpg",
-		"indice_terminal" : ">GG no re",
-		"indice_ligne" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
+      	"indice_terminal" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
+		"indice_ligne" : ">GG no re",
 		"tempsMax" : 1000
 	}
 }
