@@ -1,7 +1,7 @@
 extends Control
 
 var currentLevel=1
-var nbAppel=0
+var nbAppel : int
 var videoAngry = ["res://video/neighbor_mad1.ogv","res://video/neighbor_mad2.ogv","res://video/neighbor_mad3.ogv"]
 
 var indiceTerminal
@@ -13,7 +13,10 @@ var player
 var screen
 var loop=1
 
+var timer : Timer
 
+var tempsRestant = 60.0
+var label : Label
 
 func set_current_level(level: int, appelVoisin : int, indiceTer : String, indiceEdit : String, img_Path : String, maxAppelVoisin : int) -> void:
 	currentLevel = level
@@ -36,12 +39,18 @@ func _setVideoAngry():
 	$CenterIdle/typing.loop=false
 	$ecranVoisin.visible=false
 	$Screen.visible=false
+	$CenterIdle/keyBoard.autoplay=false
 
 func _ready() -> void:
 	player = $CenterIdle/typing
 	player.play()
 	screen=$Screen
 	_label_anim()
+	label=$Label
+	label.text = str(tempsRestant)
+	timer=$Timer
+	timer.timeout.connect(_on_timer_timeout)
+	timer.start()
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -78,3 +87,11 @@ func update_label(labelCommandeEcrite : Label):
 		loop=1
 	labelCommandeEcrite.text=indiceEcrit.substr(0,loop)
 	loop+=1
+
+func _on_timer_timeout():
+	tempsRestant -= 1
+	if tempsRestant <= 0:
+		timer.stop()
+		label.text = "Terminé !"
+	else:
+		label.text = str(tempsRestant)
