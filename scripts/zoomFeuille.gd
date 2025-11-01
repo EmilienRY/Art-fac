@@ -7,6 +7,7 @@ var labelsCachéTP = [[ "equalize", "diff", "erosion", "dilatation","flou","grad
 					[ "erosion", "dilatation","flou","gradient"],
  					["gradient"],	
 					["flou"],
+					[],
 					[],			
 				]
 
