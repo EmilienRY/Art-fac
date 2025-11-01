@@ -6,7 +6,7 @@
 		"goal": "res://images/lutz.png",
 		"loaded_images": [
             "res://images/Yoshi.png",
-            "res://images/wpuechOri.jpg",
+            "res://images/wpueshOri.jpg",
             "res://images/beast.png",
             "res://images/catSit.jpg",
             "res://images/catSitRemix.png",
@@ -21,10 +21,9 @@
             "res://images/YoshiYukata.png"
 		],
 		"psnr_threshold_db": 20000.0,
-		"img_indice" :  "res://images/wpuechOri.jpg",
-		"indice_terminal" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
-		"indice_ligne" : "> GG no re",
+		"img_indice" :  "res://images/wpueshOri.jpg",
+		"indice_terminal" : ">GG no re",
+		"indice_ligne" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
 		"tempsMax" : 1000
 	}
 }
- 

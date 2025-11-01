@@ -6,6 +6,9 @@ func _input_event(_viewport, event, _shape_idx):
 
 func show_leaf():
 	var ui_layer = get_tree().current_scene.get_node("UI")  # ton CanvasLayer
+	if TutoTimer.running:
+		var tuto_layer = get_tree().current_scene.get_node("TutoCenter")
+		tuto_layer.visible = false
 	var feuille_zoom = preload("res://scene/FeuilleZoom.tscn").instantiate()
 	
 	# Récupérer le niveau actuel depuis le LevelManager

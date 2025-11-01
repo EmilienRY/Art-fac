@@ -8,6 +8,9 @@ func _input_event(_viewport, event, _shape_idx):
 
 func transitionPC_Voisin():
 	var ui_layer = get_tree().current_scene.get_node("UI")
+	if TutoTimer.running:
+		var tuto_layer = get_tree().current_scene.get_node("TutoCenter")
+		tuto_layer.visible = false
 	var transition = preload("res://scene/transition.tscn").instantiate()
 	transition.video_path= "res://video/right_transition.ogv"
 	ui_layer.add_child(transition)
@@ -21,6 +24,9 @@ func transitionPC_Voisin():
 func _on_transition_finished(ui_layer):
 	#var voisin = preload("res://scene/voisin.tscn").instantiate()
 	var voisin = preload("res://scene/voisin.tscn").instantiate()
+	if TutoTimer.running:
+		var tuto2_layer = get_tree().current_scene.get_node("TutoVoisin")
+		tuto2_layer.visible = true
 	# Récupérer le niveau actuel depuis le LevelManager
 	var level_manager = get_node("/root/LevelManager")
 	if level_manager:

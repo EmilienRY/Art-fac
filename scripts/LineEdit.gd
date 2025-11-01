@@ -42,6 +42,7 @@ var goal_node: TextureRect
 var level_manager: LevelManager
 
 func _ready():
+	TutoTimer.start_timer()
 	gameText = get_parent().get_parent().get_node("GameText")
 	start_node = _find_node_by_name(get_tree().get_root(), "Start")
 	goal_node = _find_node_by_name(get_tree().get_root(), "Goal")

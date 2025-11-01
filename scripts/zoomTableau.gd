@@ -3,7 +3,7 @@ extends Control
 var currentLevel=1
 
 var consigneEx=["res://assets/consigneEx1.png","res://assets/consigneEx2.png"
-,"res://assets/consigneEx3.png","res://assets/consigneEx4.png","res://assets/consigneEx5.png","res://assets/Top_1.png"]
+,"res://assets/consigneEx3.png","res://assets/consigneEx4.png","res://assets/consigneEx5.png"]
 
 func set_current_level(level: int) -> void:
 	currentLevel = level
@@ -30,3 +30,6 @@ func transitionTableau_PC():
 
 func _on_transition_finished():
 	queue_free()
+	if TutoTimer.running:
+		var tuto_layer = get_tree().current_scene.get_node("TutoCenter")
+		tuto_layer.visible = true

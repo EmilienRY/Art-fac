@@ -62,6 +62,9 @@ func _gui_input(event):
 
 func transitionVoisin_PC():
 	var ui_layer = get_tree().current_scene.get_node("UI")
+	if TutoTimer.running:
+		var tuto2_layer = get_tree().current_scene.get_node("TutoVoisin")
+		tuto2_layer.visible = false
 	var transition = preload("res://scene/transition.tscn").instantiate()
 	transition.video_path= "res://video/left_transition.ogv"
 	ui_layer.add_child(transition)
@@ -72,6 +75,9 @@ func transitionVoisin_PC():
 
 func _on_transition_finished():
 	var level_manager = get_node("/root/LevelManager")
+	if TutoTimer.running:
+		var tuto_layer = get_tree().current_scene.get_node("TutoCenter")
+		tuto_layer.visible = true
 	if level_manager:
 		level_manager.update_timer(tempsRestant)
 	queue_free()

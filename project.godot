@@ -15,6 +15,10 @@ run/main_scene="uid://cwt3mvqkyx2k4"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+TutoTimer="*res://scripts/TutoTimer.gd"
+
 [display]
 
 window/stretch/mode="viewport"

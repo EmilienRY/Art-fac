@@ -6,6 +6,9 @@ func _input_event(_viewport, event, _shape_idx):
 
 func transitionPC_Tableau():
 	var ui_layer = get_tree().current_scene.get_node("UI")
+	if TutoTimer.running:
+		var tuto_layer = get_tree().current_scene.get_node("TutoCenter")
+		tuto_layer.visible = false
 	var transition = preload("res://scene/transition.tscn").instantiate()
 	transition.video_path= "res://video/up_transition.ogv"
 	ui_layer.add_child(transition)
