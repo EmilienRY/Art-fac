@@ -1,0 +1,15 @@
+{
+	"TP3": {
+		"intro" : "Bienvenue dans ce troisième TP de traitement d'images !.",
+		"description" : "Votre but est de créer une image binaire en noir et blanc.",
+		"source": "res://images/ours.png",
+		"goal": "res://images/blackBear.png",
+		"loaded_images": [
+		],
+		"psnr_threshold_db": 50.0,
+		"img_indice" :  "res://images/blackBear.png",
+		"indice_terminal" : "grey",
+		"indice_ligne" : ">dilatation 2",
+		"tempsMax" : 45
+	}
+}

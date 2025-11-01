@@ -454,7 +454,6 @@ func _on_next_level_pressed():
 	tableau.visible = true
 	voisin.visible = true
 	feuille.visible = true
-	btn.visible = false
 
 func _process_send_command():
 	var result = level_manager.submit()
