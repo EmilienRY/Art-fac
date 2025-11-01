@@ -29,6 +29,7 @@ var typing_video_path := "res://video/typing.ogv"
 
 @onready var stop_timer = $Timer
 @onready var victorySound = _find_node_by_name(get_tree().get_root(), "victory")
+@onready var mute_button = _find_node_by_name(get_tree().get_root(), "ButtonMute")
 
 
 
@@ -43,6 +44,8 @@ var level_manager: LevelManager
 
 func _ready():
 	TutoTimer.start_timer()
+	ProfAudio.play_intro_once()
+	
 	gameText = get_parent().get_parent().get_node("GameText")
 	start_node = _find_node_by_name(get_tree().get_root(), "Start")
 	goal_node = _find_node_by_name(get_tree().get_root(), "Goal")
@@ -57,6 +60,12 @@ func _ready():
 	call_deferred("_setup_managers")
 	grab_focus()
 	btn.connect("pressed", Callable(self, "_on_next_level_pressed"))
+	mute_button.connect("pressed", Callable(self, "_on_MuteButton_pressed"))
+
+func _on_MuteButton_pressed():
+	ProfAudio.mute()
+	var mute_layer = get_tree().current_scene.get_node("MuteProf")
+	mute_layer.visible = false
 
 func _setup_managers():
 	img_manager = ImageManager.new()
