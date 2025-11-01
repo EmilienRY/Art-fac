@@ -2,14 +2,15 @@ extends Control
 
 var currentLevel=1
 
-var consigneEx=["res://images/chat.jpg","res://images/chien.jpg"]
+var consigneEx=["res://assets/consigneEx1.png","res://assets/consigneEx2.png"
+,"res://assets/consigneEx3.png","res://assets/consigneEx4.png","res://assets/consigneEx5.png"]
 
 func set_current_level(level: int) -> void:
 	currentLevel = level
 	set_consigne(currentLevel)
 
 func set_consigne(level : int) -> void:
-	var consigne=$ContenuTab
+	var consigne=$consigne
 	var texture_path = consigneEx[level - 1]
 	consigne.texture = load(texture_path)
 
