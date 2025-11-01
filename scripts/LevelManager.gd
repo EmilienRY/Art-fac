@@ -46,6 +46,12 @@ func load_current_level() -> bool:
 	img_manager.load_image(cfg.source)
 	_goal_texture = ResourceLoader.load(cfg.goal)
 	
+	var loaded_images = cfg.get("loaded_images", [])
+
+	if loaded_images.size() > 0:
+		for image_path in loaded_images:
+			img_manager.loadToImageSaved(image_path)
+
 	indiceTerminal = cfg.indice_terminal
 	indiceLigneEdit = cfg.indice_ligne
 	maxAppel = cfg.maxVoisin

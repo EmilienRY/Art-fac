@@ -2,12 +2,15 @@
 	"TP2": {
 		"intro" : "Bienvenue dans ce deuxième TP de traitement d'images !.",
 		"description" : "Votre but est de reproduire l'image cible en partant de l'image source.",
-		"source": "res://images/chien.jpg",
-		"goal": "res://images/chien.jpg",
+		"source": "res://images/larry_sombre.png",
+		"goal": "res://images/oupiLarry.png",
+		"loaded_images": [
+			"res://images/oupiGoupi.jpg"
+		],
 		"psnr_threshold_db": 50.0,
-		"img_indice" :  "res://images/chien.jpg",
-		"indice_terminal" : "grey",
-		"indice_ligne" : ">seuil 100",
+		"img_indice" :  "res://images/oupiGoupi.jpg",
+		"indice_terminal" : "equalize",
+		"indice_ligne" : ">save larry_le_malicieux",
 		"maxVoisin" : 3
 	}
 }
