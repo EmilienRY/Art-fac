@@ -2,6 +2,8 @@ extends Control
 
 var currentLevel=1
 var videoAngry = ["res://video/neighbor_mad1.ogv","res://video/neighbor_mad2.ogv","res://video/neighbor_mad3.ogv"]
+var grognement = ["res://sound/grognement1.mp3","res://sound/grognement2.mp3","res://sound/grognement3.mp3"]
+var soundAngry = ["res://sound/mad1.mp3","res://sound/mad2.mp3","res://sound/mad3.mp3"]
 
 var indiceTerminal
 var indiceEcrit
@@ -36,15 +38,16 @@ func _setVideoAngry():
 	$ecranVoisin.visible=false
 	$Screen.visible=false
 	$CenterIdle/keyBoard.autoplay=false
+	$CenterIdle/Grognement.stream = load(soundAngry[numVideo])
 	$CenterIdle/Grognement.play()
+	$CenterIdle/typing.play()
+	$CenterIdle/keyBoard.stop()
 
 func _ready() -> void:
 	player = $CenterIdle/typing
 	player.play()
 	screen=$Screen
 	_label_anim()
-	label=$Label
-	label.text = str(tempsRestant)
 	timerRegard=$Timer
 	timerRegard.timeout.connect(_on_timer_timeout)
 	timerRegard.start()
@@ -93,10 +96,11 @@ func _on_timer_timeout():
 	tempsRestant -= 1
 	if tempsRestant <= 0:
 		timerRegard.stop()
-		label.text = "Terminé !"
+		_setVideoAngry()
 	else:
 		if tempsRestant <20 :
 			s=5
 		if tempsRestant % s  == 0:
+			var numSound = randi_range(0,2)
+			$CenterIdle/Grognement.stream=load(grognement[numSound])
 			$CenterIdle/Grognement.play()
-		label.text = str(tempsRestant)
