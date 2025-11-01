@@ -25,6 +25,8 @@ func parse(text):
 			return InstructionSet.REDO
 		'psnr':
 			return InstructionSet.PSNR
+		'steve':
+			return InstructionSet.STEVE
 		'send':
 			return InstructionSet.SEND
 		'grey':

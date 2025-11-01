@@ -50,4 +50,6 @@ const FNAF = "fnaf"
 
 const DIFF= "diff"
 
+const STEVE= "steve"
+
 const GRADIENT= "gradient"
