@@ -24,14 +24,12 @@ func _on_transition_finished(ui_layer):
 	# Récupérer le niveau actuel depuis le LevelManager
 	var level_manager = get_node("/root/LevelManager")
 	if level_manager:
-		level_manager.set_appel()
-		appelVoisin = level_manager.get_appel()
+		var temps = level_manager.get_timer()
 		var current_level = level_manager.get_current_level_number()
 		var indiceTermi= level_manager._get_indiceTerminal()
 		var indiceLigne = level_manager._get_indiceLigneEdit()
 		var imgPath = level_manager._get_img_Indice()
-		var maxAppel = level_manager._get_MaxappelVoisin()
 		
-		voisin.set_current_level(current_level,appelVoisin,indiceTermi,indiceLigne,imgPath,maxAppel)
+		voisin.set_current_level(current_level,temps,indiceTermi,indiceLigne,imgPath)
 
 	ui_layer.add_child(voisin)
