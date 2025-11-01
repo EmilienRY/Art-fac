@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hd547dce68d8"
-path="res://.godot/imported/blackBear.png-6b482699aa5d8683aca47af6a7619356.ctex"
+uid="uid://fkoha4yns3xj"
+path="res://.godot/imported/steve.jpg-013752d1c450b18e8931267825707d16.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/blackBear.png"
-dest_files=["res://.godot/imported/blackBear.png-6b482699aa5d8683aca47af6a7619356.ctex"]
+source_file="res://images/steve.jpg"
+dest_files=["res://.godot/imported/steve.jpg-013752d1c450b18e8931267825707d16.ctex"]
 
 [params]
 

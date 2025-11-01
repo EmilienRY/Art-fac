@@ -3,7 +3,12 @@ var currentLevel=1
 
 var afficher_labels: bool = false
 
-var labelsCachéTP = [["erosion", "dilatation", "flou", "gradient", "histogramme", "profil", "ouverture", "fermeture"],["erosion", "dilatation", "flou", "gradient", "ouverture", "fermeture"]]
+var labelsCachéTP = [[ "equalize", "diff", "erosion", "dilatation","flou","gradient"],
+					[ "erosion", "dilatation","flou","gradient"],
+ 					["gradient"],	
+					["flou"],
+					[],			
+				]
 
 func _ready() -> void:
 	_set_labels_visible(afficher_labels)
