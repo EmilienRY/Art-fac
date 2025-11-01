@@ -37,6 +37,16 @@ func _ready() -> void:
 	_thread_shows_progress = false
 	_last_printed_progress = -1
 
+func loadToImageSaved(imagePath: String):
+	var res = ResourceLoader.load(imagePath)
+	var img = res.get_image()
+	var splited= imagePath.split("/")
+
+	var name= splited[splited.size() - 1].split(".")[0]
+
+	if img:
+		image_saved[name] = img
+
 func load_image(file_path: String) -> bool:
 	var res = ResourceLoader.load(file_path)
 
@@ -595,6 +605,7 @@ func reset():
 	current_image = null
 	current_texture = null
 	clear_history()
+	image_saved = {}
 	emit_signal("image_changed", null)
 
 func compute_mse(a, b) -> float:
