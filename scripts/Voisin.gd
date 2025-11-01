@@ -1,32 +1,28 @@
 extends Control
 
 var currentLevel=1
-var nbAppel : int
 var videoAngry = ["res://video/neighbor_mad1.ogv","res://video/neighbor_mad2.ogv","res://video/neighbor_mad3.ogv"]
 
 var indiceTerminal
 var indiceEcrit
 var imgPath
-var maxAppel
 
 var player
 var screen
 var loop=1
 
-var timer : Timer
-
-var tempsRestant = 60.0
+var timerRegard : Timer
+var tempsRestant : int
 var label : Label
 
-func set_current_level(level: int, appelVoisin : int, indiceTer : String, indiceEdit : String, img_Path : String, maxAppelVoisin : int) -> void:
+func set_current_level(level: int, appelVoisin : int, indiceTer : String, indiceEdit : String, img_Path : String) -> void:
 	currentLevel = level
-	nbAppel=appelVoisin
+	tempsRestant=appelVoisin
 	indiceTerminal = indiceTer
 	indiceEcrit = indiceEdit
 	imgPath=img_Path
-	maxAppel=maxAppelVoisin
 	set_indice(indiceTerminal,imgPath)
-	if nbAppel>maxAppel:
+	if tempsRestant<=0:
 		_setVideoAngry()
 
 func set_indice(indiceTer : String, img_path : String) -> void :
@@ -40,6 +36,7 @@ func _setVideoAngry():
 	$ecranVoisin.visible=false
 	$Screen.visible=false
 	$CenterIdle/keyBoard.autoplay=false
+	$CenterIdle/Grognement.play()
 
 func _ready() -> void:
 	player = $CenterIdle/typing
@@ -48,9 +45,9 @@ func _ready() -> void:
 	_label_anim()
 	label=$Label
 	label.text = str(tempsRestant)
-	timer=$Timer
-	timer.timeout.connect(_on_timer_timeout)
-	timer.start()
+	timerRegard=$Timer
+	timerRegard.timeout.connect(_on_timer_timeout)
+	timerRegard.start()
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -71,6 +68,9 @@ func transitionVoisin_PC():
 	playerTransition.finished.connect(func():_on_transition_finished())
 
 func _on_transition_finished():
+	var level_manager = get_node("/root/LevelManager")
+	if level_manager:
+		level_manager.update_timer(tempsRestant)
 	queue_free()
 
 func _label_anim():
@@ -89,9 +89,14 @@ func update_label(labelCommandeEcrite : Label):
 	loop+=1
 
 func _on_timer_timeout():
+	var s = 10
 	tempsRestant -= 1
 	if tempsRestant <= 0:
-		timer.stop()
+		timerRegard.stop()
 		label.text = "Terminé !"
 	else:
+		if tempsRestant <20 :
+			s=5
+		if tempsRestant % s  == 0:
+			$CenterIdle/Grognement.play()
 		label.text = str(tempsRestant)

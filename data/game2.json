@@ -8,6 +8,6 @@
 		"img_indice" :  "res://images/chien.jpg",
 		"indice_terminal" : "grey",
 		"indice_ligne" : ">seuil 100",
-		"maxVoisin" : 3
+		"tempsMax" : 45
 	}
 }

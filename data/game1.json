@@ -8,6 +8,6 @@
 		"img_indice" :  "res://images/puechFinalExo1.png",
 		"indice_terminal" : "grey",
 		"indice_ligne" : ">seuil 100",
-		"maxVoisin" : 5
+		"tempsMax" : 60
 	}
 }
