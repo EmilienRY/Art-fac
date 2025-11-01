@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 TutoTimer="*res://scripts/TutoTimer.gd"
+ProfAudio="*res://scripts/ProfAudio.gd"
 
 [display]
 
