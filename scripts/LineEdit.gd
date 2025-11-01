@@ -28,6 +28,9 @@ var typing_video_path := "res://video/typing.ogv"
 
 
 @onready var stop_timer = $Timer
+@onready var victorySound = _find_node_by_name(get_tree().get_root(), "victory")
+
+
 
 var gameText: RichTextLabel
 var progress_label: Label
@@ -424,6 +427,7 @@ func _process_psnr_command(command_text: String):
 
 func _show_win_screen(result: Dictionary):
 	winScreen.visible = true
+	victorySound.play()
 	ui.visible = false
 	screen.visible = false
 	tableau.visible = false

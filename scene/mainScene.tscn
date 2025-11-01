@@ -1,7 +1,6 @@
 [gd_scene load_steps=27 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
-[ext_resource type="Texture2D" uid="uid://culfumnxrcvw3" path="res://assets/postit.png" id="2_myw5j"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
 [ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
 [ext_resource type="VideoStream" uid="uid://buh7scap6cm2g" path="res://video/foxy.ogv" id="3_ogdkf"]
@@ -19,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://ylxii0rimuck" path="res://assets/center_idle.png" id="14_s3u6w"]
 [ext_resource type="Shader" uid="uid://vx2c2dhjymjy" path="res://shader/pixelate.gdshader" id="14_u2mby"]
 [ext_resource type="Texture2D" uid="uid://bp6mcxj45gixy" path="res://assets/lutzParticule.png" id="15_ogdkf"]
+[ext_resource type="AudioStream" uid="uid://d4jnrxjb0xtxu" path="res://sound/Victory Sound Effect.mp3" id="18_4w6yj"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
 
@@ -86,23 +86,6 @@ grow_horizontal = 2
 grow_vertical = 2
 speed_scale = 1.5
 expand = true
-
-[node name="post-it" type="Sprite2D" parent="CenterIdle"]
-position = Vector2(262.4789, -33.157917)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_myw5j")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CenterIdle/post-it"]
-modulate = Color(0, 0, 0, 1)
-self_modulate = Color(0, 0, 0, 1)
-offset_left = -141.207
-offset_top = -121.05256
-offset_right = 135.66946
-offset_bottom = 60.52642
-theme_override_font_sizes/normal_font_size = 56
-theme_override_font_sizes/bold_font_size = 55
-bbcode_enabled = true
-text = "[b]Attention il te voit ![b]"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(581, 332)
@@ -361,17 +344,17 @@ theme_override_fonts/font = ExtResource("2_00228")
 theme_override_font_sizes/font_size = 700
 text = "Score:"
 
-[node name="Lutz1" type="Sprite2D" parent="scoreScreen"]
+[node name="Lutz2" type="Sprite2D" parent="scoreScreen"]
 position = Vector2(581.0613, 480.534)
 scale = Vector2(0.4683426, 0.39681935)
 texture = ExtResource("13_rh23s")
 
-[node name="Lutz2" type="Sprite2D" parent="scoreScreen"]
+[node name="Lutz3" type="Sprite2D" parent="scoreScreen"]
 position = Vector2(852.5019, 480.534)
 scale = Vector2(0.4653271, 0.39964387)
 texture = ExtResource("13_rh23s")
 
-[node name="Lutz3" type="Sprite2D" parent="scoreScreen"]
+[node name="Lutz1" type="Sprite2D" parent="scoreScreen"]
 position = Vector2(309.62024, 480.534)
 scale = Vector2(0.4653271, 0.39964387)
 texture = ExtResource("13_rh23s")
@@ -403,6 +386,9 @@ angle_min = -500.0
 angle_max = 200.0
 scale_amount_min = 2.0
 scale_amount_max = 4.0
+
+[node name="victory" type="AudioStreamPlayer2D" parent="scoreScreen"]
+stream = ExtResource("18_4w6yj")
 
 [node name="TableauArea" type="Area2D" parent="."]
 script = ExtResource("12_5sxg5")
