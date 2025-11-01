@@ -79,7 +79,7 @@ func apply_threshold(t: int, color_mode: int) -> bool:
 	thread.start(Callable(self, "_thread_worker").bind("threshold", [img, t, color_mode]))
 	return true
 
-func erosionPPM_mat3x3() -> bool:
+func erosionPPM_mat3x3(iterations: int) -> bool:
 	if not current_image or is_processing:
 		return false
 	var img = current_image.duplicate()
@@ -91,11 +91,11 @@ func erosionPPM_mat3x3() -> bool:
 	_thread_shows_progress = true
 	_last_printed_progress = -1
 	mutex.unlock()
-	thread.start(Callable(self, "_thread_worker").bind("erosion", img))
+	thread.start(Callable(self, "_thread_worker").bind("erosion", [img, iterations]))
 
 	return true
 
-func dilatationPPM_mat3x3() -> bool:
+func dilatationPPM_mat3x3(iterations: int) -> bool:
 	if not current_image or is_processing:
 		return false
 	var img = current_image.duplicate()
@@ -107,7 +107,7 @@ func dilatationPPM_mat3x3() -> bool:
 	_thread_shows_progress = true
 	_last_printed_progress = -1
 	mutex.unlock()
-	thread.start(Callable(self, "_thread_worker").bind("dilatation", img))
+	thread.start(Callable(self, "_thread_worker").bind("dilatation", [img, iterations]))
 	return true
 
 func equalize_histogram() -> bool:
@@ -196,11 +196,13 @@ func _thread_worker(op, payload = null) -> void:
 			var args = actual_payload
 			result = _proc_threshold(args[0], args[1], args[2])
 		"erosion":
-			var img2: Image = actual_payload
-			result = _proc_erosion(img2)
+			var img2: Image = actual_payload[0]
+			var it= actual_payload[1]
+			result = _proc_erosion(img2, it)
 		"dilatation":
-			var img3: Image = actual_payload
-			result = _proc_dilatation(img3)
+			var img3: Image = actual_payload[0]
+			var it= actual_payload[1]
+			result = _proc_dilatation(img3, it)
 		"equalize":
 			var img4: Image = actual_payload
 			result = _proc_equalize(img4)
@@ -363,67 +365,88 @@ func _proc_threshold(img: Image, t: int, color_mode: int) -> Image:
 				img.set_pixel(x, y, Color(nr / 255.0, ng / 255.0, nb / 255.0, c.a))
 	return img
 
-func _proc_erosion(src: Image) -> Image:
-	var w = src.get_width()
-	var h = src.get_height()
-	var copy_src = src.duplicate()
-	for y in range(h):
-		for x in range(w):
-			var minR = 255
-			var minG = 255
-			var minB = 255
-			for j in range(-1, 2):
-				for i in range(-1, 2):
-					var nx = x + i
-					var ny = y + j
-					if nx >= 0 and ny >= 0 and nx < w and ny < h:
-						var nc = copy_src.get_pixel(nx, ny)
-						var vr = int(round(nc.r * 255.0))
-						var vg = int(round(nc.g * 255.0))
-						var vb = int(round(nc.b * 255.0))
-						if vr < minR:
-							minR = vr
-						if vg < minG:
-							minG = vg
-						if vb < minB:
-							minB = vb
-			var a = copy_src.get_pixel(x, y).a
-			src.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
-		mutex.lock()
-		_thread_progress = float(y + 1) / float(h)
-		mutex.unlock()
-	return src
+func _proc_dilatation(src: Image, iterations: int) -> Image:
 
-func _proc_dilatation(src: Image) -> Image:
 	var w = src.get_width()
 	var h = src.get_height()
-	var copy_src = src.duplicate()
-	for y in range(h):
-		for x in range(w):
-			var maxR = 0
-			var maxG = 0
-			var maxB = 0
-			for j in range(-1, 2):
-				for i in range(-1, 2):
-					var nx = x + i
-					var ny = y + j
-					if nx >= 0 and ny >= 0 and nx < w and ny < h:
-						var nc = copy_src.get_pixel(nx, ny)
-						var vr = int(round(nc.r * 255.0))
-						var vg = int(round(nc.g * 255.0))
-						var vb = int(round(nc.b * 255.0))
-						if vr > maxR:
-							maxR = vr
-						if vg > maxG:
-							maxG = vg
-						if vb > maxB:
-							maxB = vb
-			var a = copy_src.get_pixel(x, y).a
-			src.set_pixel(x, y, Color(maxR / 255.0, maxG / 255.0, maxB / 255.0, a))
-		mutex.lock()
-		_thread_progress = float(y + 1) / float(h)
-		mutex.unlock()
-	return src
+	var work = src.duplicate()
+
+	for it in range(iterations):
+		var copy_src = work.duplicate()
+		var new_work = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		new_work.fill(Color(0,0,0,0))
+
+		for y in range(h):
+			for x in range(w):
+				var minR = 255
+				var minG = 255
+				var minB = 255
+				for j in range(-1, 2):
+					for i in range(-1, 2):
+						var nx = x + i
+						var ny = y + j
+						if nx >= 0 and ny >= 0 and nx < w and ny < h:
+							var nc = copy_src.get_pixel(nx, ny)
+							var vr = int(nc.r * 255.0 + 0.5)
+							var vg = int(nc.g * 255.0 + 0.5)
+							var vb = int(nc.b * 255.0 + 0.5)
+							if vr < minR:
+								minR = vr
+							if vg < minG:
+								minG = vg
+							if vb < minB:
+								minB = vb
+				var a = copy_src.get_pixel(x, y).a
+				new_work.set_pixel(x, y, Color(minR / 255.0, minG / 255.0, minB / 255.0, a))
+
+			mutex.lock()
+			_thread_progress = (float(it) + float(y + 1) / float(h)) / float(iterations)
+			mutex.unlock()
+		work = new_work
+
+	return work
+
+func _proc_erosion(src: Image, iterations: int) -> Image:
+
+	var w = src.get_width()
+	var h = src.get_height()
+	var work = src.duplicate()
+
+	for it in range(iterations):
+		var copy_src = work.duplicate()
+		var new_work = Image.create(w, h, false, Image.FORMAT_RGBA8)
+		new_work.fill(Color(0,0,0,0))
+
+		for y in range(h):
+			for x in range(w):
+				var maxR = 0
+				var maxG = 0
+				var maxB = 0
+				for j in range(-1, 2):
+					for i in range(-1, 2):
+						var nx = x + i
+						var ny = y + j
+						if nx >= 0 and ny >= 0 and nx < w and ny < h:
+							var nc = copy_src.get_pixel(nx, ny)
+							var vr = int(nc.r * 255.0 + 0.5)
+							var vg = int(nc.g * 255.0 + 0.5)
+							var vb = int(nc.b * 255.0 + 0.5)
+							if vr > maxR:
+								maxR = vr
+							if vg > maxG:
+								maxG = vg
+							if vb > maxB:
+								maxB = vb
+				var a = copy_src.get_pixel(x, y).a
+				new_work.set_pixel(x, y, Color(maxR / 255.0, maxG / 255.0, maxB / 255.0, a))
+
+			mutex.lock()
+			_thread_progress = (float(it) + float(y + 1) / float(h)) / float(iterations)
+			mutex.unlock()
+
+		work = new_work
+
+	return work
 
 func build_map(hist: PackedInt32Array) -> PackedInt32Array:
 	var n = hist.size()

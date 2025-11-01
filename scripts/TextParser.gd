@@ -29,16 +29,23 @@ func parse(text):
 			return InstructionSet.SEND
 		'grey':
 			return InstructionSet.GREY
-		'erosion':
-			return InstructionSet.EROSION
-		'dilatation':
-			return InstructionSet.DILATATION
 		'see':
 			return InstructionSet.SEE
 		'equalize':
 			return InstructionSet.EQUALIZE
 		'gradient':
 			return InstructionSet.GRADIENT
+		'fnaf':
+			return InstructionSet.FNAF
+
+	if text.begins_with('erosion'):
+		param = text.split(' ', false)
+		return InstructionSet.EROSION
+
+	if text.begins_with('dilatation'):
+		param = text.split(' ', false)
+		return InstructionSet.DILATATION
+
 
 	if text.begins_with('diff'):
 		param = text.split(' ', false)

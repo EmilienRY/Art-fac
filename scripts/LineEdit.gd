@@ -9,10 +9,16 @@ var typing_video_path := "res://video/typing.ogv"
 @onready var winScreen = _find_node_by_name(get_tree().get_root(), "scoreScreen")
 @onready var ui = _find_node_by_name(get_tree().get_root(), "UI")
 @onready var screen = _find_node_by_name(get_tree().get_root(), "Screen")
+@onready var terminal = _find_node_by_name(get_tree().get_root(), "Terminal")
 @onready var tableau = _find_node_by_name(get_tree().get_root(), "TableauArea")
 @onready var voisin = _find_node_by_name(get_tree().get_root(), "VoisinArea")
 @onready var feuille = _find_node_by_name(get_tree().get_root(), "Feuille")
 @onready var btn = _find_node_by_name(get_tree().get_root(), "NextLvlButton")
+
+#fnaf
+@onready var musiquePlayer = _find_node_by_name(get_tree().get_root(), "musique")
+@onready var videoFoxy = _find_node_by_name(get_tree().get_root(), "foxy")
+
 
 @onready var lutz1 = _find_node_by_name(get_tree().get_root(), "Lutz1")
 @onready var lutz2 = _find_node_by_name(get_tree().get_root(), "Lutz2")
@@ -135,6 +141,8 @@ func _on_text_submitted(new_text: String):
 			_process_gradient_command(new_text)
 		InstructionSet.DIFF:
 			_process_diff_command(new_text)
+		InstructionSet.FNAF:
+			_process_fnaf_command(new_text)
 		InstructionSet.PNG:
 			var success = img_manager.save_png()
 			var output = " > " + new_text + "\n\n"
@@ -146,6 +154,51 @@ func _on_text_submitted(new_text: String):
 				gameText.append_text(output)
 		_:
 			_process_generic_command(new_text, instruction)
+
+func _process_fnaf_command(new_text):
+
+	var output = " > " + new_text + "\n\n"
+	output += "La pizza arrive.\n\n"
+	gameText.append_text(output)
+
+	if not is_instance_valid(musiquePlayer):
+		push_error("musiquePlayer introuvable (musique node non trouvé)")
+		return
+
+	var path := "res://sound/fnaf.mp3"
+	var stream = ResourceLoader.load(path)
+	if stream == null:
+		push_error("Fichier audio introuvable: %s" % path)
+		return
+
+	if musiquePlayer.playing:
+		musiquePlayer.stop()
+
+	musiquePlayer.stream = stream
+
+	musiquePlayer.connect("finished", Callable(self,"_on_loop_sound").bind(musiquePlayer))
+
+	musiquePlayer.play()
+
+func _on_loop_sound(player):
+	var stream = ResourceLoader.load("res://sound/foxyJumpscare.mp3")
+	player.stream = stream
+	videoFoxy.connect("finished", Callable(self,"_on_foxy_jumpscare_finished").bind(player))
+	player.play()
+	videoFoxy.play()
+	videoFoxy.set_visible(true)
+
+	ui.set_visible(false)
+	terminal.set_visible(false)
+
+func _on_foxy_jumpscare_finished(player):
+
+	player.stop()
+	videoFoxy.stop()
+
+	videoFoxy.set_visible(false)
+	ui.set_visible(true)
+	terminal.set_visible(true)
 
 func _process_gradient_command(new_text):
 	var output = " > " + new_text + "\n\n"
@@ -312,12 +365,17 @@ func _process_erosion_command(command_text: String):
 		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
-	var success = img_manager.erosionPPM_mat3x3()
+	var param = text_parser.get_param()
+	var iterations = 1 
+	if param != null and param.size() == 2:
+			iterations = param[1].to_int()
+
+	var success = img_manager.erosionPPM_mat3x3(iterations)
 	if(!success):
 		gameText.append_text(output+"Erreur lors de l'érosion de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text(output+"Érosion en cours...\n\n")
+		gameText.append_text(output+"Érosion en cours avec %d itérations...\n\n" % iterations)
 
 func _process_dilatation_command(command_text: String):
 	var output = " > " + command_text + "\n\n"
@@ -326,12 +384,17 @@ func _process_dilatation_command(command_text: String):
 		gameText.append_text(output+"Un traitement est déjà en cours. Attendez la fin.\n\n")
 		return
 
-	var success = img_manager.dilatationPPM_mat3x3()
+	var param = text_parser.get_param()
+	var iterations = 1 
+	if param != null and param.size() == 2:
+			iterations = param[1].to_int()
+	
+	var success = img_manager.dilatationPPM_mat3x3(iterations)
 	if(!success):
 		gameText.append_text(output+"Erreur lors de la dilatation de l'image.\n\n")
 	else:
 		self.editable = false
-		gameText.append_text(output+"Dilatation en cours...\n\n")
+		gameText.append_text(output+"Dilatation en cours avec %d itérations...\n\n" % iterations)
 
 func _process_undo_command():	
 	var success = img_manager.undo()
@@ -423,9 +486,9 @@ func _process_histogram_command(command_text: String):
 
 	var histogram_win := Window.new()
 	histogram_win.name = "HistogramWindow"
-	histogram_win.size = Vector2i(512, 230)
-	histogram_win.min_size = Vector2i(512, 230)
-	histogram_win.max_size = Vector2i(512, 230)
+	histogram_win.size = Vector2i(580, 230)
+	histogram_win.min_size = Vector2i(580, 230)
+	histogram_win.max_size = Vector2i(580, 230)
 	histogram_win.position = Vector2i(200, 150)
 	histogram_win.title = "Histogramme"
 	get_tree().root.add_child(histogram_win)
@@ -438,21 +501,22 @@ func _process_histogram_command(command_text: String):
 	var tex_rect := TextureRect.new()
 	tex_rect.texture = tex
 	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	tex_rect.custom_minimum_size = Vector2(512, 180)
+	tex_rect.custom_minimum_size = Vector2(560, 180)
 	vbox.add_child(tex_rect)
 
 	var scale_control := Control.new()
-	scale_control.custom_minimum_size = Vector2(490, 20)
+	scale_control.custom_minimum_size = Vector2(560, 20)
 	vbox.add_child(scale_control)
 
-	var tex_width = 490
-	var graduations = [20,40,60,80,100,120,140,160,180,200,220,240,255]
+	var left_margin = 15
+	var tex_width = int(tex_rect.custom_minimum_size.x) - left_margin * 2
+	var graduations = [0,20,40,60,80,100,120,140,160,180,200,220,240,255]
 	for grad in graduations:
 		var label := Label.new()
 		label.label_settings = LabelSettings.new()
 		label.label_settings.font_size = 10
 		label.text = str(grad)
-		label.position = Vector2((grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
+		label.position = Vector2(left_margin + (grad / 255.0 * tex_width) - label.get_minimum_size().x / 2, 0)
 		scale_control.add_child(label)
 
 	histogram_win.connect("close_requested", Callable(self, "_on_histogram_close").bind(histogram_win))

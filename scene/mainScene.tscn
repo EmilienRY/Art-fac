@@ -1,8 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=24 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
+[ext_resource type="AudioStream" uid="uid://brmkdsii5od3v" path="res://sound/fnaf.mp3" id="2_myw5j"]
 [ext_resource type="Texture2D" uid="uid://dj37tupsujhv0" path="res://assets/feuille.jpg" id="2_x5lxk"]
 [ext_resource type="Script" uid="uid://csi26ckm6tcd2" path="res://scripts/LineEdit.gd" id="3_1bl4g"]
+[ext_resource type="VideoStream" uid="uid://buh7scap6cm2g" path="res://video/foxy.ogv" id="3_ogdkf"]
 [ext_resource type="AudioStream" uid="uid://c5msgvc7m10kt" path="res://sound/keyboard-sound.mp3" id="4_1bl4g"]
 [ext_resource type="AudioStream" uid="uid://d2fvihm3baw5n" path="res://sound/enter-sound.mp3" id="5_0mgva"]
 [ext_resource type="Script" uid="uid://b61l0jdts0hi6" path="res://scripts/feuille.gd" id="6_00228"]
@@ -29,7 +31,7 @@ shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.0
 shader_parameter/scanlines_width = 0.05200000247
 shader_parameter/grille_opacity = 0.0090000004275
-shader_parameter/resolution = Vector2(1280, 720)
+shader_parameter/resolution = Vector2(960, 640)
 shader_parameter/pixelate = false
 shader_parameter/roll = true
 shader_parameter/roll_speed = 1.0
@@ -39,13 +41,13 @@ shader_parameter/distort_intensity = 0.010000000475
 shader_parameter/noise_opacity = 0.202000009595
 shader_parameter/noise_speed = 5.0
 shader_parameter/static_noise_intensity = 0.0790000037525
-shader_parameter/aberration = 0.010000047974999982
+shader_parameter/aberration = 0.01000004797499998
 shader_parameter/brightness = 1.3
 shader_parameter/discolor = false
-shader_parameter/warp_amount = 0.3750000178125
+shader_parameter/warp_amount = 0.1150000054625
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.3230000153425
+shader_parameter/vignette_opacity = 0.3650000173375
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6fla"]
 size = Vector2(618.5, 121)
@@ -75,19 +77,17 @@ grow_vertical = 2
 speed_scale = 1.5
 expand = true
 
-[node name="musique" type="AudioStreamPlayer2D" parent="CenterIdle"]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(581, 332)
 
 [node name="Screen" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 211.0
-offset_top = 53.0
-offset_right = 246.69644
-offset_bottom = 97.59783
-scale = Vector2(18.713348, 9.282963)
+offset_left = 235.00002
+offset_top = 61.0
+offset_right = 266.9558
+offset_bottom = 99.68315
+scale = Vector2(18.713348, 9.668293)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Screen"]
 layout_mode = 1
@@ -114,11 +114,11 @@ color = Color(0, 0, 0, 1)
 [node name="Terminal" type="Control" parent="Screen"]
 z_index = 1
 anchors_preset = 0
-offset_left = 0.5343783
-offset_top = 5.9248323
-offset_right = 749.3305
-offset_bottom = 266.39508
-scale = Vector2(0.029091781, 0.116657674)
+offset_left = 0.42750168
+offset_top = 0.62058544
+offset_right = 714.9696
+offset_bottom = 257.1292
+scale = Vector2(0.029091781, 0.12408854)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
@@ -129,7 +129,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="Screen/Terminal/Background"]
 layout_mode = 2
@@ -192,6 +191,32 @@ one_shot = true
 stream = ExtResource("5_0mgva")
 pitch_scale = 0.85
 
+[node name="fnafEaster" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 230.0
+offset_top = 70.0
+offset_right = 260.9709
+offset_bottom = 120.1337
+scale = Vector2(20.6, 7.4800005)
+mouse_filter = 2
+
+[node name="foxy" type="VideoStreamPlayer" parent="fnafEaster"]
+visible = false
+layout_mode = 1
+offset_right = 692.0
+offset_bottom = 518.0
+scale = Vector2(0.0446603, 0.090909064)
+mouse_filter = 2
+stream = ExtResource("3_ogdkf")
+speed_scale = 0.5
+
+[node name="musique" type="AudioStreamPlayer2D" parent="fnafEaster"]
+position = Vector2(-11.165049, -9.358289)
+scale = Vector2(0.048543688, 0.128846)
+stream = ExtResource("2_myw5j")
+
 [node name="Feuille" type="Area2D" parent="."]
 script = ExtResource("6_00228")
 
@@ -207,44 +232,42 @@ shape = SubResource("RectangleShape2D_5sxg5")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Start" type="TextureRect" parent="UI"]
-offset_left = 637.0
-offset_top = 101.0
-offset_right = 637.0
-offset_bottom = 101.0
+offset_left = 628.0
+offset_top = 77.0
+offset_right = 1120.0
+offset_bottom = 429.0
 scale = Vector2(0.4, 0.4)
-expand_mode = 1
-stretch_mode = 2
 
 [node name="Goal" type="TextureRect" parent="UI"]
-offset_left = 637.0
-offset_top = 266.0
-offset_right = 1237.0
-offset_bottom = 666.0
+offset_left = 628.0
+offset_top = 222.0
+offset_right = 1120.4999
+offset_bottom = 574.0
 scale = Vector2(0.4, 0.4)
 
 [node name="Barre" type="Sprite2D" parent="UI"]
-position = Vector2(429.14063, 409)
-scale = Vector2(0.3033711, 0.5205477)
+position = Vector2(529.08954, 396.17)
+scale = Vector2(0.42518097, 0.51589)
 texture = ExtResource("10_s3u6w")
 
 [node name="Cible" type="Sprite2D" parent="UI"]
-position = Vector2(841.00006, 426)
+position = Vector2(809, 358)
 scale = Vector2(0.07812501, 0.07812503)
 texture = ExtResource("11_8selj")
 
 [node name="shader" type="ColorRect" parent="UI"]
 material = SubResource("ShaderMaterial_1bl4g")
 anchors_preset = -1
-anchor_top = 0.0014557544
-anchor_right = 3.8637056e-05
-anchor_bottom = 0.0014557544
-offset_left = 215.00003
-offset_top = 53.0
-offset_right = 238.621
-offset_bottom = 76.19818
+anchor_left = -0.0071776975
+anchor_top = 0.009658248
+anchor_right = -0.0071776975
+anchor_bottom = 0.009658248
+offset_left = 238.2687
+offset_top = 48.74146
+offset_right = 259.79895
+offset_bottom = 69.99153
 scale = Vector2(28.1, 17.647)
 mouse_filter = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="scoreScreen" type="CanvasLayer" parent="."]
 visible = false
