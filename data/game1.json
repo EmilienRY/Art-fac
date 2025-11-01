@@ -1,7 +1,7 @@
 {
 	"TP1": {
 		"intro" : "Bienvenue dans ce premier TP de traitement d'images !.",
-		"description" : "Votre but est de reproduire l'image cible en partant de l'image source.",
+		"description" : "Votre but est seuiller les différents canaux de l'image source afin que pour chaque canal, il y ait autant de pixels à 0 et à 255.",
 		"source": "res://images/wpuechOri.jpg",
 		"goal": "res://images/puechFinalExo1.png",
 		"loaded_images": [

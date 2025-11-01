@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cwt3mvqkyx2k4"]
+[gd_scene load_steps=27 format=3 uid="uid://cwt3mvqkyx2k4"]
 
 [ext_resource type="FontFile" uid="uid://bq1qb3s7yikad" path="res://font/09809_COURIER.ttf" id="2_00228"]
 [ext_resource type="Texture2D" uid="uid://culfumnxrcvw3" path="res://assets/postit.png" id="2_myw5j"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dv8ggelno4xuv" path="res://assets/lutz.png" id="13_rh23s"]
 [ext_resource type="Theme" uid="uid://b3klx57slj0l3" path="res://themes/soft_retro/soft_retro.tres" id="14_myw5j"]
 [ext_resource type="Texture2D" uid="uid://ylxii0rimuck" path="res://assets/center_idle.png" id="14_s3u6w"]
+[ext_resource type="Shader" uid="uid://vx2c2dhjymjy" path="res://shader/pixelate.gdshader" id="14_u2mby"]
 [ext_resource type="Texture2D" uid="uid://bp6mcxj45gixy" path="res://assets/lutzParticule.png" id="15_ogdkf"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1bl4g"]
@@ -30,7 +31,7 @@ size = Vector2(650.25, 86)
 shader = ExtResource("8_00228")
 shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.0
-shader_parameter/scanlines_width = 0.05200000247
+shader_parameter/scanlines_width = 0.0
 shader_parameter/grille_opacity = 0.0090000004275
 shader_parameter/resolution = Vector2(960, 640)
 shader_parameter/pixelate = false
@@ -49,6 +50,14 @@ shader_parameter/warp_amount = 0.1150000054625
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.3650000173375
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4w6yj"]
+shader = ExtResource("14_u2mby")
+shader_parameter/pixel_size = 6.0000002375
+shader_parameter/pixel_size_xy = Vector2(8, 8)
+shader_parameter/use_separate_xy = false
+shader_parameter/mix_with_original = 1.0
+shader_parameter/center_pixels = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6fla"]
 size = Vector2(618.5, 121)
@@ -210,22 +219,21 @@ stream = ExtResource("5_0mgva")
 pitch_scale = 0.85
 
 [node name="fnafEaster" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = 230.0
-offset_top = 70.0
-offset_right = 260.9709
-offset_bottom = 120.1337
+offset_left = 239.99998
+offset_top = 81.0
+offset_right = 268.59222
+offset_bottom = 126.053474
 scale = Vector2(20.6, 7.4800005)
 mouse_filter = 2
 
 [node name="foxy" type="VideoStreamPlayer" parent="fnafEaster"]
-visible = false
 layout_mode = 1
-offset_right = 692.0
+offset_left = 0.77669966
+offset_right = 692.7767
 offset_bottom = 518.0
-scale = Vector2(0.0446603, 0.090909064)
+scale = Vector2(0.038835056, 0.090909064)
 mouse_filter = 2
 stream = ExtResource("3_ogdkf")
 speed_scale = 0.5
@@ -287,6 +295,16 @@ offset_top = 48.74146
 offset_right = 259.79895
 offset_bottom = 69.99153
 scale = Vector2(28.1, 17.647)
+mouse_filter = 2
+
+[node name="steve" type="ColorRect" parent="UI"]
+visible = false
+material = SubResource("ShaderMaterial_4w6yj")
+offset_left = -83.0
+offset_top = -140.0
+offset_right = 1072.0
+offset_bottom = 540.0
+scale = Vector2(1.1999998, 1.4000001)
 mouse_filter = 2
 
 [node name="scoreScreen" type="CanvasLayer" parent="."]
