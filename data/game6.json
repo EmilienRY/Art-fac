@@ -1,0 +1,29 @@
+{
+	"TP6": {
+		"intro" : "Bravo ! Vous êtes arrivé à la fin !",
+		"description" : "Vous pouvez maintenant jouer librement avec les images mises à votre disposition.",
+		"source": "res://images/Yoshi.png",
+		"goal": "res://images/lutz.png",
+		"loaded_images": [
+            "res://images/Yoshi.png",
+            "res://images/wpueshOri.jpg",
+            "res://images/beast.png",
+            "res://images/catSit.jpg",
+            "res://images/catSitRemix.png",
+            "res://images/chat.jpg",
+            "res://images/chien.jpg",
+            "res://images/Larry_sombre.png",
+            "res://images/lutz.png",
+            "res://images/oupiGoupi.jpg",
+            "res://images/ours.png",
+            "res://images/Sanic.jpg",
+            "res://images/steve.jpg",
+            "res://images/YoshiYukata.png"
+		],
+		"psnr_threshold_db": 20000.0,
+		"img_indice" :  "res://images/wpueshOri.jpg",
+		"indice_terminal" : ">GG no re",
+		"indice_ligne" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
+		"tempsMax" : 1000
+	}
+}
