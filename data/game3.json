@@ -1,15 +1,15 @@
 {
 	"TP3": {
 		"intro" : "Bienvenue dans ce troisième TP de traitement d'images !.",
-		"description" : "Votre but est de créer une image binaire en noir et blanc.",
+		"description" : "Votre but est de créer une image binaire en noir et blanc avec l'ours en noir et le fond en blanc.",
 		"source": "res://images/ours.png",
 		"goal": "res://images/blackBear.png",
 		"loaded_images": [
 		],
-		"psnr_threshold_db": 50.0,
+		"psnr_threshold_db": 25.0,
 		"img_indice" :  "res://images/blackBear.png",
-		"indice_terminal" : "grey",
-		"indice_ligne" : ">dilatation 2",
+		"indice_terminal" : "> grey",
+		"indice_ligne" : "> seuil 141",
 		"tempsMax" : 45
 	}
 }

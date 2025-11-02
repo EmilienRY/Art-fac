@@ -1,7 +1,7 @@
 {
 	"TP2": {
 		"intro" : "Bienvenue dans ce deuxième TP de traitement d'images !.",
-		"description" : "Votre but est de faire la différence entre l'image de oupiGoupi et celle de base éclaircie. N'oubliez pas que la commande \"see\" permet de voir les images chargées en mémoire.",
+		"description" : "Votre but est de faire la différence entre l'image de oupiGoupi et celle de base éclaircie. N'oubliez pas que la commande \"see\" permet de voir les images chargées en mémoire,  \"save\" de les enregistrer et  \"load\" de les charger.",
 		"source": "res://images/larry_sombre.png",
 		"goal": "res://images/oupiLarry.png",
 		"loaded_images": [
@@ -9,8 +9,8 @@
 		],
 		"psnr_threshold_db": 50.0,
 		"img_indice" :  "res://images/oupiGoupi.jpg",
-		"indice_terminal" : "equalize",
-		"indice_ligne" : ">save larry_le_malicieux",
+		"indice_terminal" : "> equalize",
+		"indice_ligne" : "> save larry_le_malicieux",
 		"tempsMax" : 45
 	}
 }
