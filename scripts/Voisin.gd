@@ -9,6 +9,8 @@ var indiceTerminal
 var indiceEcrit
 var imgPath
 
+var played=false
+
 var player
 var screen
 var loop=1
@@ -26,6 +28,7 @@ func set_current_level(level: int, appelVoisin : int, indiceTer : String, indice
 	set_indice(indiceTerminal,imgPath)
 	if tempsRestant<=0:
 		_setVideoAngry()
+		played = true
 
 func set_indice(indiceTer : String, img_path : String) -> void :
 	$Screen/Terminal/Background/MarginContainer/Rows/indiceCommande1.text=indiceTer
@@ -102,7 +105,8 @@ func _on_timer_timeout():
 	tempsRestant -= 1
 	if tempsRestant <= 0:
 		timerRegard.stop()
-		_setVideoAngry()
+		if !played :
+			_setVideoAngry()
 	else:
 		if tempsRestant <20 :
 			s=5
