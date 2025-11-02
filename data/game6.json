@@ -23,7 +23,7 @@
 		"psnr_threshold_db": 20000.0,
 		"img_indice" :  "res://images/wpuechOri.jpg",
       	"indice_terminal" : "> J'espère avoir une bonne note au TP... J'ai trop joué à overwatch...",
-		"indice_ligne" : ">GG no re",
+		"indice_ligne" : "> GG no re",
 		"tempsMax" : 1000
 	}
 }
