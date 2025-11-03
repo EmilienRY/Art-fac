@@ -10,12 +10,15 @@ var indiceEcrit
 var imgPath
 
 var played=false
+var current_index = 0
+var playerAngry
 
 var player
 var screen
 var loop=1
 
 var timerRegard : Timer
+var tempsEntreVideo = 5.0
 var tempsRestant : int
 var label : Label
 
@@ -29,22 +32,39 @@ func set_current_level(level: int, appelVoisin : int, indiceTer : String, indice
 	if tempsRestant<=0:
 		_setVideoAngry()
 		played = true
+		tempsEntreVideo=0.0
 
 func set_indice(indiceTer : String, img_path : String) -> void :
 	$Screen/Terminal/Background/MarginContainer/Rows/indiceCommande1.text=indiceTer
 	$ecranVoisin/imgIndice.texture=load(img_path)
 
 func _setVideoAngry():
-	var numVideo = randi_range(0,2)
-	$CenterIdle/typing.stream=load(videoAngry[numVideo])
-	$CenterIdle/typing.loop=false
+	playerAngry = $CenterIdle/typing
+	playerAngry.loop=false
 	$ecranVoisin.visible=false
 	$Screen.visible=false
 	$CenterIdle/keyBoard.autoplay=false
-	$CenterIdle/Grognement.stream = load(soundAngry[numVideo])
-	$CenterIdle/Grognement.play()
-	$CenterIdle/typing.play()
 	$CenterIdle/keyBoard.stop()
+	playerAngry.finished.connect(_on_video_finished)
+	_play_current_video()
+
+
+func _play_current_video():
+	if current_index < videoAngry.size():
+		var stream = load(videoAngry[current_index])
+		if stream:
+			$CenterIdle/Grognement.stream = load(soundAngry[current_index])
+			$CenterIdle/Grognement.play()
+			playerAngry.stream = stream
+			playerAngry.play()
+
+func _on_video_finished():
+	current_index += 1
+	if current_index < videoAngry.size():
+		if tempsEntreVideo > 0 :
+			await get_tree().create_timer(tempsEntreVideo).timeout
+			tempsEntreVideo -= 3
+		_play_current_video()
 
 func _ready() -> void:
 	player = $CenterIdle/typing
