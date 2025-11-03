@@ -6,7 +6,7 @@
 		"goal": "res://images/finalImage.png",
 		"loaded_images": [
 		],
-		"psnr_threshold_db": 30.0,
+		"psnr_threshold_db": 10.0,
 		"img_indice" :  "res://images/catSitRemix.png",
 		"indice_terminal" : "> grey",
 		"indice_ligne" : "> seuil ...",
