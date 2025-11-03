@@ -6,10 +6,10 @@
 		"goal": "res://images/blackBear.png",
 		"loaded_images": [
 		],
-		"psnr_threshold_db": 25.0,
+		"psnr_threshold_db": 10.0,
 		"img_indice" :  "res://images/blackBear.png",
-		"indice_terminal" : "> grey",
-		"indice_ligne" : "> seuil 141",
-		"tempsMax" : 45
+		"indice_terminal" : "> seuil 141",
+		"indice_ligne" : "> dilatation 2",
+		"tempsMax" : 40
 	}
 }

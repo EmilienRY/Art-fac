@@ -6,10 +6,10 @@
 		"goal": "res://images/erobrine.png",
 		"loaded_images": [
 		],
-		"psnr_threshold_db": 35.0,
+		"psnr_threshold_db": 10.0,
 		"img_indice" :  "res://images/erobrine.png",
 		"indice_terminal" : "> grey",
 		"indice_ligne" : "> gradient",
-		"tempsMax" : 45
+		"tempsMax" : 30
 	}
 }
